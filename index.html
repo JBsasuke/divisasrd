@@ -13,8 +13,6 @@
 <meta property="og:url" content="https://divisasrd.com/">
 <meta property="og:locale" content="es_DO">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='0' y2='1'%3E%3Cstop offset='0' stop-color='%23ffd54f'/%3E%3Cstop offset='.5' stop-color='%23ffc107'/%3E%3Cstop offset='1' stop-color='%23e0a000'/%3E%3C/linearGradient%3E%3C/defs%3E%3Ccircle cx='32' cy='32' r='30' fill='url(%23g)'/%3E%3Ctext x='32' y='44' text-anchor='middle' font-family='Arial' font-weight='900' font-size='36' fill='%23fff'%3E$%3C/text%3E%3C/svg%3E">
-<link rel="manifest" href="/manifest.json">
-<link rel="apple-touch-icon" href="/icono-192.png">
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"WebSite","name":"Divisas RD","url":"https://divisasrd.com/","inLanguage":"es-DO","description":"Tasa del dólar hoy en República Dominicana en bancos, remesadoras y casas de cambio."}
 </script>
@@ -111,22 +109,6 @@
   }
   .fila .completo { display: none; width: 100%; font-weight: 700; }
   .fila .completo small { display: block; font-weight: 400; color: var(--suave); }
-  .fila .completo { position: relative; padding-right: 120px; min-height: 34px; }
-  .campana {
-    position: absolute; right: 0; top: 0;
-    padding: 6px 10px; border-radius: 999px; font-size: 13px; font-weight: 700;
-    border: 1px solid var(--dorado); background: rgba(255,255,255,.15); color: #fff; cursor: pointer;
-  }
-  .campana.on { background: var(--dorado); color: var(--noche); }
-  .fila .vigilado { font-size: 12px; margin-left: -4px; }
-  .fila.abierta .vigilado { display: none; }
-  .avisos { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-top: 12px;
-            padding: 10px 12px; border-radius: 12px; background: rgba(255,255,255,.08); }
-  .avisos p { margin: 0; flex: 1; min-width: 200px; font-size: 14px; }
-  .avisos small { display: block; color: var(--suave); font-size: 12px; }
-  .avisos button { padding: 8px 14px; border-radius: 999px; border: 0; background: var(--dorado);
-                   color: var(--noche); font-weight: 800; cursor: pointer; font-size: 14px; }
-  .avisos button:disabled { background: rgba(255,255,255,.2); color: var(--suave); cursor: default; }
   .fila.abierta .completo { display: block; }
   .insignia {
     width: 34px; height: 34px; border-radius: 50%; flex: none;
@@ -201,8 +183,6 @@
     .dos { grid-template-columns: 1fr; }
   }
 </style>
-<meta name="google-adsense-account" content="ca-pub-3979135814994883">
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3979135814994883" crossorigin="anonymous"></script>
 </head>
 <body>
 
@@ -233,20 +213,14 @@
       <div><small>Euro</small><strong id="eur-dop">—</strong></div>
     </div>
     <p class="nota" id="mejor-hoy" style="margin-top:8px"></p>
-    <div class="avisos">
-      <p>🔔 <b>Avisos de cambios de precio</b>
-        <small id="estado-avisos">Toca un banco, combustible o moneda y elige "Avisarme". Te avisamos mientras tengas esta página abierta.</small></p>
-      <button type="button" id="activar-avisos">Activar avisos</button>
-    </div>
   </section>
 
   <!-- Bancos -->
   <section class="tarjeta" id="bancos" aria-labelledby="t-bancos">
     <h2 id="t-bancos">Dólar en bancos y remesas</h2>
-    <p class="nota">Compra = lo que te dan por cada dólar. Toca una entidad para ver su nombre completo y activar avisos 🔔.</p>
+    <p class="nota">Compra = lo que te dan por cada dólar. Toca una entidad para ver su nombre completo.</p>
     <div class="cab"><span>Entidad</span><span>Compra</span><span>Venta</span></div>
     <div id="lista-bancos"><div class="cargando">Cargando tasas…</div></div>
-    <p class="nota" id="act-bancos" style="margin-top:8px"></p>
   </section>
 
   <!-- Convertidor -->
@@ -295,7 +269,6 @@
       <h2 id="t-comb-rd">Combustibles en RD</h2>
       <p class="nota" id="semana-rd">Precios oficiales del MICM.</p>
       <div id="lista-comb-rd"><div class="cargando">Cargando…</div></div>
-      <p class="nota" id="act-comb-rd" style="margin-top:8px"></p>
     </section>
 
     <section class="tarjeta tabla-us" aria-labelledby="t-comb-us">
@@ -304,16 +277,16 @@
       <div class="cab"><span>Estado</span><span>Regular</span><span>Premium</span><span>Diésel</span></div>
       <div id="lista-comb-us"><div class="cargando">Cargando…</div></div>
       <p class="nota">* Diésel: promedio de la región.</p>
-      <p class="nota" id="act-comb-us"></p>
     </section>
   </div>
 
   <!-- Mercados -->
   <div class="rejilla" id="mercados" style="margin-top:16px">
-    <section class="tarjeta"><h2>Criptomonedas</h2><div id="g-cripto"><div class="cargando">Cargando…</div></div><p class="nota act-mercados" style="margin-top:8px"></p></section>
-    <section class="tarjeta"><h2>Bolsa de EE. UU.</h2><div id="g-indices"><div class="cargando">Cargando…</div></div><p class="nota act-mercados" style="margin-top:8px"></p></section>
-    <section class="tarjeta"><h2>Videojuegos</h2><div id="g-empresas"><div class="cargando">Cargando…</div></div><p class="nota act-mercados" style="margin-top:8px"></p></section>
-    <section class="tarjeta"><h2>Oro y petróleo</h2><div id="g-materias"><div class="cargando">Cargando…</div></div><p class="nota act-mercados" style="margin-top:8px"></p></section>
+    <section class="tarjeta"><h2>Criptomonedas</h2><div id="g-cripto"><div class="cargando">Cargando…</div></div></section>
+    <section class="tarjeta"><h2>Bolsa de EE. UU.</h2><div id="g-indices"><div class="cargando">Cargando…</div></div></section>
+    <section class="tarjeta"><h2>Grandes empresas</h2><div id="g-grandes"><div class="cargando">Cargando…</div></div></section>
+    <section class="tarjeta"><h2>Videojuegos</h2><div id="g-empresas"><div class="cargando">Cargando…</div></div></section>
+    <section class="tarjeta"><h2>Oro y petróleo</h2><div id="g-materias"><div class="cargando">Cargando…</div></div></section>
   </div>
 
   <!-- Texto para buscadores y lectores -->
@@ -351,24 +324,10 @@
   const precio = (n) => n == null ? "—" : fmt(n, n < 10 ? 4 : 2);
   const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[c]));
 
-  // Horas fijas: lo dominicano en hora de RD y lo de EE. UU. en hora del Este,
-  // sin importar dónde esté quien mira la página
-  const ZONA_RD = "America/Santo_Domingo";
-  const ZONA_ESTE = "America/New_York";
-  function horaEn(fecha, zona) {
-    try {
-      return new Date(fecha).toLocaleString("es-DO", {
-        timeZone: zona, day: "numeric", month: "short", hour: "numeric", minute: "2-digit"
-      });
-    } catch (_) { return "—"; }
-  }
-  const horaRD = (f) => horaEn(f, ZONA_RD) + " (hora de RD)";
-  const horaEste = (f) => horaEn(f, ZONA_ESTE) + " (hora del Este de EE. UU.)";
-
-  // Fecha de hoy (en RD)
+  // Fecha de hoy
   try {
     $("fecha-hoy").textContent = "Compra y venta en bancos, remesadoras y casas de cambio · " +
-      new Date().toLocaleDateString("es-DO", { timeZone: ZONA_RD, weekday: "long", day: "numeric", month: "long", year: "numeric" });
+      new Date().toLocaleDateString("es-DO", { weekday: "long", day: "numeric", month: "long", year: "numeric" });
   } catch (_) {}
 
   // ---------- Colores (iguales que en la app) ----------
@@ -391,7 +350,9 @@
   const ACTIVOS = {
     BTC:["₿","#F7931A"], ETH:["Ξ","#627EEA"], USDT:["₮","#26A17B"], SOL:["◎","#9945FF"], XRP:["X","#8A9BB0"],
     SPX:["S&P","#1E88E5"], DJI:["DJ","#7E57C2"], IXIC:["NQ","#00ACC1"], ORO:["Au","#FFB300"], WTI:["Oil","#78909C"],
-    MSFT:["MS","#107C10"], SONY:["PS","#2F6FDE"], NTDOY:["N","#E60012"]
+    MSFT:["MS","#107C10"], SONY:["PS","#2F6FDE"], NTDOY:["N","#E60012"],
+    AAPL:["A","#A2AAAD"], NVDA:["NV","#76B900"], GOOGL:["G","#4285F4"], AMZN:["a","#FF9900"],
+    META:["M","#0866FF"], TSLA:["T","#CC0000"]
   };
   const COMB = { premium:["P","#E53935"], regular:["R","#43A047"], gasoilOptimo:["GO","#90A4AE"],
                  gasoilRegular:["G","#78909C"], glp:["GLP","#FB8C00"], gasNatural:["GN","#039BE5"] };
@@ -399,8 +360,6 @@
 
   // Al tocar una fila se abre con el nombre completo
   document.addEventListener("click", (e) => {
-    const b = e.target.closest(".campana");
-    if (b) { e.stopPropagation(); alternarVigilado(b.dataset.clave, b); return; }
     const f = e.target.closest(".fila");
     if (!f) return;
     const abierta = f.classList.contains("abierta");
@@ -408,24 +367,17 @@
     if (!abierta) f.classList.add("abierta");
   });
 
-  function fila(color, icono, completo, detalle, contenido, clave) {
-    const on = clave && vigilados.has(clave);
-    const campana = clave
-      ? `<button type="button" class="campana${on ? " on" : ""}" data-clave="${esc(clave)}">${on ? "🔔 Avisando" : "🔕 Avisarme"}</button>`
-      : "";
+  function fila(color, icono, completo, detalle, contenido) {
     return `<div class="fila" style="--c:${color}" tabindex="0" role="button">
-      <div class="completo">${esc(completo)}${detalle ? `<small>${esc(detalle)}</small>` : ""}${campana}</div>
+      <div class="completo">${esc(completo)}${detalle ? `<small>${esc(detalle)}</small>` : ""}</div>
       ${icono ? `<div class="insignia">${esc(icono)}</div>` : ""}
       ${contenido}
-      ${on ? '<span class="vigilado" title="Avisando">🔔</span>' : ""}
     </div>`;
   }
 
   // ---------- Datos ----------
   let tasas = null;      // mercado: 1 USD = X moneda
   let entidades = [];
-  let ultimosServidor = null;
-  let ultimosComb = null;
 
   async function json(url) {
     const r = await fetch(url, { cache: "no-store" });
@@ -449,19 +401,17 @@
   async function cargarServidor() {
     try {
       const d = await json(SERVIDOR + "/tasas");
-      ultimosServidor = d;
       entidades = (d.entidades || []).filter((e) => e.compra != null || e.venta != null);
       pintarBancos();
       pintarSelector();
       pintarMercados(d.mercados || []);
       if (d.actualizado) {
-        $("act-bancos").textContent = "Actualizado: " + horaRD(d.actualizado);
-        document.querySelectorAll(".act-mercados").forEach((el) => el.textContent = "Actualizado: " + horaEste(d.actualizado));
-        $("actualizado").textContent = "Última actualización: " + horaRD(d.actualizado);
+        $("actualizado").textContent = "Actualizado: " +
+          new Date(d.actualizado).toLocaleString("es-DO", { dateStyle: "medium", timeStyle: "short" });
       }
     } catch (_) {
       $("lista-bancos").innerHTML = '<p class="aviso">No se pudieron cargar las tasas ahora mismo. Intenta de nuevo en un momento.</p>';
-      ["g-cripto","g-indices","g-empresas","g-materias"].forEach((id) => $(id).innerHTML = '<p class="aviso">Sin datos por ahora.</p>');
+      ["g-cripto","g-indices","g-grandes","g-empresas","g-materias"].forEach((id) => $(id).innerHTML = '<p class="aviso">Sin datos por ahora.</p>');
     }
     convertir();
   }
@@ -469,13 +419,8 @@
   async function cargarCombustibles() {
     try {
       const d = await json(SERVIDOR + "/combustibles");
-      ultimosComb = d;
       pintarCombRD(d.rd);
       pintarCombUS(d.eeuu);
-      if (d.actualizado) {
-        $("act-comb-rd").textContent = "Revisado: " + horaRD(d.actualizado);
-        $("act-comb-us").textContent = "Revisado: " + horaEste(d.actualizado);
-      }
     } catch (_) {
       $("lista-comb-rd").innerHTML = '<p class="aviso">Sin datos por ahora.</p>';
       $("lista-comb-us").innerHTML = '<p class="aviso">Sin datos por ahora.</p>';
@@ -494,12 +439,12 @@
       const tipo = TIPOS[e.tipo] || "Casa de cambio";
       return fila(colorEntidad(e.nombre), iniciales(e.nombre), e.nombre, tipo + (esMejor ? " · ★ Mejor compra hoy" : ""),
         `<div class="nombre"><b>${esc(e.nombre)}</b><small class="${esMejor ? "mejor" : ""}">${esMejor ? "★ Mejor compra" : tipo}</small></div>
-         <div class="num">${fmt(e.compra)}</div><div class="num">${fmt(e.venta)}</div>`, "banco:" + e.nombre);
+         <div class="num">${fmt(e.compra)}</div><div class="num">${fmt(e.venta)}</div>`);
     }).join("");
   }
 
   function pintarMercados(lista) {
-    const grupos = { cripto: "g-cripto", indices: "g-indices", empresas: "g-empresas", materias: "g-materias" };
+    const grupos = { cripto: "g-cripto", indices: "g-indices", grandes: "g-grandes", empresas: "g-empresas", materias: "g-materias" };
     for (const [g, id] of Object.entries(grupos)) {
       const items = lista.filter((a) => a.grupo === g);
       $(id).innerHTML = items.length ? items.map((a) => {
@@ -510,7 +455,7 @@
         const enPesos = g === "cripto" && tasas && a.precio != null ? `<small>RD$ ${precio(a.precio * tasas.DOP)}</small>` : "";
         return fila(col, ic, a.nombre, "Símbolo: " + a.simbolo,
           `<div class="nombre"><b>${esc(a.nombre)}</b><small>${esc(a.simbolo)}</small></div>
-           <div class="valor"><b>US$ ${precio(a.precio)}</b>${enPesos}<small class="${clase}">${flecha}</small></div>`, "activo:" + a.simbolo);
+           <div class="valor"><b>US$ ${precio(a.precio)}</b>${enPesos}<small class="${clase}">${flecha}</small></div>`);
       }).join("") : '<p class="nota">Sin datos por ahora.</p>';
     }
   }
@@ -522,7 +467,7 @@
       const [ic, col] = COMB[p.clave] || ["?", "#607D8B"];
       return fila(col, ic, p.nombre, "Precio oficial por " + p.unidad,
         `<div class="nombre"><b>${esc(p.nombre)}</b><small>por ${esc(p.unidad)}</small></div>
-         <div class="valor"><b style="color:var(--dorado)">RD$ ${fmt(p.precio)}</b></div>`, "rd:" + p.clave);
+         <div class="valor"><b style="color:var(--dorado)">RD$ ${fmt(p.precio)}</b></div>`);
     }).join("");
   }
 
@@ -535,7 +480,7 @@
         `<div class="nombre"><b>${esc(e.nombre)}</b></div>
          <div class="num sube">${g(e.regular)}</div>
          <div class="num" style="color:var(--dorado)">${g(e.premium)}</div>
-         <div class="num">${g(e.diesel)}${e.dieselRegional && e.diesel != null ? "*" : ""}</div>`, "us:" + e.nombre)
+         <div class="num">${g(e.diesel)}${e.dieselRegional && e.diesel != null ? "*" : ""}</div>`)
     ).join("");
   }
 
@@ -588,146 +533,10 @@
   $("vendo").addEventListener("click", () => { vendo = true; $("vendo").classList.add("activo"); $("compro").classList.remove("activo"); convertir(); });
   $("compro").addEventListener("click", () => { vendo = false; $("compro").classList.add("activo"); $("vendo").classList.remove("activo"); convertir(); });
 
-  // =====================================================================
-  //  AVISOS DE CAMBIO DE PRECIO (notificaciones del navegador)
-  //  Funcionan mientras la página esté abierta, aunque sea en otra pestaña.
-  // =====================================================================
-  const guardar = (k, v) => { try { localStorage.setItem(k, JSON.stringify(v)); } catch (_) {} };
-  const leer = (k, def) => { try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : def; } catch (_) { return def; } };
-
-  let vigilados = new Set(leer("divisas_vigilados", []));
-  let registroSW = null;
-  const soporta = "Notification" in window;
-
-  async function prepararSW() {
-    if (!("serviceWorker" in navigator)) return null;
-    try { registroSW = await navigator.serviceWorker.register("/sw.js"); } catch (_) { registroSW = null; }
-    return registroSW;
-  }
-
-  function pintarEstadoAvisos() {
-    const btn = $("activar-avisos"), est = $("estado-avisos");
-    if (!soporta) {
-      btn.disabled = true; btn.textContent = "No disponible";
-      est.textContent = "Este navegador no permite notificaciones. En iPhone, primero añade la web a la pantalla de inicio (Compartir > Añadir a inicio).";
-      return;
-    }
-    if (Notification.permission === "granted") {
-      btn.disabled = true; btn.textContent = "✓ Activados";
-      est.textContent = vigilados.size
-        ? `Vigilando ${vigilados.size} precio${vigilados.size === 1 ? "" : "s"}. Te avisamos mientras esta página esté abierta.`
-        : 'Ahora toca un banco, combustible o moneda y elige "Avisarme".';
-    } else if (Notification.permission === "denied") {
-      btn.disabled = true; btn.textContent = "Bloqueados";
-      est.textContent = "Bloqueaste las notificaciones de esta web. Actívalas en el candado 🔒 junto a la dirección.";
-    }
-  }
-
-  async function pedirPermiso() {
-    if (!soporta) return false;
-    await prepararSW();
-    if (Notification.permission === "default") await Notification.requestPermission();
-    pintarEstadoAvisos();
-    return Notification.permission === "granted";
-  }
-  $("activar-avisos").addEventListener("click", pedirPermiso);
-
-  async function alternarVigilado(clave, boton) {
-    if (vigilados.has(clave)) {
-      vigilados.delete(clave);
-    } else {
-      if (!(await pedirPermiso())) return;
-      vigilados.add(clave);
-    }
-    guardar("divisas_vigilados", [...vigilados]);
-    const on = vigilados.has(clave);
-    boton.classList.toggle("on", on);
-    boton.textContent = on ? "🔔 Avisando" : "🔕 Avisarme";
-    pintarEstadoAvisos();
-    programar();
-  }
-
-  // Precios que se pueden vigilar (umbral 0 = cualquier cambio; 2 = moverse un 2 % o más)
-  function lecturas() {
-    const m = {};
-    const d = ultimosServidor, c = ultimosComb;
-    (d?.entidades || []).forEach((e) => {
-      const v = {}; if (e.compra != null) v.compra = e.compra; if (e.venta != null) v.venta = e.venta;
-      if (Object.keys(v).length) m["banco:" + e.nombre] = { nombre: e.nombre, v, umbral: 0, mon: "RD$" };
-    });
-    (d?.mercados || []).forEach((a) => {
-      if (a.precio != null) m["activo:" + a.simbolo] = { nombre: a.nombre, v: { precio: a.precio }, umbral: 2, mon: "US$" };
-    });
-    (c?.rd?.precios || []).forEach((p) => {
-      if (p.precio != null) m["rd:" + p.clave] = { nombre: p.nombre, v: { precio: p.precio }, umbral: 0, mon: "RD$" };
-    });
-    (c?.eeuu?.estados || []).forEach((e) => {
-      const v = {}; if (e.regular != null) v.regular = e.regular; if (e.premium != null) v.premium = e.premium; if (e.diesel != null) v["diésel"] = e.diesel;
-      if (Object.keys(v).length) m["us:" + e.nombre] = { nombre: "Gasolina " + e.nombre, v, umbral: 0, mon: "US$" };
-    });
-    return m;
-  }
-
-  async function avisar(titulo, cuerpo, etiqueta) {
-    if (!soporta || Notification.permission !== "granted") return;
-    const opciones = { body: cuerpo, tag: etiqueta, icon: "/icono-192.png", badge: "/icono-192.png" };
-    try {
-      const reg = registroSW || (await prepararSW());
-      if (reg) { await reg.showNotification(titulo, opciones); return; } // necesario en Android
-      new Notification(titulo, opciones);
-    } catch (_) {}
-  }
-
-  function revisarCambios() {
-    if (!vigilados.size) return;
-    const actual = lecturas();
-    const guardados = leer("divisas_ultimos", {});
-    for (const clave of vigilados) {
-      const l = actual[clave];
-      if (!l) continue;
-      const antes = guardados[clave];
-      const nuevo = { ...(antes || {}) };
-      const cambios = [];
-      for (const [k, valor] of Object.entries(l.v)) {
-        if (!antes || antes[k] == null) { nuevo[k] = valor; continue; } // primera vez: solo se guarda
-        const viejo = antes[k], dif = valor - viejo;
-        const pct = viejo ? Math.abs(dif) / viejo * 100 : 0;
-        const hay = l.umbral > 0 ? pct >= l.umbral : Math.abs(dif) >= 0.005;
-        if (hay) {
-          cambios.push(`${k} ${dif > 0 ? "▲ subió" : "▼ bajó"} de ${l.mon} ${precio(viejo)} a ${precio(valor)}`);
-          nuevo[k] = valor;
-        } else if (l.umbral === 0) {
-          nuevo[k] = valor;
-        }
-      }
-      guardados[clave] = nuevo;
-      if (cambios.length) avisar(l.nombre, cambios.join("\n"), clave);
-    }
-    guardar("divisas_ultimos", guardados);
-  }
-
-  // ---------- Arranque y actualización ----------
-  // Cada 10 minutos si vigilas algo; si no, cada 30.
-  let temporizador = null;
-  async function cargarTodo() {
-    cargarMercado();
-    await Promise.allSettled([cargarServidor(), cargarCombustibles()]);
-    revisarCambios();
-  }
-  function programar() {
-    clearInterval(temporizador);
-    temporizador = setInterval(cargarTodo, (vigilados.size ? 10 : 30) * 60 * 1000);
-  }
-  // Al volver a la pestaña después de un rato, se actualiza enseguida
-  let ultimaCarga = Date.now();
-  document.addEventListener("visibilitychange", () => {
-    if (!document.hidden && Date.now() - ultimaCarga > 5 * 60 * 1000) { ultimaCarga = Date.now(); cargarTodo(); }
-  });
-
-  pintarEstadoAvisos();
-  if (soporta && Notification.permission === "granted") prepararSW();
+  // ---------- Arranque y actualización cada 30 minutos ----------
+  function cargarTodo() { cargarMercado(); cargarServidor(); cargarCombustibles(); }
   cargarTodo();
-  programar();
+  setInterval(cargarTodo, 30 * 60 * 1000);
 })();
 </script>
 </body>
