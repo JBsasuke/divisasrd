@@ -310,6 +310,7 @@
 
   <!-- Mercados -->
   <div class="rejilla" id="mercados" style="margin-top:16px">
+    <section class="tarjeta"><h2>Monedas del mundo</h2><p class="nota">Cuántos pesos dominicanos vale cada moneda.</p><div id="g-monedas"><div class="cargando">Cargando…</div></div><p class="nota" id="act-monedas" style="margin-top:8px"></p></section>
     <section class="tarjeta"><h2>Criptomonedas</h2><div id="g-cripto"><div class="cargando">Cargando…</div></div><p class="nota act-mercados" style="margin-top:8px"></p></section>
     <section class="tarjeta"><h2>Bolsa de EE. UU.</h2><div id="g-indices"><div class="cargando">Cargando…</div></div><p class="nota act-mercados" style="margin-top:8px"></p></section>
     <section class="tarjeta"><h2>Grandes empresas</h2><div id="g-grandes"><div class="cargando">Cargando…</div></div><p class="nota act-mercados" style="margin-top:8px"></p></section>
@@ -344,7 +345,17 @@
 (() => {
   // Tu servidor de Cloudflare
   const SERVIDOR = "https://divisas-rd.juanbatista88.workers.dev";
-  const MONEDAS = ["USD", "DOP", "EUR", "GBP", "CAD", "MXN", "COP"];
+  const MONEDAS = ["USD", "DOP", "EUR", "GBP", "CAD", "MXN", "COP", "BRL", "PEN"];
+  // Monedas del mundo: [código, moneda, país, símbolo, color]
+  const MUNDO = [
+    ["EUR", "Euro", "Europa", "€", "#1E5BC6"],
+    ["GBP", "Libra", "Reino Unido", "£", "#C8102E"],
+    ["CAD", "Dólar", "Canadá", "C$", "#D52B1E"],
+    ["MXN", "Peso", "México", "MX$", "#006847"],
+    ["COP", "Peso", "Colombia", "CO$", "#C99A00"],
+    ["BRL", "Real", "Brasil", "R$", "#009C3B"],
+    ["PEN", "Sol", "Perú", "S/", "#D91023"]
+  ];
 
   const $ = (id) => document.getElementById(id);
   const fmt = (n, d = 2) => n == null || isNaN(n) ? "—" :
@@ -443,8 +454,11 @@
       MONEDAS.forEach((m) => { tasas[m] = j.rates[m]; });
       $("usd-dop").textContent = "RD$ " + fmt(tasas.DOP);
       $("eur-dop").textContent = "RD$ " + fmt(tasas.DOP / tasas.EUR);
+      if (j.time_last_update_unix) $("act-monedas").textContent = "Tasa internacional del " + horaRD(j.time_last_update_unix * 1000);
+      pintarMonedas();
     } catch (_) {
       $("usd-dop").textContent = "No disponible";
+      $("g-monedas").innerHTML = '<p class="aviso">Sin datos por ahora.</p>';
     }
     convertir();
   }
@@ -516,6 +530,17 @@
            <div class="valor"><b>US$ ${precio(a.precio)}</b>${enPesos}<small class="${clase}">${flecha}</small></div>`, "activo:" + a.simbolo);
       }).join("") : '<p class="nota">Sin datos por ahora.</p>';
     }
+  }
+
+  function pintarMonedas() {
+    if (!tasas || !tasas.DOP) return;
+    $("g-monedas").innerHTML = MUNDO.filter(([c]) => tasas[c]).map(([c, moneda, pais, sim, col]) => {
+      const enPesos = tasas.DOP / tasas[c];       // 1 unidad = X pesos
+      const porPeso = tasas[c] / tasas.DOP;       // 1 peso = X unidades
+      return fila(col, sim, `${moneda} · ${pais}`, "Código: " + c,
+        `<div class="nombre"><b>${esc(moneda)}</b><small>${esc(pais)} · ${esc(c)}</small></div>
+         <div class="valor"><b>RD$ ${precio(enPesos)}</b><small>RD$ 1 = ${precio(porPeso)} ${esc(c)}</small></div>`, "moneda:" + c);
+    }).join("");
   }
 
   function pintarCombRD(rd) {
@@ -661,6 +686,9 @@
     (d?.mercados || []).forEach((a) => {
       if (a.precio != null) m["activo:" + a.simbolo] = { nombre: a.nombre, v: { precio: a.precio }, umbral: 2, mon: "US$" };
     });
+    if (tasas && tasas.DOP) MUNDO.forEach(([cod, moneda, pais]) => {
+      if (tasas[cod]) m["moneda:" + cod] = { nombre: `${moneda} (${pais})`, v: { "en pesos": tasas.DOP / tasas[cod] }, umbral: 1, mon: "RD$" };
+    });
     (c?.rd?.precios || []).forEach((p) => {
       if (p.precio != null) m["rd:" + p.clave] = { nombre: p.nombre, v: { precio: p.precio }, umbral: 0, mon: "RD$" };
     });
@@ -713,8 +741,7 @@
   // Cada 10 minutos si vigilas algo; si no, cada 30.
   let temporizador = null;
   async function cargarTodo() {
-    cargarMercado();
-    await Promise.allSettled([cargarServidor(), cargarCombustibles()]);
+    await Promise.allSettled([cargarMercado(), cargarServidor(), cargarCombustibles()]);
     revisarCambios();
   }
   function programar() {
