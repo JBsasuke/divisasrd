@@ -1,0 +1,130 @@
+# =====================================================================
+#  Divisas RD - Publica en Instagram (@divisa_rd) automáticamente
+#   - Todos los días a las 8:30 a. m. (hora de RD): tasa del dólar
+#   - Viernes 7:00 p. m. y, si el MICM se atrasó, sábado 8:00 a. m.: combustibles
+#  RD está siempre en UTC-4 (no cambia la hora), por eso los horarios en UTC son fijos.
+# =====================================================================
+name: Instagram
+
+on:
+  schedule:
+    - cron: "30 12 * * *"   # 8:30 a. m. RD, todos los días  -> tasa
+    - cron: "0 23 * * 5"    # 7:00 p. m. RD, viernes          -> combustibles
+    - cron: "0 12 * * 6"    # 8:00 a. m. RD, sábado (respaldo) -> combustibles, solo si no salió el viernes
+  workflow_dispatch:
+    inputs:
+      modo:
+        description: "¿Qué imagen?"
+        type: choice
+        options: [tasa, combustibles]
+        default: tasa
+      publicar:
+        description: "¿Publicar en Instagram? (no = solo crear la imagen)"
+        type: choice
+        options: ["no", "si"]
+        default: "no"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: instagram
+  cancel-in-progress: false
+
+jobs:
+  publicar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Decidir qué se publica
+        id: plan
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo "modo=${{ inputs.modo }}" >> "$GITHUB_OUTPUT"
+            echo "publicar=${{ inputs.publicar }}" >> "$GITHUB_OUTPUT"
+          elif [ "${{ github.event.schedule }}" = "30 12 * * *" ]; then
+            echo "modo=tasa" >> "$GITHUB_OUTPUT"
+            echo "publicar=si" >> "$GITHUB_OUTPUT"
+          else
+            echo "modo=combustibles" >> "$GITHUB_OUTPUT"
+            echo "publicar=si" >> "$GITHUB_OUTPUT"
+          fi
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Instalar navegador y letra Inter
+        working-directory: instagram
+        run: |
+          npm install --no-audit --no-fund
+          npx playwright install --with-deps chromium
+          sudo apt-get install -y fonts-inter >/dev/null
+
+      - name: Crear la imagen
+        id: imagen
+        run: node instagram/generar.mjs ${{ steps.plan.outputs.modo }}
+
+      - name: Subir la imagen a divisasrd.com
+        if: steps.imagen.outputs.saltar != 'true'
+        run: |
+          # Deja solo las imágenes de los últimos 7 días (la fecha va en el nombre del archivo)
+          LIMITE=$(date -u -d '7 days ago' +%F)
+          for f in ig/*-20[0-9][0-9]-[0-9][0-9]-[0-9][0-9].*; do
+            [ -e "$f" ] || continue
+            FECHA=$(echo "$f" | grep -oE '20[0-9]{2}-[0-9]{2}-[0-9]{2}')
+            if [[ "$FECHA" < "$LIMITE" ]]; then rm -f "$f"; fi
+          done
+          git config user.name "divisasrd-bot"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add -A ig
+          git commit -m "Instagram: ${{ steps.imagen.outputs.archivo }}" || echo "Sin cambios"
+          git pull --rebase
+          git push
+
+      - name: Esperar a que la imagen esté en línea
+        if: steps.imagen.outputs.saltar != 'true' && steps.plan.outputs.publicar == 'si'
+        run: |
+          URL="https://divisasrd.com/ig/${{ steps.imagen.outputs.archivo }}"
+          for i in $(seq 1 30); do
+            if curl -sfI "$URL" | grep -qi '^content-type: image/jpeg'; then
+              echo "La imagen ya está en línea: $URL"; exit 0
+            fi
+            sleep 10
+          done
+          echo "La imagen no apareció en divisasrd.com después de 5 minutos"; exit 1
+
+      - name: Publicar en Instagram
+        if: steps.imagen.outputs.saltar != 'true' && steps.plan.outputs.publicar == 'si'
+        env:
+          IG_TOKEN: ${{ secrets.IG_TOKEN }}
+          IG_USER_ID: ${{ secrets.IG_USER_ID }}
+        run: |
+          ARCHIVO="${{ steps.imagen.outputs.archivo }}"
+          node instagram/publicar.mjs "https://divisasrd.com/ig/$ARCHIVO?v=${{ github.run_id }}" "ig/${ARCHIVO%.jpg}.txt"
+
+      - name: Marcar la semana de combustibles como publicada
+        if: steps.imagen.outputs.saltar != 'true' && steps.plan.outputs.publicar == 'si' && steps.plan.outputs.modo == 'combustibles'
+        run: |
+          echo "${{ steps.imagen.outputs.semana }}" > ig/ultima-semana.txt
+          git add ig/ultima-semana.txt
+          git commit -m "Instagram: combustibles publicados (${{ steps.imagen.outputs.semana }})" || true
+          git pull --rebase
+          git push
+
+      # El token de Instagram dura 60 días. Cada lunes se renueva y se guarda solo,
+      # si existe el secret GH_PAT (token de GitHub con permiso para editar secrets).
+      - name: Renovar el token de Instagram (lunes)
+        if: github.event.schedule == '30 12 * * *'
+        env:
+          IG_TOKEN: ${{ secrets.IG_TOKEN }}
+          GH_TOKEN: ${{ secrets.GH_PAT }}
+        run: |
+          if [ "$(date -u +%u)" != "1" ]; then echo "Hoy no toca renovar"; exit 0; fi
+          if [ -z "$GH_TOKEN" ]; then echo "::warning::Falta el secret GH_PAT: el token de Instagram no se renueva solo"; exit 0; fi
+          node instagram/renovar-token.mjs "$RUNNER_TEMP/ig_token"
+          gh secret set IG_TOKEN --repo "${{ github.repository }}" < "$RUNNER_TEMP/ig_token"
+          rm -f "$RUNNER_TEMP/ig_token"
+          echo "IG_TOKEN actualizado"
