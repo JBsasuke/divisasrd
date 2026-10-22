@@ -16,7 +16,7 @@
 <link rel="manifest" href="/manifest.json">
 <link rel="apple-touch-icon" href="/icono-192.png">
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"WebSite","name":"Divisas RD","url":"https://divisasrd.com/","inLanguage":"es-DO","description":"Tasa del dólar hoy en República Dominicana en bancos, remesadoras y casas de cambio."}
+{"@context":"https://schema.org","@type":"WebSite","name":"Divisas RD","url":"https://divisasrd.com/","inLanguage":"es-DO","description":"Tasa del dólar hoy en República Dominicana en bancos, remesadoras y casas de cambio.","sameAs":["https://www.instagram.com/divisas_rd/"]}
 </script>
 <style>
   :root {
@@ -187,6 +187,8 @@
     background: var(--dorado); color: var(--noche); font-weight: 800; text-decoration: none;
   }
   .boton.apagado { background: rgba(255,255,255,.15); color: var(--suave); }
+  .botones-app { display: flex; gap: 10px; flex-wrap: wrap; }
+  .boton.ig { background: linear-gradient(45deg, #f09433, #dc2743 50%, #bc1888); color: #fff; }
 
   .texto h2 { color: var(--dorado); font-size: 18px; margin: 0 0 6px; }
   .texto h3 { font-size: 16px; margin: 14px 0 4px; }
@@ -286,7 +288,10 @@
     <div class="logo" aria-hidden="true">$</div>
     <p><b id="t-app">Divisas RD para Android</b><br><span class="nota">Avisos cuando cambia la tasa de tu banco o el precio de la gasolina, y el dólar del día en tu pantalla de bloqueo.</span></p>
     <!-- Cuando la app esté publicada, cambia este botón por el enlace de Google Play -->
-    <span class="boton apagado">Próximamente en Google Play</span>
+    <span class="botones-app">
+      <span class="boton apagado">Próximamente en Google Play</span>
+      <a class="boton ig" href="https://www.instagram.com/divisas_rd/" target="_blank" rel="noopener">📸 @divisas_rd</a>
+    </span>
   </section>
 
   <!-- Combustibles -->
@@ -337,6 +342,7 @@
 <footer class="envoltura">
   <p id="actualizado">&nbsp;</p>
   <p>Fuentes: sitios de cada entidad, InfoDolar, MICM, EIA, ExchangeRate-API, Yahoo Finance, Kraken y CoinGecko.</p>
+  <p>📸 Síguenos en Instagram: <a href="https://www.instagram.com/divisas_rd/" target="_blank" rel="noopener"><b>@divisas_rd</b></a> · la tasa del dólar cada mañana</p>
   <p><a href="/privacidad/">Política de privacidad</a> · <a href="mailto:divisasrdapp@gmail.com">divisasrdapp@gmail.com</a></p>
   <p>© 2026 Divisas RD</p>
 </footer>
