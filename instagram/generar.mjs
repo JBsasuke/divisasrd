@@ -1,5 +1,5 @@
 // =====================================================================
-//  Divisas RD - Genera las imágenes de Instagram (@divisa_rd)
+//  Divisas RD - Genera las imágenes de Instagram (@divisas_rd)
 //  Uso:  node generar.mjs tasa           -> ig/tasa-AAAA-MM-DD.jpg
 //        node generar.mjs combustibles   -> ig/combustibles-AAAA-MM-DD.jpg
 //  Con DATOS_LOCALES=carpeta lee los .json de esa carpeta en vez de internet.
@@ -57,6 +57,30 @@ await pagina.goto("file://" + path.join(AQUI, "plantilla.html"));
 await pagina.evaluate(([m, d]) => window.pintar(m, d), [modo, datos]);
 await pagina.evaluate(() => document.fonts.ready);
 await pagina.screenshot({ path: salida, type: "jpeg", quality: 92 });
+
+// Versión para historias (1080×1920): la misma imagen en el centro, con franjas arriba y abajo.
+// Las franjas quedan donde Instagram pone su nombre y la barra de respuesta, así no tapan los precios.
+const salidaHistoria = salida.replace(/\.jpg$/, "-historia.jpg");
+const imagenBase64 = (await readFile(salida)).toString("base64");
+const historia = await navegador.newPage({ viewport: { width: 1080, height: 1920 }, deviceScaleFactor: 1 });
+await historia.setContent(`<!doctype html><html><head><meta charset="utf-8"><style>
+  * { margin: 0; box-sizing: border-box; }
+  body { width: 1080px; height: 1920px; overflow: hidden; font-family: Inter, system-ui, sans-serif; color: #fff;
+         background: linear-gradient(170deg, #061428 0%, #002d62 55%, #0b4a8f 100%);
+         display: flex; flex-direction: column; align-items: center; justify-content: space-between; }
+  .franja { height: 335px; width: 100%; display: flex; align-items: center; justify-content: center; text-align: center; }
+  .arriba { padding-top: 120px; font-size: 34px; font-weight: 800; color: #ffc107; letter-spacing: .08em; text-transform: uppercase; }
+  .abajo { flex-direction: column; padding-bottom: 150px; font-size: 30px; color: #b8c7e0; }
+  .abajo b { font-size: 44px; color: #ffc107; display: block; margin-top: 6px; }
+  img { width: 1000px; height: 1250px; display: block; border-radius: 40px;
+        border: 3px solid rgba(255,193,7,.55); box-shadow: 0 20px 60px rgba(0,0,0,.45); }
+</style></head><body>
+  <div class="franja arriba">${modo === "combustibles" ? "Combustibles de la semana" : "La tasa de hoy"}</div>
+  <img src="data:image/jpeg;base64,${imagenBase64}">
+  <div class="franja abajo">Todas las tasas en<b>divisasrd.com</b></div>
+</body></html>`);
+await historia.evaluate(() => document.fonts.ready);
+await historia.screenshot({ path: salidaHistoria, type: "jpeg", quality: 90 });
 await navegador.close();
 
 // Texto de la publicación
@@ -83,4 +107,5 @@ await writeFile(salida.replace(/\.jpg$/, ".txt"), texto);
 if (modo === "combustibles") await salidaGH("semana", datos.combustibles.rd.semana);
 await salidaGH("saltar", "false");
 await salidaGH("archivo", path.basename(salida));
+await salidaGH("historia", path.basename(salidaHistoria));
 console.log(salida);

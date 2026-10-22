@@ -1,0 +1,773 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tasa del dólar hoy en RD · Bancos, remesas y combustibles | Divisas RD</title>
+<meta name="description" content="Tasa del dólar y del euro hoy en República Dominicana: compra y venta en Banreservas, Popular, BHD, Caribe Express y casas de cambio. Convertidor, combustibles, cripto y bolsa, actualizado al día.">
+<link rel="canonical" href="https://divisasrd.com/">
+<meta name="theme-color" content="#061428">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Tasa del dólar hoy en RD | Divisas RD">
+<meta property="og:description" content="Compra y venta del dólar en bancos, remesadoras y casas de cambio de República Dominicana, actualizado al día.">
+<meta property="og:url" content="https://divisasrd.com/">
+<meta property="og:locale" content="es_DO">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='0' y2='1'%3E%3Cstop offset='0' stop-color='%23ffd54f'/%3E%3Cstop offset='.5' stop-color='%23ffc107'/%3E%3Cstop offset='1' stop-color='%23e0a000'/%3E%3C/linearGradient%3E%3C/defs%3E%3Ccircle cx='32' cy='32' r='30' fill='url(%23g)'/%3E%3Ctext x='32' y='44' text-anchor='middle' font-family='Arial' font-weight='900' font-size='36' fill='%23fff'%3E$%3C/text%3E%3C/svg%3E">
+<link rel="manifest" href="/manifest.json">
+<link rel="apple-touch-icon" href="/icono-192.png">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebSite","name":"Divisas RD","url":"https://divisasrd.com/","inLanguage":"es-DO","description":"Tasa del dólar hoy en República Dominicana en bancos, remesadoras y casas de cambio.","sameAs":["https://www.instagram.com/divisas_rd/"]}
+</script>
+<style>
+  :root {
+    --noche: #061428;
+    --bandera: #002d62;
+    --claro: #0b4a8f;
+    --dorado: #ffc107;
+    --blanco: #ffffff;
+    --suave: #b8c7e0;
+    --sube: #4cd964;
+    --baja: #ff5a5f;
+    --tarjeta: rgba(255,255,255,.07);
+    --borde: rgba(255,193,7,.25);
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    min-height: 100vh;
+    color: var(--blanco);
+    background: var(--noche) linear-gradient(180deg, var(--noche) 0%, var(--bandera) 55%, var(--claro) 100%);
+    font: 16px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  }
+  a { color: var(--dorado); }
+  .envoltura { max-width: 980px; margin: 0 auto; padding: 0 16px; }
+
+  /* Encabezado */
+  header { padding: 20px 0 8px; }
+  .barra { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+  .marca { display: flex; align-items: center; gap: 12px; text-decoration: none; color: inherit; }
+  .logo {
+    width: 46px; height: 46px; border-radius: 50%; flex: none;
+    display: grid; place-items: center;
+    background: linear-gradient(#ffd54f, var(--dorado) 50%, #e0a000);
+    border: 1.5px solid rgba(255,255,255,.7);
+    box-shadow: 0 0 14px rgba(255,193,7,.45);
+    font-weight: 900; font-size: 26px; color: #fff;
+  }
+  .marca b { display: block; font-size: 24px; line-height: 1.1; }
+  .marca span { color: var(--dorado); font-size: 13px; }
+  nav { display: flex; gap: 6px; flex-wrap: wrap; }
+  nav a {
+    color: var(--suave); text-decoration: none; font-size: 14px;
+    padding: 6px 10px; border-radius: 999px; border: 1px solid transparent;
+  }
+  nav a:hover { border-color: var(--borde); color: #fff; }
+
+  h1 { font-size: clamp(24px, 5vw, 34px); margin: 18px 0 4px; line-height: 1.2; }
+  .sub { color: var(--suave); margin: 0 0 18px; }
+
+  /* Tarjetas */
+  .tarjeta {
+    background: var(--tarjeta);
+    border: 1px solid var(--borde);
+    border-radius: 18px;
+    padding: 16px;
+    margin-bottom: 16px;
+  }
+  .tarjeta h2 { color: var(--dorado); font-size: 20px; margin: 0 0 4px; }
+  .nota { color: var(--suave); font-size: 13px; margin: 0 0 10px; }
+
+  .destacada {
+    border: 2px solid transparent;
+    background:
+      linear-gradient(180deg, rgba(255,193,7,.18), rgba(255,255,255,.05)) padding-box,
+      linear-gradient(#08203f, #08203f) padding-box,
+      linear-gradient(135deg, #ffe082, var(--dorado), #e0a000) border-box;
+    box-shadow: 0 6px 24px rgba(255,193,7,.18);
+  }
+  .grande { display: flex; gap: 24px; flex-wrap: wrap; align-items: baseline; }
+  .grande div { min-width: 200px; }
+  .grande small { color: var(--suave); display: block; }
+  .grande strong { font-size: clamp(28px, 7vw, 40px); }
+
+  /* Filas tipo tarjetita con borde de color */
+  .fila {
+    --c: #607d8b;
+    display: flex; align-items: center; gap: 10px;
+    padding: 8px 10px; margin: 6px 0;
+    border-radius: 14px;
+    border: 1px solid color-mix(in srgb, var(--c) 65%, transparent);
+    background: color-mix(in srgb, var(--c) 14%, rgba(6,20,40,.55));
+    box-shadow: 0 2px 6px color-mix(in srgb, var(--c) 25%, transparent);
+    cursor: pointer;
+    transition: background .15s, box-shadow .15s;
+  }
+  .fila.abierta {
+    border-width: 2px; border-color: var(--c);
+    background: color-mix(in srgb, var(--c) 28%, rgba(6,20,40,.55));
+    box-shadow: 0 4px 16px color-mix(in srgb, var(--c) 45%, transparent);
+    flex-wrap: wrap;
+  }
+  .fila .completo { display: none; width: 100%; font-weight: 700; }
+  .fila .completo small { display: block; font-weight: 400; color: var(--suave); }
+  .fila .completo { position: relative; padding-right: 120px; min-height: 34px; }
+  .campana {
+    position: absolute; right: 0; top: 0;
+    padding: 6px 10px; border-radius: 999px; font-size: 13px; font-weight: 700;
+    border: 1px solid var(--dorado); background: rgba(255,255,255,.15); color: #fff; cursor: pointer;
+  }
+  .campana.on { background: var(--dorado); color: var(--noche); }
+  .fila .vigilado { font-size: 12px; margin-left: -4px; }
+  .fila.abierta .vigilado { display: none; }
+  .avisos { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-top: 12px;
+            padding: 10px 12px; border-radius: 12px; background: rgba(255,255,255,.08); }
+  .avisos p { margin: 0; flex: 1; min-width: 200px; font-size: 14px; }
+  .avisos small { display: block; color: var(--suave); font-size: 12px; }
+  .avisos button { padding: 8px 14px; border-radius: 999px; border: 0; background: var(--dorado);
+                   color: var(--noche); font-weight: 800; cursor: pointer; font-size: 14px; }
+  .avisos button:disabled { background: rgba(255,255,255,.2); color: var(--suave); cursor: default; }
+  .fila.abierta .completo { display: block; }
+  .insignia {
+    width: 34px; height: 34px; border-radius: 50%; flex: none;
+    display: grid; place-items: center;
+    background: var(--c); color: #fff; font-weight: 700; font-size: 13px;
+    border: 1px solid rgba(255,255,255,.35);
+  }
+  .nombre { flex: 1; min-width: 0; }
+  .nombre b { display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-weight: 600; }
+  .nombre small { color: var(--suave); font-size: 12px; }
+  .nombre small.mejor { color: var(--sube); }
+  .num { width: 76px; text-align: right; font-weight: 600; font-variant-numeric: tabular-nums; }
+  .cab { display: flex; gap: 10px; padding: 0 10px; color: var(--suave); font-size: 13px; font-weight: 700; }
+  .cab span:first-child { flex: 1; }
+  .cab span { width: 76px; text-align: right; }
+  .cab span:first-child { text-align: left; }
+
+  .valor { text-align: right; }
+  .valor b { display: block; font-variant-numeric: tabular-nums; }
+  .valor small { display: block; font-size: 12px; color: var(--suave); }
+  .sube { color: var(--sube) !important; }
+  .baja { color: var(--baja) !important; }
+
+  /* Convertidor */
+  .controles { display: grid; gap: 10px; }
+  label { color: var(--suave); font-size: 13px; display: block; margin-bottom: 4px; }
+  input, select {
+    width: 100%; padding: 10px 12px; border-radius: 12px;
+    border: 1px solid var(--suave); background: rgba(6,20,40,.6); color: #fff;
+    font-size: 16px;
+  }
+  select option { color: #000; }
+  .dos { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .pastillas { display: flex; gap: 8px; flex-wrap: wrap; }
+  .pastillas button {
+    flex: 1; min-width: 130px; padding: 10px; border-radius: 999px; font-size: 15px;
+    border: 1px solid var(--dorado); background: transparent; color: #fff; cursor: pointer;
+  }
+  .pastillas button.activo { background: var(--dorado); color: var(--noche); font-weight: 700; }
+  .resultado { font-size: clamp(24px, 6vw, 32px); font-weight: 800; color: var(--dorado); margin: 12px 0 0; }
+  .detalle { color: var(--suave); font-size: 13px; }
+
+  .rejilla { display: grid; grid-template-columns: repeat(auto-fit, minmax(290px, 1fr)); gap: 16px; }
+  .rejilla .tarjeta { margin-bottom: 0; }
+
+  .tabla-us .num { width: 64px; }
+  .tabla-us .cab span { width: 64px; }
+
+  .cargando { color: var(--suave); padding: 8px 0; }
+  .aviso { color: var(--baja); font-size: 14px; }
+
+  .app {
+    display: flex; align-items: center; gap: 14px; flex-wrap: wrap;
+  }
+  .app p { flex: 1; min-width: 220px; margin: 0; }
+  .boton {
+    display: inline-block; padding: 12px 18px; border-radius: 999px;
+    background: var(--dorado); color: var(--noche); font-weight: 800; text-decoration: none;
+  }
+  .boton.apagado { background: rgba(255,255,255,.15); color: var(--suave); }
+  .botones-app { display: flex; gap: 10px; flex-wrap: wrap; }
+  .boton.ig { background: linear-gradient(45deg, #f09433, #dc2743 50%, #bc1888); color: #fff; }
+
+  .texto h2 { color: var(--dorado); font-size: 18px; margin: 0 0 6px; }
+  .texto h3 { font-size: 16px; margin: 14px 0 4px; }
+  .texto p { color: #dce5f3; margin: 0 0 8px; }
+
+  footer { color: var(--suave); font-size: 13px; padding: 8px 0 32px; text-align: center; }
+  footer a { color: var(--suave); }
+
+  @media (max-width: 420px) {
+    .num, .cab span { width: 64px; }
+    .tabla-us .num, .tabla-us .cab span { width: 56px; font-size: 13px; }
+    .dos { grid-template-columns: 1fr; }
+  }
+</style>
+<meta name="google-adsense-account" content="ca-pub-3979135814994883">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3979135814994883" crossorigin="anonymous"></script>
+</head>
+<body>
+
+<header class="envoltura">
+  <div class="barra">
+    <a class="marca" href="/">
+      <div class="logo" aria-hidden="true">$</div>
+      <div><b>Divisas</b><span>Dólar, bolsa, cripto y combustibles</span></div>
+    </a>
+    <nav aria-label="Secciones">
+      <a href="#bancos">Bancos</a>
+      <a href="#convertidor">Convertidor</a>
+      <a href="#combustibles">Combustibles</a>
+      <a href="#mercados">Cripto y bolsa</a>
+    </nav>
+  </div>
+  <h1>Tasa del dólar hoy en República Dominicana</h1>
+  <p class="sub" id="fecha-hoy">Compra y venta en bancos, remesadoras y casas de cambio.</p>
+</header>
+
+<main class="envoltura">
+
+  <!-- Tasa de mercado -->
+  <section class="tarjeta destacada" aria-labelledby="t-mercado">
+    <h2 id="t-mercado">Tasa de mercado hoy</h2>
+    <div class="grande">
+      <div><small>Dólar estadounidense</small><strong id="usd-dop">—</strong></div>
+      <div><small>Euro</small><strong id="eur-dop">—</strong></div>
+    </div>
+    <p class="nota" id="mejor-hoy" style="margin-top:8px"></p>
+    <div class="avisos">
+      <p>🔔 <b>Avisos de cambios de precio</b>
+        <small id="estado-avisos">Toca un banco, combustible o moneda y elige "Avisarme". Te avisamos mientras tengas esta página abierta.</small></p>
+      <button type="button" id="activar-avisos">Activar avisos</button>
+    </div>
+  </section>
+
+  <!-- Bancos -->
+  <section class="tarjeta" id="bancos" aria-labelledby="t-bancos">
+    <h2 id="t-bancos">Dólar en bancos y remesas</h2>
+    <p class="nota">Compra = lo que te dan por cada dólar. Toca una entidad para ver su nombre completo y activar avisos 🔔.</p>
+    <div class="cab"><span>Entidad</span><span>Compra</span><span>Venta</span></div>
+    <div id="lista-bancos"><div class="cargando">Cargando tasas…</div></div>
+    <p class="nota" id="act-bancos" style="margin-top:8px"></p>
+  </section>
+
+  <!-- Convertidor -->
+  <section class="tarjeta" id="convertidor" aria-labelledby="t-conv">
+    <h2 id="t-conv">Convertidor</h2>
+    <div class="controles">
+      <div>
+        <label for="fuente">Tasa a usar</label>
+        <select id="fuente"><option value="mercado">Mercado internacional (todas las monedas)</option></select>
+      </div>
+
+      <div id="modo-mercado">
+        <div class="dos">
+          <div><label for="desde">De</label><select id="desde"></select></div>
+          <div><label for="hacia">A</label><select id="hacia"></select></div>
+        </div>
+      </div>
+
+      <div id="modo-banco" hidden>
+        <div class="pastillas">
+          <button type="button" id="vendo" class="activo">Vendo dólares</button>
+          <button type="button" id="compro">Compro dólares</button>
+        </div>
+      </div>
+
+      <div>
+        <label for="cantidad" id="etq-cantidad">Cantidad</label>
+        <input id="cantidad" type="number" inputmode="decimal" min="0" step="any" value="100">
+      </div>
+    </div>
+    <p class="resultado" id="resultado">—</p>
+    <p class="detalle" id="detalle"></p>
+  </section>
+
+  <!-- App -->
+  <section class="tarjeta app" aria-labelledby="t-app">
+    <div class="logo" aria-hidden="true">$</div>
+    <p><b id="t-app">Divisas RD para Android</b><br><span class="nota">Avisos cuando cambia la tasa de tu banco o el precio de la gasolina, y el dólar del día en tu pantalla de bloqueo.</span></p>
+    <!-- Cuando la app esté publicada, cambia este botón por el enlace de Google Play -->
+    <span class="botones-app">
+      <span class="boton apagado">Próximamente en Google Play</span>
+      <a class="boton ig" href="https://www.instagram.com/divisas_rd/" target="_blank" rel="noopener">📸 @divisas_rd</a>
+    </span>
+  </section>
+
+  <!-- Combustibles -->
+  <div class="rejilla" id="combustibles">
+    <section class="tarjeta" aria-labelledby="t-comb-rd">
+      <h2 id="t-comb-rd">Combustibles en RD</h2>
+      <p class="nota" id="semana-rd">Precios oficiales del MICM.</p>
+      <div id="lista-comb-rd"><div class="cargando">Cargando…</div></div>
+      <p class="nota" id="act-comb-rd" style="margin-top:8px"></p>
+    </section>
+
+    <section class="tarjeta tabla-us" aria-labelledby="t-comb-us">
+      <h2 id="t-comb-us">Gasolina en EE. UU.</h2>
+      <p class="nota" id="semana-us">US$ por galón (EIA).</p>
+      <div class="cab"><span>Estado</span><span>Regular</span><span>Premium</span><span>Diésel</span></div>
+      <div id="lista-comb-us"><div class="cargando">Cargando…</div></div>
+      <p class="nota">* Diésel: promedio de la región.</p>
+      <p class="nota" id="act-comb-us"></p>
+    </section>
+  </div>
+
+  <!-- Mercados -->
+  <div class="rejilla" id="mercados" style="margin-top:16px">
+    <section class="tarjeta"><h2>Monedas del mundo</h2><p class="nota">Cuántos pesos dominicanos vale cada moneda.</p><div id="g-monedas"><div class="cargando">Cargando…</div></div><p class="nota" id="act-monedas" style="margin-top:8px"></p></section>
+    <section class="tarjeta"><h2>Criptomonedas</h2><div id="g-cripto"><div class="cargando">Cargando…</div></div><p class="nota act-mercados" style="margin-top:8px"></p></section>
+    <section class="tarjeta"><h2>Bolsa de EE. UU.</h2><div id="g-indices"><div class="cargando">Cargando…</div></div><p class="nota act-mercados" style="margin-top:8px"></p></section>
+    <section class="tarjeta"><h2>Grandes empresas</h2><div id="g-grandes"><div class="cargando">Cargando…</div></div><p class="nota act-mercados" style="margin-top:8px"></p></section>
+    <section class="tarjeta"><h2>Videojuegos</h2><div id="g-empresas"><div class="cargando">Cargando…</div></div><p class="nota act-mercados" style="margin-top:8px"></p></section>
+    <section class="tarjeta"><h2>Oro, plata y materias primas</h2><div id="g-materias"><div class="cargando">Cargando…</div></div><p class="nota act-mercados" style="margin-top:8px"></p></section>
+  </div>
+
+  <!-- Texto para buscadores y lectores -->
+  <section class="tarjeta texto" style="margin-top:16px">
+    <h2>Preguntas frecuentes sobre la tasa del dólar en RD</h2>
+    <h3>¿Qué es la tasa de compra y la de venta?</h3>
+    <p>La <b>compra</b> es lo que el banco o la casa de cambio te paga en pesos por cada dólar que les vendes. La <b>venta</b> es lo que te cobran si tú les compras dólares. Si recibes remesas en dólares, te conviene la entidad con la compra más alta.</p>
+    <h3>¿Por qué la tasa de mercado es distinta a la de los bancos?</h3>
+    <p>La tasa de mercado es un promedio internacional. Cada banco y remesadora fija su propia compra y venta, y la diferencia es su margen.</p>
+    <h3>¿Cada cuánto se actualizan los precios?</h3>
+    <p>Las tasas de bancos, bolsa y cripto se revisan cada 30 minutos. Los combustibles de RD cambian cada semana (los fija el MICM los viernes) y los de EE. UU. también cada semana (los publica la EIA).</p>
+    <p class="nota">Precios informativos. Confirma siempre la tasa con la entidad antes de hacer una operación.</p>
+  </section>
+
+  <!-- Espacio reservado para un anuncio (AdSense), cuando se active -->
+
+</main>
+
+<footer class="envoltura">
+  <p id="actualizado">&nbsp;</p>
+  <p>Fuentes: sitios de cada entidad, InfoDolar, MICM, EIA, ExchangeRate-API, Yahoo Finance, Kraken y CoinGecko.</p>
+  <p>📸 Síguenos en Instagram: <a href="https://www.instagram.com/divisas_rd/" target="_blank" rel="noopener"><b>@divisas_rd</b></a> · la tasa del dólar cada mañana</p>
+  <p><a href="/privacidad/">Política de privacidad</a> · <a href="mailto:divisasrdapp@gmail.com">divisasrdapp@gmail.com</a></p>
+  <p>© 2026 Divisas RD</p>
+</footer>
+
+<script>
+(() => {
+  // Tu servidor de Cloudflare
+  const SERVIDOR = "https://divisas-rd.juanbatista88.workers.dev";
+  const MONEDAS = ["USD", "DOP", "EUR", "GBP", "CAD", "MXN", "COP", "BRL", "PEN"];
+  // Monedas del mundo: [código, moneda, país, símbolo, color]
+  const MUNDO = [
+    ["EUR", "Euro", "Europa", "€", "#1E5BC6"],
+    ["GBP", "Libra", "Reino Unido", "£", "#C8102E"],
+    ["CAD", "Dólar", "Canadá", "C$", "#D52B1E"],
+    ["MXN", "Peso", "México", "MX$", "#006847"],
+    ["COP", "Peso", "Colombia", "CO$", "#C99A00"],
+    ["BRL", "Real", "Brasil", "R$", "#009C3B"],
+    ["PEN", "Sol", "Perú", "S/", "#D91023"]
+  ];
+
+  const $ = (id) => document.getElementById(id);
+  const fmt = (n, d = 2) => n == null || isNaN(n) ? "—" :
+    Number(n).toLocaleString("es-DO", { minimumFractionDigits: d, maximumFractionDigits: d });
+  const precio = (n) => n == null ? "—" : fmt(n, n < 10 ? 4 : 2);
+  const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[c]));
+
+  // Horas fijas: lo dominicano en hora de RD y lo de EE. UU. en hora del Este,
+  // sin importar dónde esté quien mira la página
+  const ZONA_RD = "America/Santo_Domingo";
+  const ZONA_ESTE = "America/New_York";
+  function horaEn(fecha, zona) {
+    try {
+      return new Date(fecha).toLocaleString("es-DO", {
+        timeZone: zona, day: "numeric", month: "short", hour: "numeric", minute: "2-digit"
+      });
+    } catch (_) { return "—"; }
+  }
+  const horaRD = (f) => horaEn(f, ZONA_RD) + " (hora de RD)";
+  const horaEste = (f) => horaEn(f, ZONA_ESTE) + " (hora del Este de EE. UU.)";
+
+  // Fecha de hoy (en RD)
+  try {
+    $("fecha-hoy").textContent = "Compra y venta en bancos, remesadoras y casas de cambio · " +
+      new Date().toLocaleDateString("es-DO", { timeZone: ZONA_RD, weekday: "long", day: "numeric", month: "long", year: "numeric" });
+  } catch (_) {}
+
+  // ---------- Colores (iguales que en la app) ----------
+  const PALETA = ["#26C6DA","#AB47BC","#66BB6A","#FF7043","#5C6BC0","#EC407A","#8D6E63","#29B6F6","#9CCC65","#FFA726"];
+  function hash(s) { let h = 0; for (const ch of s) h = (h * 31 + ch.charCodeAt(0)) | 0; return Math.abs(h); }
+  function colorEntidad(nombre) {
+    const n = nombre.toLowerCase();
+    const mapa = [["banreservas","#1E88E5"],["bhd","#00A651"],["popular","#0D47A1"],["caribe express","#FFC20E"],
+      ["scotiabank","#EC111A"],["banesco","#00965E"],["lafise","#43A047"],["vimenca","#FFD600"],["bonanza","#E53935"],
+      ["caribe","#F57C00"],["cibao","#00897B"],["nacional","#3949AB"],["romana","#8E24AA"],["peravia","#6D4C41"]];
+    for (const [k, c] of mapa) if (n.includes(k)) return c;
+    return PALETA[hash(nombre) % PALETA.length];
+  }
+  function iniciales(nombre) {
+    const p = nombre.replace("Banco ", "").replace("Asociación ", "").split(" ")
+      .filter((w) => w && w[0] === w[0].toUpperCase() && /[A-ZÁÉÍÓÚÑ]/.test(w[0]));
+    return (p.slice(0, 2).map((w) => w[0]).join("") || nombre.slice(0, 2)).toUpperCase();
+  }
+  const TIPOS = { banco: "Banco", remesadora: "Remesadora", asociacion: "Asociación de ahorros" };
+  const ACTIVOS = {
+    BTC:["₿","#F7931A"], ETH:["Ξ","#627EEA"], USDT:["₮","#26A17B"], SOL:["◎","#9945FF"], XRP:["X","#8A9BB0"],
+    SPX:["S&P","#1E88E5"], DJI:["DJ","#7E57C2"], IXIC:["NQ","#00ACC1"], ORO:["Au","#FFB300"], WTI:["Oil","#78909C"],
+    PLATA:["Ag","#90A4AE"], PLATINO:["Pt","#78909C"], COBRE:["Cu","#B87333"], GASNAT:["GN","#039BE5"],
+    CAFE:["Cf","#6D4C41"], CACAO:["Cc","#8D6E63"],
+    MSFT:["MS","#107C10"], SONY:["PS","#2F6FDE"], NTDOY:["N","#E60012"],
+    AAPL:["A","#8E8E93"], NVDA:["NV","#76B900"], GOOGL:["G","#4285F4"], AMZN:["a","#FF9900"],
+    META:["M","#0866FF"], TSLA:["T","#CC0000"]
+  };
+  const COMB = { premium:["P","#E53935"], regular:["R","#43A047"], gasoilOptimo:["GO","#90A4AE"],
+                 gasoilRegular:["G","#78909C"], glp:["GLP","#FB8C00"], gasNatural:["GN","#039BE5"],
+                 avtur:["AV","#0288D1"], kerosene:["K","#7CB342"], fuelOil6:["F6","#5D4037"], fuelOil1:["F1","#795548"] };
+  const ESTADOS = { "Nueva York":"#1E88E5", "Ohio":"#E53935", "Florida":"#FB8C00", "Texas":"#8E24AA", "California":"#FDD835" };
+
+  // Al tocar una fila se abre con el nombre completo
+  document.addEventListener("click", (e) => {
+    const b = e.target.closest(".campana");
+    if (b) { e.stopPropagation(); alternarVigilado(b.dataset.clave, b); return; }
+    const f = e.target.closest(".fila");
+    if (!f) return;
+    const abierta = f.classList.contains("abierta");
+    f.parentElement.querySelectorAll(".fila.abierta").forEach((x) => x.classList.remove("abierta"));
+    if (!abierta) f.classList.add("abierta");
+  });
+
+  function fila(color, icono, completo, detalle, contenido, clave) {
+    const on = clave && vigilados.has(clave);
+    const campana = clave
+      ? `<button type="button" class="campana${on ? " on" : ""}" data-clave="${esc(clave)}">${on ? "🔔 Avisando" : "🔕 Avisarme"}</button>`
+      : "";
+    return `<div class="fila" style="--c:${color}" tabindex="0" role="button">
+      <div class="completo">${esc(completo)}${detalle ? `<small>${esc(detalle)}</small>` : ""}${campana}</div>
+      ${icono ? `<div class="insignia">${esc(icono)}</div>` : ""}
+      ${contenido}
+      ${on ? '<span class="vigilado" title="Avisando">🔔</span>' : ""}
+    </div>`;
+  }
+
+  // ---------- Datos ----------
+  let tasas = null;      // mercado: 1 USD = X moneda
+  let entidades = [];
+  let ultimosServidor = null;
+  let ultimosComb = null;
+
+  async function json(url) {
+    const r = await fetch(url, { cache: "no-store" });
+    if (!r.ok) throw new Error("HTTP " + r.status);
+    return r.json();
+  }
+
+  async function cargarMercado() {
+    try {
+      const j = await json("https://open.er-api.com/v6/latest/USD");
+      tasas = {};
+      MONEDAS.forEach((m) => { tasas[m] = j.rates[m]; });
+      $("usd-dop").textContent = "RD$ " + fmt(tasas.DOP);
+      $("eur-dop").textContent = "RD$ " + fmt(tasas.DOP / tasas.EUR);
+      if (j.time_last_update_unix) $("act-monedas").textContent = "Tasa internacional del " + horaRD(j.time_last_update_unix * 1000);
+      pintarMonedas();
+    } catch (_) {
+      $("usd-dop").textContent = "No disponible";
+      $("g-monedas").innerHTML = '<p class="aviso">Sin datos por ahora.</p>';
+    }
+    convertir();
+  }
+
+  async function cargarServidor() {
+    try {
+      const d = await json(SERVIDOR + "/tasas");
+      ultimosServidor = d;
+      entidades = (d.entidades || []).filter((e) => e.compra != null || e.venta != null);
+      pintarBancos();
+      pintarSelector();
+      pintarMercados(d.mercados || []);
+      if (d.actualizado) {
+        $("act-bancos").textContent = "Actualizado: " + horaRD(d.actualizado);
+        document.querySelectorAll(".act-mercados").forEach((el) => el.textContent = "Actualizado: " + horaEste(d.actualizado));
+        $("actualizado").textContent = "Última actualización: " + horaRD(d.actualizado);
+      }
+    } catch (_) {
+      $("lista-bancos").innerHTML = '<p class="aviso">No se pudieron cargar las tasas ahora mismo. Intenta de nuevo en un momento.</p>';
+      ["g-cripto","g-indices","g-grandes","g-empresas","g-materias"].forEach((id) => $(id).innerHTML = '<p class="aviso">Sin datos por ahora.</p>');
+    }
+    convertir();
+  }
+
+  async function cargarCombustibles() {
+    try {
+      const d = await json(SERVIDOR + "/combustibles");
+      ultimosComb = d;
+      pintarCombRD(d.rd);
+      pintarCombUS(d.eeuu);
+      if (d.actualizado) {
+        $("act-comb-rd").textContent = "Revisado: " + horaRD(d.actualizado);
+        $("act-comb-us").textContent = "Revisado: " + horaEste(d.actualizado);
+      }
+    } catch (_) {
+      $("lista-comb-rd").innerHTML = '<p class="aviso">Sin datos por ahora.</p>';
+      $("lista-comb-us").innerHTML = '<p class="aviso">Sin datos por ahora.</p>';
+    }
+  }
+
+  // ---------- Pintar ----------
+  function pintarBancos() {
+    if (!entidades.length) { $("lista-bancos").innerHTML = '<p class="aviso">Sin datos por ahora.</p>'; return; }
+    const mejor = Math.max(...entidades.map((e) => e.compra || 0));
+    const top = entidades.find((e) => e.compra === mejor);
+    if (top) $("mejor-hoy").innerHTML = `★ Mejor compra hoy: <b>${esc(top.nombre)}</b> a RD$ ${fmt(top.compra)} por dólar`;
+
+    $("lista-bancos").innerHTML = entidades.map((e) => {
+      const esMejor = e.compra != null && e.compra === mejor;
+      const tipo = TIPOS[e.tipo] || "Casa de cambio";
+      return fila(colorEntidad(e.nombre), iniciales(e.nombre), e.nombre, tipo + (esMejor ? " · ★ Mejor compra hoy" : ""),
+        `<div class="nombre"><b>${esc(e.nombre)}</b><small class="${esMejor ? "mejor" : ""}">${esMejor ? "★ Mejor compra" : tipo}</small></div>
+         <div class="num">${fmt(e.compra)}</div><div class="num">${fmt(e.venta)}</div>`, "banco:" + e.nombre);
+    }).join("");
+  }
+
+  function pintarMercados(lista) {
+    const grupos = { cripto: "g-cripto", indices: "g-indices", grandes: "g-grandes", empresas: "g-empresas", materias: "g-materias" };
+    for (const [g, id] of Object.entries(grupos)) {
+      const items = lista.filter((a) => a.grupo === g);
+      $(id).innerHTML = items.length ? items.map((a) => {
+        const [ic, col] = ACTIVOS[a.simbolo] || [a.simbolo.slice(0, 2), "#607D8B"];
+        const c = a.cambio;
+        const clase = c == null ? "" : c > 0 ? "sube" : c < 0 ? "baja" : "";
+        const flecha = c == null ? "" : (c > 0 ? "▲ +" : c < 0 ? "▼ " : "") + fmt(c) + "%";
+        const enPesos = g === "cripto" && tasas && a.precio != null ? `<small>RD$ ${precio(a.precio * tasas.DOP)}</small>` : "";
+        return fila(col, ic, a.nombre, "Símbolo: " + a.simbolo,
+          `<div class="nombre"><b>${esc(a.nombre)}</b><small>${esc(a.simbolo)}</small></div>
+           <div class="valor"><b>US$ ${precio(a.precio)}</b>${enPesos}<small class="${clase}">${flecha}</small></div>`, "activo:" + a.simbolo);
+      }).join("") : '<p class="nota">Sin datos por ahora.</p>';
+    }
+  }
+
+  function pintarMonedas() {
+    if (!tasas || !tasas.DOP) return;
+    $("g-monedas").innerHTML = MUNDO.filter(([c]) => tasas[c]).map(([c, moneda, pais, sim, col]) => {
+      const enPesos = tasas.DOP / tasas[c];       // 1 unidad = X pesos
+      const porPeso = tasas[c] / tasas.DOP;       // 1 peso = X unidades
+      return fila(col, sim, `${moneda} · ${pais}`, "Código: " + c,
+        `<div class="nombre"><b>${esc(moneda)}</b><small>${esc(pais)} · ${esc(c)}</small></div>
+         <div class="valor"><b>RD$ ${precio(enPesos)}</b><small>RD$ 1 = ${precio(porPeso)} ${esc(c)}</small></div>`, "moneda:" + c);
+    }).join("");
+  }
+
+  function pintarCombRD(rd) {
+    if (!rd || !rd.precios) { $("lista-comb-rd").innerHTML = '<p class="nota">Sin datos por ahora.</p>'; return; }
+    $("semana-rd").textContent = (rd.enVivo ? "Semana del " : "Última semana registrada: ") + (rd.semana || "—") + " · Precios oficiales del MICM.";
+    $("lista-comb-rd").innerHTML = rd.precios.filter((p) => p.precio != null).map((p) => {
+      const [ic, col] = COMB[p.clave] || ["?", "#607D8B"];
+      return fila(col, ic, p.nombre, "Precio oficial por " + p.unidad,
+        `<div class="nombre"><b>${esc(p.nombre)}</b><small>por ${esc(p.unidad)}</small></div>
+         <div class="valor"><b style="color:var(--dorado)">RD$ ${fmt(p.precio)}</b></div>`, "rd:" + p.clave);
+    }).join("");
+  }
+
+  function pintarCombUS(us) {
+    if (!us || !us.estados) { $("lista-comb-us").innerHTML = '<p class="nota">Sin datos por ahora.</p>'; return; }
+    $("semana-us").textContent = "US$ por galón · semana del " + (us.semana || "—") + " (EIA).";
+    const g = (n) => n == null ? "—" : "$" + Number(n).toFixed(2);
+    $("lista-comb-us").innerHTML = us.estados.map((e) =>
+      fila(ESTADOS[e.nombre] || "#FFC107", "", e.nombre, e.dieselRegional ? "Diésel: promedio de su región" : "",
+        `<div class="nombre"><b>${esc(e.nombre)}</b></div>
+         <div class="num sube">${g(e.regular)}</div>
+         <div class="num" style="color:var(--dorado)">${g(e.premium)}</div>
+         <div class="num">${g(e.diesel)}${e.dieselRegional && e.diesel != null ? "*" : ""}</div>`, "us:" + e.nombre)
+    ).join("");
+  }
+
+  // ---------- Convertidor ----------
+  let vendo = true;
+  MONEDAS.forEach((m) => {
+    $("desde").add(new Option(m, m, m === "USD", m === "USD"));
+    $("hacia").add(new Option(m, m, m === "DOP", m === "DOP"));
+  });
+
+  function pintarSelector() {
+    const sel = $("fuente");
+    const actual = sel.value;
+    sel.length = 1;
+    entidades.forEach((e) => sel.add(new Option(`${e.nombre} · compra ${fmt(e.compra)} / venta ${fmt(e.venta)}`, e.nombre)));
+    sel.value = [...sel.options].some((o) => o.value === actual) ? actual : "mercado";
+  }
+
+  function convertir() {
+    const monto = parseFloat(String($("cantidad").value).replace(",", ".")) || 0;
+    const fuente = $("fuente").value;
+    const enBanco = fuente !== "mercado";
+    $("modo-mercado").hidden = enBanco;
+    $("modo-banco").hidden = !enBanco;
+
+    if (!enBanco) {
+      $("etq-cantidad").textContent = "Cantidad";
+      if (!tasas) { $("resultado").textContent = "—"; $("detalle").textContent = "Cargando tasa de mercado…"; return; }
+      const de = $("desde").value, a = $("hacia").value;
+      const r = monto / tasas[de] * tasas[a];
+      $("resultado").textContent = `${fmt(monto)} ${de} = ${fmt(r)} ${a}`;
+      $("detalle").textContent = "Tasa de mercado internacional.";
+      return;
+    }
+
+    const e = entidades.find((x) => x.nombre === fuente);
+    const tasa = e && (vendo ? e.compra : e.venta);
+    $("etq-cantidad").textContent = "Cantidad en dólares (US$)";
+    if (tasa == null) {
+      $("resultado").textContent = "—";
+      $("detalle").textContent = `${fuente} no publica precio de ${vendo ? "compra" : "venta"}. Prueba con otra entidad.`;
+      return;
+    }
+    $("resultado").textContent = (vendo ? "Te dan " : "Pagas ") + "RD$ " + fmt(monto * tasa);
+    $("detalle").textContent = `${e.nombre} · ${vendo ? "compra" : "venta"} a RD$ ${fmt(tasa)} por dólar`;
+  }
+
+  ["cantidad", "desde", "hacia", "fuente"].forEach((id) => $(id).addEventListener("input", convertir));
+  $("fuente").addEventListener("change", convertir);
+  $("vendo").addEventListener("click", () => { vendo = true; $("vendo").classList.add("activo"); $("compro").classList.remove("activo"); convertir(); });
+  $("compro").addEventListener("click", () => { vendo = false; $("compro").classList.add("activo"); $("vendo").classList.remove("activo"); convertir(); });
+
+  // =====================================================================
+  //  AVISOS DE CAMBIO DE PRECIO (notificaciones del navegador)
+  //  Funcionan mientras la página esté abierta, aunque sea en otra pestaña.
+  // =====================================================================
+  const guardar = (k, v) => { try { localStorage.setItem(k, JSON.stringify(v)); } catch (_) {} };
+  const leer = (k, def) => { try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : def; } catch (_) { return def; } };
+
+  let vigilados = new Set(leer("divisas_vigilados", []));
+  let registroSW = null;
+  const soporta = "Notification" in window;
+
+  async function prepararSW() {
+    if (!("serviceWorker" in navigator)) return null;
+    try { registroSW = await navigator.serviceWorker.register("/sw.js"); } catch (_) { registroSW = null; }
+    return registroSW;
+  }
+
+  function pintarEstadoAvisos() {
+    const btn = $("activar-avisos"), est = $("estado-avisos");
+    if (!soporta) {
+      btn.disabled = true; btn.textContent = "No disponible";
+      est.textContent = "Este navegador no permite notificaciones. En iPhone, primero añade la web a la pantalla de inicio (Compartir > Añadir a inicio).";
+      return;
+    }
+    if (Notification.permission === "granted") {
+      btn.disabled = true; btn.textContent = "✓ Activados";
+      est.textContent = vigilados.size
+        ? `Vigilando ${vigilados.size} precio${vigilados.size === 1 ? "" : "s"}. Te avisamos mientras esta página esté abierta.`
+        : 'Ahora toca un banco, combustible o moneda y elige "Avisarme".';
+    } else if (Notification.permission === "denied") {
+      btn.disabled = true; btn.textContent = "Bloqueados";
+      est.textContent = "Bloqueaste las notificaciones de esta web. Actívalas en el candado 🔒 junto a la dirección.";
+    }
+  }
+
+  async function pedirPermiso() {
+    if (!soporta) return false;
+    await prepararSW();
+    if (Notification.permission === "default") await Notification.requestPermission();
+    pintarEstadoAvisos();
+    return Notification.permission === "granted";
+  }
+  $("activar-avisos").addEventListener("click", pedirPermiso);
+
+  async function alternarVigilado(clave, boton) {
+    if (vigilados.has(clave)) {
+      vigilados.delete(clave);
+    } else {
+      if (!(await pedirPermiso())) return;
+      vigilados.add(clave);
+    }
+    guardar("divisas_vigilados", [...vigilados]);
+    const on = vigilados.has(clave);
+    boton.classList.toggle("on", on);
+    boton.textContent = on ? "🔔 Avisando" : "🔕 Avisarme";
+    pintarEstadoAvisos();
+    programar();
+  }
+
+  // Precios que se pueden vigilar (umbral 0 = cualquier cambio; 2 = moverse un 2 % o más)
+  function lecturas() {
+    const m = {};
+    const d = ultimosServidor, c = ultimosComb;
+    (d?.entidades || []).forEach((e) => {
+      const v = {}; if (e.compra != null) v.compra = e.compra; if (e.venta != null) v.venta = e.venta;
+      if (Object.keys(v).length) m["banco:" + e.nombre] = { nombre: e.nombre, v, umbral: 0, mon: "RD$" };
+    });
+    (d?.mercados || []).forEach((a) => {
+      if (a.precio != null) m["activo:" + a.simbolo] = { nombre: a.nombre, v: { precio: a.precio }, umbral: 2, mon: "US$" };
+    });
+    if (tasas && tasas.DOP) MUNDO.forEach(([cod, moneda, pais]) => {
+      if (tasas[cod]) m["moneda:" + cod] = { nombre: `${moneda} (${pais})`, v: { "en pesos": tasas.DOP / tasas[cod] }, umbral: 1, mon: "RD$" };
+    });
+    (c?.rd?.precios || []).forEach((p) => {
+      if (p.precio != null) m["rd:" + p.clave] = { nombre: p.nombre, v: { precio: p.precio }, umbral: 0, mon: "RD$" };
+    });
+    (c?.eeuu?.estados || []).forEach((e) => {
+      const v = {}; if (e.regular != null) v.regular = e.regular; if (e.premium != null) v.premium = e.premium; if (e.diesel != null) v["diésel"] = e.diesel;
+      if (Object.keys(v).length) m["us:" + e.nombre] = { nombre: "Gasolina " + e.nombre, v, umbral: 0, mon: "US$" };
+    });
+    return m;
+  }
+
+  async function avisar(titulo, cuerpo, etiqueta) {
+    if (!soporta || Notification.permission !== "granted") return;
+    const opciones = { body: cuerpo, tag: etiqueta, icon: "/icono-192.png", badge: "/icono-192.png" };
+    try {
+      const reg = registroSW || (await prepararSW());
+      if (reg) { await reg.showNotification(titulo, opciones); return; } // necesario en Android
+      new Notification(titulo, opciones);
+    } catch (_) {}
+  }
+
+  function revisarCambios() {
+    if (!vigilados.size) return;
+    const actual = lecturas();
+    const guardados = leer("divisas_ultimos", {});
+    for (const clave of vigilados) {
+      const l = actual[clave];
+      if (!l) continue;
+      const antes = guardados[clave];
+      const nuevo = { ...(antes || {}) };
+      const cambios = [];
+      for (const [k, valor] of Object.entries(l.v)) {
+        if (!antes || antes[k] == null) { nuevo[k] = valor; continue; } // primera vez: solo se guarda
+        const viejo = antes[k], dif = valor - viejo;
+        const pct = viejo ? Math.abs(dif) / viejo * 100 : 0;
+        const hay = l.umbral > 0 ? pct >= l.umbral : Math.abs(dif) >= 0.005;
+        if (hay) {
+          cambios.push(`${k} ${dif > 0 ? "▲ subió" : "▼ bajó"} de ${l.mon} ${precio(viejo)} a ${precio(valor)}`);
+          nuevo[k] = valor;
+        } else if (l.umbral === 0) {
+          nuevo[k] = valor;
+        }
+      }
+      guardados[clave] = nuevo;
+      if (cambios.length) avisar(l.nombre, cambios.join("\n"), clave);
+    }
+    guardar("divisas_ultimos", guardados);
+  }
+
+  // ---------- Arranque y actualización ----------
+  // Cada 10 minutos si vigilas algo; si no, cada 30.
+  let temporizador = null;
+  async function cargarTodo() {
+    await Promise.allSettled([cargarMercado(), cargarServidor(), cargarCombustibles()]);
+    revisarCambios();
+  }
+  function programar() {
+    clearInterval(temporizador);
+    temporizador = setInterval(cargarTodo, (vigilados.size ? 10 : 30) * 60 * 1000);
+  }
+  // Al volver a la pestaña después de un rato, se actualiza enseguida
+  let ultimaCarga = Date.now();
+  document.addEventListener("visibilitychange", () => {
+    if (!document.hidden && Date.now() - ultimaCarga > 5 * 60 * 1000) { ultimaCarga = Date.now(); cargarTodo(); }
+  });
+
+  pintarEstadoAvisos();
+  if (soporta && Notification.permission === "granted") prepararSW();
+  cargarTodo();
+  programar();
+})();
+</script>
+</body>
+</html>
