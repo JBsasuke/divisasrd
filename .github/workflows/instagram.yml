@@ -34,7 +34,7 @@ concurrency:
 jobs:
   publicar:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
 
@@ -56,12 +56,13 @@ jobs:
         with:
           node-version: 20
 
-      - name: Instalar navegador y letra Inter
+      # Usa el Google Chrome que ya trae GitHub y la letra incluida en instagram/fuentes:
+      # no se descarga ningún navegador ni se instala nada del sistema
+      - name: Preparar
         working-directory: instagram
-        run: |
-          npm install --no-audit --no-fund
-          npx playwright install --with-deps chromium
-          sudo apt-get install -y fonts-inter >/dev/null
+        env:
+          PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: "1"
+        run: npm install --no-audit --no-fund
 
       - name: Crear la imagen
         id: imagen
