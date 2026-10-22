@@ -1,0 +1,244 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Divisas RD · Instagram</title>
+<style>
+  :root {
+    --noche: #061428; --bandera: #002d62; --claro: #0b4a8f;
+    --dorado: #ffc107; --dorado2: #ffe082; --blanco: #fff; --suave: #b8c7e0;
+    --sube: #4cd964; --baja: #ff5a5f; --rojo: #ce1126;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { width: 1080px; height: 1350px; overflow: hidden; }
+  body {
+    font-family: "Inter", system-ui, sans-serif; color: var(--blanco);
+    background: radial-gradient(1100px 700px at 85% -10%, rgba(255,193,7,.16), transparent 60%),
+                linear-gradient(170deg, var(--noche) 0%, var(--bandera) 58%, var(--claro) 100%);
+    padding: 64px 64px 52px; display: flex; flex-direction: column;
+    -webkit-font-smoothing: antialiased;
+  }
+  .num { font-variant-numeric: tabular-nums; letter-spacing: -0.01em; }
+
+  /* Encabezado */
+  .cab { display: flex; align-items: center; gap: 22px; }
+  .logo {
+    width: 92px; height: 92px; border-radius: 50%; flex: none; display: grid; place-items: center;
+    background: linear-gradient(#ffd54f, var(--dorado) 50%, #e0a000);
+    border: 3px solid rgba(255,255,255,.75); box-shadow: 0 0 34px rgba(255,193,7,.45);
+    font-weight: 900; font-size: 54px; color: #fff; text-shadow: 0 2px 4px rgba(0,0,0,.18);
+  }
+  .marca b { display: block; font-size: 50px; font-weight: 800; line-height: 1; letter-spacing: -0.02em; }
+  .marca span { display: block; margin-top: 8px; font-size: 24px; color: var(--dorado); font-weight: 600; }
+  .fecha { margin-left: auto; text-align: right; }
+  .fecha b { display: block; font-size: 30px; font-weight: 700; }
+  .fecha span { display: block; margin-top: 6px; font-size: 22px; color: var(--suave); }
+  .bandera { display: inline-block; width: 38px; height: 26px; vertical-align: -4px; margin-left: 10px;
+    border-radius: 4px; overflow: hidden; border: 1.5px solid rgba(255,255,255,.7);
+    background:
+      linear-gradient(#fff,#fff) center / 100% 22% no-repeat,
+      linear-gradient(90deg, transparent 39%, #fff 39%, #fff 61%, transparent 61%),
+      linear-gradient(90deg, #002d62 50%, #ce1126 50%) top / 100% 50% no-repeat,
+      linear-gradient(90deg, #ce1126 50%, #002d62 50%) bottom / 100% 50% no-repeat; }
+
+  /* Tarjeta grande */
+  .grande {
+    margin-top: 36px; padding: 32px 44px; border-radius: 34px; border: 3px solid transparent;
+    background:
+      linear-gradient(180deg, rgba(255,193,7,.16), rgba(255,255,255,.04)) padding-box,
+      linear-gradient(#082246, #082246) padding-box,
+      linear-gradient(135deg, var(--dorado2), var(--dorado), #e0a000) border-box;
+    box-shadow: 0 14px 50px rgba(255,193,7,.18);
+    display: flex; align-items: flex-end; gap: 36px;
+  }
+  .grande .etq { font-size: 26px; font-weight: 700; color: var(--dorado); letter-spacing: .12em; text-transform: uppercase; }
+  .grande .valor { font-size: 118px; font-weight: 800; line-height: 1; margin-top: 14px; letter-spacing: -0.035em; }
+  .grande .valor small { font-size: 52px; font-weight: 700; color: var(--suave); margin-right: 10px; letter-spacing: 0; }
+  .grande .sub { margin-top: 14px; font-size: 24px; color: var(--suave); }
+  .grande .lado { margin-left: auto; text-align: right; padding-bottom: 8px; }
+  .grande .lado div + div { margin-top: 22px; }
+  .grande .lado span { display: block; font-size: 22px; color: var(--suave); }
+  .grande .lado b { display: block; font-size: 40px; font-weight: 700; margin-top: 4px; }
+
+  .mejor {
+    margin-top: 20px; padding: 16px 28px; border-radius: 20px;
+    background: rgba(76,217,100,.12); border: 2px solid rgba(76,217,100,.55);
+    font-size: 28px; display: flex; align-items: center; gap: 14px;
+  }
+  .mejor .estrella { color: var(--dorado); font-size: 32px; }
+  .mejor b { font-weight: 800; }
+  .mejor .precio { margin-left: auto; font-weight: 800; color: var(--sube); font-size: 32px; }
+
+  /* Tabla */
+  .tabla { margin-top: 22px; flex: 1; display: flex; flex-direction: column; }
+  .tabla h2 { font-size: 30px; font-weight: 800; color: var(--dorado); }
+  .encab { display: flex; padding: 8px 24px 2px; color: var(--suave); font-size: 21px; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; }
+  .encab span { width: 170px; text-align: right; }
+  .encab span:first-child { flex: 1; width: auto; text-align: left; padding-left: 70px; }
+  .fila {
+    --c: #607d8b; display: flex; align-items: center; gap: 18px;
+    padding: 9px 24px; margin-top: 9px; border-radius: 18px;
+    border: 2px solid color-mix(in srgb, var(--c) 70%, transparent);
+    background: color-mix(in srgb, var(--c) 16%, #0a1f3d);
+  }
+  .insignia { width: 50px; height: 50px; border-radius: 50%; flex: none; display: grid; place-items: center;
+    background: var(--c); color: #fff; font-weight: 800; font-size: 19px; border: 2px solid rgba(255,255,255,.4); }
+  .fila .nombre { flex: 1; min-width: 0; font-size: 28px; font-weight: 650; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .fila .nombre small { display: block; font-size: 18px; color: var(--suave); font-weight: 500; margin-top: 2px; }
+  .fila .n { width: 170px; text-align: right; font-size: 33px; font-weight: 750; }
+  .fila .n.compra { color: var(--sube); }
+  .fila .n.vacio { color: var(--suave); font-weight: 500; }
+
+  /* Combustibles */
+  .semana { margin-top: 44px; }
+  .semana .etq { font-size: 26px; font-weight: 700; color: var(--dorado); letter-spacing: .12em; text-transform: uppercase; }
+  .semana h1 { font-size: 66px; font-weight: 800; line-height: 1.05; margin-top: 10px; letter-spacing: -0.025em; }
+  .semana p { font-size: 26px; color: var(--suave); margin-top: 12px; }
+  .rejilla { margin-top: 30px; display: grid; grid-template-columns: 1fr 1fr; gap: 16px; flex: 1; align-content: start; }
+  .comb {
+    --c: #607d8b; padding: 18px 22px; min-height: 124px; border-radius: 22px; display: flex; align-items: center; gap: 16px;
+    border: 2px solid color-mix(in srgb, var(--c) 70%, transparent);
+    background: color-mix(in srgb, var(--c) 16%, #0a1f3d);
+  }
+  .comb .insignia { width: 58px; height: 58px; font-size: 19px; }
+  .comb .nombre { flex: 1; min-width: 0; font-size: 25px; font-weight: 650; line-height: 1.15; }
+  .comb .nombre small { display: block; font-size: 18px; color: var(--suave); font-weight: 500; margin-top: 3px; }
+  .comb .p { text-align: right; font-size: 34px; font-weight: 800; color: var(--dorado); white-space: nowrap; }
+  .comb .p small { display: block; font-size: 17px; font-weight: 500; color: var(--suave); }
+  .seccion { grid-column: 1 / -1; font-size: 21px; font-weight: 700; color: var(--suave); text-transform: uppercase; letter-spacing: .1em; margin-top: 8px; }
+
+  /* Pie */
+  .pie { margin-top: 22px; display: flex; align-items: center; gap: 20px; padding-top: 24px; border-top: 2px solid rgba(255,193,7,.25); }
+  .pie .web { font-size: 34px; font-weight: 800; color: var(--dorado); }
+  .pie .web small { display: block; font-size: 21px; font-weight: 500; color: var(--suave); margin-top: 4px; }
+  .pie .nota { margin-left: auto; text-align: right; font-size: 19px; color: var(--suave); line-height: 1.4; }
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script>
+const ZONA_RD = "America/Santo_Domingo";
+const fmt = (n, d = 2) => n == null || isNaN(n) ? "—" :
+  Number(n).toLocaleString("en-US", { minimumFractionDigits: d, maximumFractionDigits: d });
+const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[c]));
+
+const COLORES = [["banreservas","#1E88E5"],["bhd","#00A651"],["popular","#0D47A1"],["caribe express","#E0A800"],
+  ["scotiabank","#EC111A"],["banesco","#00965E"],["lafise","#43A047"],["vimenca","#C9A800"],["bonanza","#E53935"],
+  ["taveras","#8E24AA"],["cibao","#00897B"],["nacional","#3949AB"]];
+const colorDe = (n) => (COLORES.find(([k]) => n.toLowerCase().includes(k)) || [0, "#5C6BC0"])[1];
+const SIGLAS = { banreservas: "BR", bhd: "BHD", banesco: "BN", popular: "BP", lafise: "LF", bonanza: "BZ", "caribe express": "CE", scotiabank: "SB", vimenca: "VI" };
+function iniciales(nombre) {
+  const s = Object.entries(SIGLAS).find(([k]) => nombre.toLowerCase().includes(k));
+  if (s) return s[1];
+  const p = nombre.replace("Banco ", "").replace("Asociación ", "").split(" ").filter((w) => /^[A-ZÁÉÍÓÚÑ]/.test(w));
+  return (p.slice(0, 2).map((w) => w[0]).join("") || nombre.slice(0, 2)).toUpperCase();
+}
+const corto = (n) => n.replace(/^Banco\s+/, "").replace(" Banco", "").replace(" de Ahorros y Préstamos", "");
+
+function fechaLarga(d) {
+  const t = d.toLocaleDateString("es-DO", { timeZone: ZONA_RD, weekday: "long", day: "numeric", month: "long" }).replace(",", "");
+  return t.charAt(0).toUpperCase() + t.slice(1);
+}
+function hora(d) {
+  return d.toLocaleTimeString("es-DO", { timeZone: ZONA_RD, hour: "numeric", minute: "2-digit" });
+}
+
+function cabecera(ahora) {
+  return `<div class="cab">
+    <div class="logo">$</div>
+    <div class="marca"><b>Divisas RD<i class="bandera"></i></b><span>@divisa_rd</span></div>
+    <div class="fecha"><b>${esc(fechaLarga(ahora))}</b><span>${ahora.toLocaleDateString("es-DO", { timeZone: ZONA_RD, year: "numeric" })}</span></div>
+  </div>`;
+}
+function pie(texto) {
+  return `<div class="pie">
+    <div class="web">divisasrd.com<small>Todas las tasas, cripto y combustibles</small></div>
+    <div class="nota">${texto}</div>
+  </div>`;
+}
+
+// ---------- Imagen diaria: tasa del dólar ----------
+function pintarTasa({ tasas, mercado }) {
+  const ahora = new Date(tasas.actualizado || Date.now());
+  const dop = mercado?.rates?.DOP, eur = mercado?.rates?.EUR;
+  const ent = (tasas.entidades || []).filter((e) => e.compra != null);
+
+  const mejor = ent.reduce((a, b) => (b.compra > (a?.compra ?? 0) ? b : a), null);
+  const bancos = ent.filter((e) => e.tipo === "banco").sort((a, b) => b.compra - a.compra).slice(0, 6);
+  const remesa = ent.filter((e) => e.tipo === "remesadora").slice(0, 1);
+  const lista = [...bancos, ...remesa];
+
+  const btc = (tasas.mercados || []).find((m) => m.simbolo === "BTC");
+  const oro = (tasas.mercados || []).find((m) => m.simbolo === "ORO");
+
+  document.getElementById("app").outerHTML = `
+    ${cabecera(ahora)}
+    <div class="grande">
+      <div>
+        <div class="etq">Dólar hoy</div>
+        <div class="valor num"><small>RD$</small>${fmt(dop)}</div>
+        <div class="sub">Tasa de mercado · 1 dólar estadounidense</div>
+      </div>
+      <div class="lado">
+        <div><span>Euro</span><b class="num">RD$ ${fmt(dop && eur ? dop / eur : null)}</b></div>
+        ${btc ? `<div><span>Bitcoin</span><b class="num">US$ ${fmt(btc.precio, 0)}</b></div>` : ""}
+      </div>
+    </div>
+    ${mejor ? `<div class="mejor"><span class="estrella">★</span><span>Mejor compra hoy: <b>${esc(corto(mejor.nombre))}</b></span><span class="precio num">RD$ ${fmt(mejor.compra)}</span></div>` : ""}
+    <div class="tabla">
+      <h2>Bancos y remesas</h2>
+      <div class="encab"><span>Entidad</span><span>Compra</span><span>Venta</span></div>
+      ${lista.map((e) => `
+        <div class="fila" style="--c:${colorDe(e.nombre)}">
+          <div class="insignia">${esc(iniciales(e.nombre))}</div>
+          <div class="nombre">${esc(corto(e.nombre))}<small>${e.tipo === "remesadora" ? "Remesadora" : "Banco"}</small></div>
+          <div class="n compra num">${fmt(e.compra)}</div>
+          <div class="n num ${e.venta == null ? "vacio" : ""}">${e.venta == null ? "—" : fmt(e.venta)}</div>
+        </div>`).join("")}
+    </div>
+    ${pie(`Actualizado ${esc(hora(ahora))} (hora de RD)<br>Precios informativos. Confirma con tu entidad.`)}
+  `;
+}
+
+// ---------- Viernes: combustibles de la semana ----------
+const COMB = { premium:["P","#E53935"], regular:["R","#43A047"], gasoilOptimo:["GO","#78909C"], gasoilRegular:["G","#607D8B"],
+  glp:["GLP","#FB8C00"], gasNatural:["GN","#039BE5"], avtur:["AV","#0288D1"], kerosene:["K","#7CB342"],
+  fuelOil6:["F6","#6D4C41"], fuelOil1:["F1","#795548"] };
+const PRINCIPALES = ["premium","regular","gasoilOptimo","gasoilRegular","glp","gasNatural"];
+
+function pintarCombustibles({ combustibles }) {
+  const rd = combustibles.rd || {};
+  const ahora = new Date(combustibles.actualizado || Date.now());
+  const precios = (rd.precios || []).filter((p) => p.precio != null);
+  const tarjeta = (p) => {
+    const [ic, col] = COMB[p.clave] || ["?", "#607D8B"];
+    const nombre = p.nombre.replace(/\s*\((aviones|industria)\)/, "");
+    const detalle = /aviones/.test(p.nombre) ? "Aviones" : /industria/.test(p.nombre) ? "Industria" : "por " + p.unidad;
+    return `<div class="comb" style="--c:${col}">
+      <div class="insignia">${ic}</div>
+      <div class="nombre">${esc(nombre)}<small>${esc(detalle)}</small></div>
+      <div class="p num">${fmt(p.precio)}<small>RD$ / ${esc(p.unidad)}</small></div>
+    </div>`;
+  };
+  const principales = precios.filter((p) => PRINCIPALES.includes(p.clave));
+  const otros = precios.filter((p) => !PRINCIPALES.includes(p.clave));
+
+  document.getElementById("app").outerHTML = `
+    ${cabecera(ahora)}
+    <div class="semana">
+      <div class="etq">Precios de combustibles</div>
+      <h1>Semana del ${esc((rd.semana || "").replace(/ del? (\d{4})$/, ""))}</h1>
+      <p>Precios oficiales fijados por el MICM · República Dominicana</p>
+    </div>
+    <div class="rejilla">
+      ${principales.map(tarjeta).join("")}
+      ${otros.length ? `<div class="seccion">Aviones e industria</div>${otros.map(tarjeta).join("")}` : ""}
+    </div>
+    ${pie(`Fuente: MICM<br>Vigentes de sábado a viernes.`)}
+  `;
+}
+
+window.pintar = (modo, datos) => (modo === "combustibles" ? pintarCombustibles : pintarTasa)(datos);
+</script>
+</body>
+</html>
