@@ -8,6 +8,7 @@ import { chromium } from "playwright";
 import { readFile, writeFile, mkdir, appendFile, rm } from "node:fs/promises";
 import { fileURLToPath } from "node:url";
 import path from "node:path";
+import { fraseTasa, fraseCombustibles, NOTA_INVERSION } from "./frases.mjs";
 
 const AQUI = path.dirname(fileURLToPath(import.meta.url));
 const SERVIDOR = "https://divisas-rd.juanbatista88.workers.dev";
@@ -51,6 +52,34 @@ if (modo === "combustibles") {
   }
 }
 
+// ---------- Frase con humor según lo que cambió ----------
+// ig/estado.json recuerda el dólar de ayer, la gasolina de la semana pasada y las últimas frases usadas.
+const archivoEstado = path.join(carpeta, "estado.json");
+let estado = {};
+try { estado = JSON.parse(await readFile(archivoEstado, "utf8")); } catch (_) {}
+const usadas = estado.usadas || [];
+let frase;
+if (modo === "tasa") {
+  const dop = datos.mercado.rates.DOP;
+  // Si hoy ya corrió antes (una prueba), se compara con el día anterior a hoy, no consigo mismo
+  const dopAyer = estado.fecha === hoy ? estado.dolarAnterior : estado.dolar;
+  const ent = datos.tasas.entidades.filter((e) => e.compra != null);
+  const mejor = ent.reduce((a, b) => (b.compra > a.compra ? b : a), ent[0]);
+  frase = fraseTasa({ dop, dopAyer, mejor, mercados: datos.tasas.mercados, fecha: hoy, usadas });
+  estado = { ...estado, fecha: hoy, dolar: dop, dolarAnterior: dopAyer ?? null };
+} else {
+  const rd = datos.combustibles.rd;
+  const precios = Object.fromEntries(rd.precios.map((x) => [x.clave, x.precio]));
+  const g = estado.gasolina || {};
+  const anteriores = g.semana === rd.semana ? g.anteriores : g.precios;
+  frase = fraseCombustibles({ precios: rd.precios, anteriores, fecha: hoy + "-comb", usadas });
+  estado = { ...estado, gasolina: { semana: rd.semana, precios, anteriores: anteriores ?? null } };
+}
+estado.usadas = [frase.id, ...usadas.filter((u) => u !== frase.id)].slice(0, 40);
+await writeFile(archivoEstado, JSON.stringify(estado, null, 2) + "\n");
+const esInversion = /^(btc|empresa)_/.test(frase.grupo);
+console.log("Frase:", frase.texto);
+
 // En GitHub se usa el Google Chrome que ya trae la máquina (no hay que descargar nada)
 let navegador;
 try { navegador = await chromium.launch(process.env.CI ? { channel: "chrome" } : {}); }
@@ -75,13 +104,16 @@ await writeFile(archivoHistoria, `<!doctype html><html><head><meta charset="utf-
          background: linear-gradient(170deg, #061428 0%, #002d62 55%, #0b4a8f 100%);
          display: flex; flex-direction: column; align-items: center; justify-content: space-between; }
   .franja { height: 335px; width: 100%; display: flex; align-items: center; justify-content: center; text-align: center; }
-  .arriba { padding-top: 120px; font-size: 34px; font-weight: 800; color: #ffc107; letter-spacing: .08em; text-transform: uppercase; }
+  .arriba { padding: 0 70px 26px; flex-direction: column; justify-content: flex-end; }
+  .arriba small { font-size: 24px; font-weight: 800; color: #ffc107; letter-spacing: .1em; text-transform: uppercase; }
+  .arriba span { margin-top: 12px; font-size: 34px; font-weight: 800; line-height: 1.25; color: #fff;
+                 display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
   .abajo { flex-direction: column; padding-bottom: 150px; font-size: 30px; color: #b8c7e0; }
   .abajo b { font-size: 44px; color: #ffc107; display: block; margin-top: 6px; }
   img { width: 1000px; height: 1250px; display: block; border-radius: 40px;
         border: 3px solid rgba(255,193,7,.55); box-shadow: 0 20px 60px rgba(0,0,0,.45); }
 </style></head><body>
-  <div class="franja arriba">${modo === "combustibles" ? "Combustibles de la semana" : "La tasa de hoy"}</div>
+  <div class="franja arriba"><small>${modo === "combustibles" ? "Combustibles de la semana" : "La tasa de hoy"}</small><span>${frase.texto.replace(/[&<>]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;" }[c]))}</span></div>
   <img src="data:image/jpeg;base64,${imagenBase64}">
   <div class="franja abajo">Todas las tasas en<b>divisasrd.com</b></div>
 </body></html>`);
@@ -98,13 +130,15 @@ if (modo === "tasa") {
   const dop = datos.mercado.rates.DOP;
   const ent = datos.tasas.entidades.filter((e) => e.compra != null);
   const mejor = ent.reduce((a, b) => (b.compra > a.compra ? b : a));
-  texto = `💵 Dólar hoy en RD: RD$ ${fmt(dop)} (tasa de mercado)\n` +
+  texto = `${frase.texto}${esInversion ? "\n" + NOTA_INVERSION : ""}\n\n` +
+          `💵 Dólar hoy en RD: RD$ ${fmt(dop)} (tasa de mercado)\n` +
           `⭐ Mejor compra: ${mejor.nombre} a RD$ ${fmt(mejor.compra)}\n\n` +
           `Todas las tasas de bancos, remesadoras y casas de cambio en divisasrd.com (enlace en la bio) 👆\n\n` +
           `#TasaDelDolar #DolarHoy #RepublicaDominicana #RD #Remesas #Banreservas #Dominicanos`;
 } else {
   const p = Object.fromEntries(datos.combustibles.rd.precios.map((x) => [x.clave, x.precio]));
-  texto = `⛽ Combustibles RD · semana del ${datos.combustibles.rd.semana}\n\n` +
+  texto = `${frase.texto}\n\n` +
+          `⛽ Combustibles RD · semana del ${datos.combustibles.rd.semana}\n\n` +
           `Gasolina Premium: RD$ ${fmt(p.premium)}\nGasolina Regular: RD$ ${fmt(p.regular)}\n` +
           `Gasoil Óptimo: RD$ ${fmt(p.gasoilOptimo)}\nGasoil Regular: RD$ ${fmt(p.gasoilRegular)}\n` +
           `GLP: RD$ ${fmt(p.glp)}\n\nPrecios oficiales del MICM. Más en divisasrd.com 👆\n\n` +
