@@ -10,9 +10,9 @@ const API = "https://graph.instagram.com";
 const args = process.argv.slice(2);
 const esHistoria = args[0] === "--historia";
 const [urlImagen, archivoTexto] = esHistoria ? args.slice(1) : args;
-const { IG_TOKEN, IG_USER_ID } = process.env;
+const { IG_TOKEN } = process.env;
 if (!urlImagen || (!esHistoria && !archivoTexto)) throw new Error("Uso: node publicar.mjs <url-imagen> <archivo-texto>  |  node publicar.mjs --historia <url-imagen>");
-if (!IG_TOKEN || !IG_USER_ID) throw new Error("Faltan los secrets IG_TOKEN o IG_USER_ID");
+if (!IG_TOKEN) throw new Error("Falta el secret IG_TOKEN");
 
 const esperar = (ms) => new Promise((r) => setTimeout(r, ms));
 
@@ -25,9 +25,23 @@ async function api(metodo, ruta, parametros = {}) {
   const j = await r.json().catch(() => ({}));
   if (!r.ok || j.error) {
     const e = j.error || {};
-    throw new Error(`Instagram ${ruta.replace(IG_USER_ID, "<cuenta>")}: HTTP ${r.status} · ${e.message || "sin detalle"} (código ${e.code ?? "?"}${e.error_subcode ? "/" + e.error_subcode : ""})`);
+    const detalle = e.message || e.error_user_msg || JSON.stringify(j).replaceAll(IG_TOKEN, "***");
+    throw new Error(`Instagram ${ruta.replace(/^\/\d+/, "/<cuenta>")}: HTTP ${r.status} · ${detalle} (código ${e.code ?? "?"}${e.error_subcode ? "/" + e.error_subcode : ""})`);
   }
   return j;
+}
+
+// El ID de la cuenta se le pide a Instagram con el propio token (así no depende de copiarlo bien).
+// Si eso falla, se usa el secret IG_USER_ID como respaldo.
+let IG_USER_ID;
+try {
+  const yo = await api("GET", "/me", { fields: "user_id,username" });
+  IG_USER_ID = String(yo.user_id || yo.id);
+  console.log(`Cuenta: @${yo.username}`);
+} catch (e) {
+  if (!process.env.IG_USER_ID) throw e;
+  IG_USER_ID = process.env.IG_USER_ID;
+  console.log("No se pudo leer la cuenta con el token; se usa IG_USER_ID");
 }
 
 // 1) Crear el contenedor (las historias no llevan texto)
