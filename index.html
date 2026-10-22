@@ -3,197 +3,538 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Divisas RD · Política de privacidad</title>
-<link rel="canonical" href="https://divisasrd.com/privacidad/">
-<meta name="description" content="Política de privacidad de la app Divisas RD: tasas del dólar, bancos, remesas, combustibles y mercados.">
+<title>Tasa del dólar hoy en RD · Bancos, remesas y combustibles | Divisas RD</title>
+<meta name="description" content="Tasa del dólar y del euro hoy en República Dominicana: compra y venta en Banreservas, Popular, BHD, Caribe Express y casas de cambio. Convertidor, combustibles, cripto y bolsa, actualizado al día.">
+<link rel="canonical" href="https://divisasrd.com/">
+<meta name="theme-color" content="#061428">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Tasa del dólar hoy en RD | Divisas RD">
+<meta property="og:description" content="Compra y venta del dólar en bancos, remesadoras y casas de cambio de República Dominicana, actualizado al día.">
+<meta property="og:url" content="https://divisasrd.com/">
+<meta property="og:locale" content="es_DO">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='0' y2='1'%3E%3Cstop offset='0' stop-color='%23ffd54f'/%3E%3Cstop offset='.5' stop-color='%23ffc107'/%3E%3Cstop offset='1' stop-color='%23e0a000'/%3E%3C/linearGradient%3E%3C/defs%3E%3Ccircle cx='32' cy='32' r='30' fill='url(%23g)'/%3E%3Ctext x='32' y='44' text-anchor='middle' font-family='Arial' font-weight='900' font-size='36' fill='%23fff'%3E$%3C/text%3E%3C/svg%3E">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebSite","name":"Divisas RD","url":"https://divisasrd.com/","inLanguage":"es-DO","description":"Tasa del dólar hoy en República Dominicana en bancos, remesadoras y casas de cambio."}
+</script>
 <style>
   :root {
-    --fondo: #f5f7fb;
-    --tarjeta: #ffffff;
-    --texto: #1b2433;
-    --suave: #5a6577;
-    --azul: #002d62;
-    --dorado: #c99400;
-    --borde: #e2e7f0;
-  }
-  @media (prefers-color-scheme: dark) {
-    :root {
-      --fondo: #061428;
-      --tarjeta: #0d2142;
-      --texto: #eef2f8;
-      --suave: #b8c7e0;
-      --azul: #8fb8ff;
-      --dorado: #ffc107;
-      --borde: #1d3560;
-    }
+    --noche: #061428;
+    --bandera: #002d62;
+    --claro: #0b4a8f;
+    --dorado: #ffc107;
+    --blanco: #ffffff;
+    --suave: #b8c7e0;
+    --sube: #4cd964;
+    --baja: #ff5a5f;
+    --tarjeta: rgba(255,255,255,.07);
+    --borde: rgba(255,193,7,.25);
   }
   * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
   body {
     margin: 0;
-    background: var(--fondo);
-    color: var(--texto);
-    font: 16px/1.6 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    min-height: 100vh;
+    color: var(--blanco);
+    background: var(--noche) linear-gradient(180deg, var(--noche) 0%, var(--bandera) 55%, var(--claro) 100%);
+    font: 16px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
   }
-  header {
-    background: linear-gradient(135deg, #061428, #002d62 60%, #0b4a8f);
-    color: #fff;
-    padding: 40px 16px 32px;
-  }
-  .contenido { max-width: 760px; margin: 0 auto; }
-  .marca { display: flex; align-items: center; gap: 14px; }
+  a { color: var(--dorado); }
+  .envoltura { max-width: 980px; margin: 0 auto; padding: 0 16px; }
+
+  /* Encabezado */
+  header { padding: 20px 0 8px; }
+  .barra { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+  .marca { display: flex; align-items: center; gap: 12px; text-decoration: none; color: inherit; }
   .logo {
-    width: 52px; height: 52px; border-radius: 50%;
-    background: linear-gradient(#ffd54f, #ffc107 50%, #e0a000);
-    color: #fff; font-weight: 900; font-size: 30px;
-    display: grid; place-items: center; flex: none;
-    box-shadow: 0 0 0 2px rgba(255,255,255,.6);
+    width: 46px; height: 46px; border-radius: 50%; flex: none;
+    display: grid; place-items: center;
+    background: linear-gradient(#ffd54f, var(--dorado) 50%, #e0a000);
+    border: 1.5px solid rgba(255,255,255,.7);
+    box-shadow: 0 0 14px rgba(255,193,7,.45);
+    font-weight: 900; font-size: 26px; color: #fff;
   }
-  header h1 { margin: 0; font-size: 28px; line-height: 1.2; }
-  header p { margin: 4px 0 0; color: #ffd54f; }
-  main { padding: 24px 16px 48px; }
-  section {
+  .marca b { display: block; font-size: 24px; line-height: 1.1; }
+  .marca span { color: var(--dorado); font-size: 13px; }
+  nav { display: flex; gap: 6px; flex-wrap: wrap; }
+  nav a {
+    color: var(--suave); text-decoration: none; font-size: 14px;
+    padding: 6px 10px; border-radius: 999px; border: 1px solid transparent;
+  }
+  nav a:hover { border-color: var(--borde); color: #fff; }
+
+  h1 { font-size: clamp(24px, 5vw, 34px); margin: 18px 0 4px; line-height: 1.2; }
+  .sub { color: var(--suave); margin: 0 0 18px; }
+
+  /* Tarjetas */
+  .tarjeta {
     background: var(--tarjeta);
     border: 1px solid var(--borde);
-    border-radius: 14px;
-    padding: 20px 20px 8px;
+    border-radius: 18px;
+    padding: 16px;
     margin-bottom: 16px;
   }
-  h2 { margin: 0 0 8px; font-size: 20px; color: var(--azul); }
-  h3 { margin: 16px 0 4px; font-size: 16px; }
-  p, li { color: var(--texto); }
-  .nota { color: var(--suave); font-size: 14px; }
-  ul { padding-left: 22px; }
-  a { color: var(--azul); }
-  .fecha {
-    display: inline-block; margin-top: 12px; padding: 4px 10px;
-    border-radius: 999px; background: rgba(255,255,255,.12); font-size: 14px;
+  .tarjeta h2 { color: var(--dorado); font-size: 20px; margin: 0 0 4px; }
+  .nota { color: var(--suave); font-size: 13px; margin: 0 0 10px; }
+
+  .destacada {
+    border: 2px solid transparent;
+    background:
+      linear-gradient(180deg, rgba(255,193,7,.18), rgba(255,255,255,.05)) padding-box,
+      linear-gradient(#08203f, #08203f) padding-box,
+      linear-gradient(135deg, #ffe082, var(--dorado), #e0a000) border-box;
+    box-shadow: 0 6px 24px rgba(255,193,7,.18);
   }
-  footer { text-align: center; color: var(--suave); font-size: 14px; padding: 0 16px 32px; }
+  .grande { display: flex; gap: 24px; flex-wrap: wrap; align-items: baseline; }
+  .grande div { min-width: 200px; }
+  .grande small { color: var(--suave); display: block; }
+  .grande strong { font-size: clamp(28px, 7vw, 40px); }
+
+  /* Filas tipo tarjetita con borde de color */
+  .fila {
+    --c: #607d8b;
+    display: flex; align-items: center; gap: 10px;
+    padding: 8px 10px; margin: 6px 0;
+    border-radius: 14px;
+    border: 1px solid color-mix(in srgb, var(--c) 65%, transparent);
+    background: color-mix(in srgb, var(--c) 14%, rgba(6,20,40,.55));
+    box-shadow: 0 2px 6px color-mix(in srgb, var(--c) 25%, transparent);
+    cursor: pointer;
+    transition: background .15s, box-shadow .15s;
+  }
+  .fila.abierta {
+    border-width: 2px; border-color: var(--c);
+    background: color-mix(in srgb, var(--c) 28%, rgba(6,20,40,.55));
+    box-shadow: 0 4px 16px color-mix(in srgb, var(--c) 45%, transparent);
+    flex-wrap: wrap;
+  }
+  .fila .completo { display: none; width: 100%; font-weight: 700; }
+  .fila .completo small { display: block; font-weight: 400; color: var(--suave); }
+  .fila.abierta .completo { display: block; }
+  .insignia {
+    width: 34px; height: 34px; border-radius: 50%; flex: none;
+    display: grid; place-items: center;
+    background: var(--c); color: #fff; font-weight: 700; font-size: 13px;
+    border: 1px solid rgba(255,255,255,.35);
+  }
+  .nombre { flex: 1; min-width: 0; }
+  .nombre b { display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-weight: 600; }
+  .nombre small { color: var(--suave); font-size: 12px; }
+  .nombre small.mejor { color: var(--sube); }
+  .num { width: 76px; text-align: right; font-weight: 600; font-variant-numeric: tabular-nums; }
+  .cab { display: flex; gap: 10px; padding: 0 10px; color: var(--suave); font-size: 13px; font-weight: 700; }
+  .cab span:first-child { flex: 1; }
+  .cab span { width: 76px; text-align: right; }
+  .cab span:first-child { text-align: left; }
+
+  .valor { text-align: right; }
+  .valor b { display: block; font-variant-numeric: tabular-nums; }
+  .valor small { display: block; font-size: 12px; color: var(--suave); }
+  .sube { color: var(--sube) !important; }
+  .baja { color: var(--baja) !important; }
+
+  /* Convertidor */
+  .controles { display: grid; gap: 10px; }
+  label { color: var(--suave); font-size: 13px; display: block; margin-bottom: 4px; }
+  input, select {
+    width: 100%; padding: 10px 12px; border-radius: 12px;
+    border: 1px solid var(--suave); background: rgba(6,20,40,.6); color: #fff;
+    font-size: 16px;
+  }
+  select option { color: #000; }
+  .dos { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .pastillas { display: flex; gap: 8px; flex-wrap: wrap; }
+  .pastillas button {
+    flex: 1; min-width: 130px; padding: 10px; border-radius: 999px; font-size: 15px;
+    border: 1px solid var(--dorado); background: transparent; color: #fff; cursor: pointer;
+  }
+  .pastillas button.activo { background: var(--dorado); color: var(--noche); font-weight: 700; }
+  .resultado { font-size: clamp(24px, 6vw, 32px); font-weight: 800; color: var(--dorado); margin: 12px 0 0; }
+  .detalle { color: var(--suave); font-size: 13px; }
+
+  .rejilla { display: grid; grid-template-columns: repeat(auto-fit, minmax(290px, 1fr)); gap: 16px; }
+  .rejilla .tarjeta { margin-bottom: 0; }
+
+  .tabla-us .num { width: 64px; }
+  .tabla-us .cab span { width: 64px; }
+
+  .cargando { color: var(--suave); padding: 8px 0; }
+  .aviso { color: var(--baja); font-size: 14px; }
+
+  .app {
+    display: flex; align-items: center; gap: 14px; flex-wrap: wrap;
+  }
+  .app p { flex: 1; min-width: 220px; margin: 0; }
+  .boton {
+    display: inline-block; padding: 12px 18px; border-radius: 999px;
+    background: var(--dorado); color: var(--noche); font-weight: 800; text-decoration: none;
+  }
+  .boton.apagado { background: rgba(255,255,255,.15); color: var(--suave); }
+
+  .texto h2 { color: var(--dorado); font-size: 18px; margin: 0 0 6px; }
+  .texto h3 { font-size: 16px; margin: 14px 0 4px; }
+  .texto p { color: #dce5f3; margin: 0 0 8px; }
+
+  footer { color: var(--suave); font-size: 13px; padding: 8px 0 32px; text-align: center; }
+  footer a { color: var(--suave); }
+
+  @media (max-width: 420px) {
+    .num, .cab span { width: 64px; }
+    .tabla-us .num, .tabla-us .cab span { width: 56px; font-size: 13px; }
+    .dos { grid-template-columns: 1fr; }
+  }
 </style>
 </head>
 <body>
-<header>
-  <div class="contenido">
-    <div class="marca">
+
+<header class="envoltura">
+  <div class="barra">
+    <a class="marca" href="/">
       <div class="logo" aria-hidden="true">$</div>
-      <div>
-        <h1>Política de privacidad de Divisas RD</h1>
-        <p>Tasas del dólar, bancos, remesas, combustibles y mercados</p>
-      </div>
-    </div>
-    <span class="fecha">Vigente desde el 21 de octubre de 2026</span>
+      <div><b>Divisas</b><span>Dólar, bolsa, cripto y combustibles</span></div>
+    </a>
+    <nav aria-label="Secciones">
+      <a href="#bancos">Bancos</a>
+      <a href="#convertidor">Convertidor</a>
+      <a href="#combustibles">Combustibles</a>
+      <a href="#mercados">Cripto y bolsa</a>
+    </nav>
   </div>
+  <h1>Tasa del dólar hoy en República Dominicana</h1>
+  <p class="sub" id="fecha-hoy">Compra y venta en bancos, remesadoras y casas de cambio.</p>
 </header>
 
-<main class="contenido">
+<main class="envoltura">
 
-  <section>
-    <h2>Resumen</h2>
-    <ul>
-      <li>Divisas RD <strong>no pide cuentas, registros, nombre, correo ni teléfono</strong>.</li>
-      <li>Tus ajustes (avisos que activas, tasas del día anterior, preferencias) se guardan <strong>solo en tu teléfono</strong>.</li>
-      <li>La app muestra <strong>anuncios de Google AdMob</strong>, que pueden usar el identificador de publicidad de tu dispositivo.</li>
-      <li><strong>No vendemos</strong> tus datos.</li>
-    </ul>
+  <!-- Tasa de mercado -->
+  <section class="tarjeta destacada" aria-labelledby="t-mercado">
+    <h2 id="t-mercado">Tasa de mercado hoy</h2>
+    <div class="grande">
+      <div><small>Dólar estadounidense</small><strong id="usd-dop">—</strong></div>
+      <div><small>Euro</small><strong id="eur-dop">—</strong></div>
+    </div>
+    <p class="nota" id="mejor-hoy" style="margin-top:8px"></p>
   </section>
 
-  <section>
-    <h2>Quién es el responsable</h2>
-    <p>Divisas RD (<code>com.jb.divisasrd</code>) es una app gratuita creada por un desarrollador independiente. Para cualquier pregunta sobre esta política escribe a <a href="mailto:divisasrdapp@gmail.com">divisasrdapp@gmail.com</a>.</p>
+  <!-- Bancos -->
+  <section class="tarjeta" id="bancos" aria-labelledby="t-bancos">
+    <h2 id="t-bancos">Dólar en bancos y remesas</h2>
+    <p class="nota">Compra = lo que te dan por cada dólar. Toca una entidad para ver su nombre completo.</p>
+    <div class="cab"><span>Entidad</span><span>Compra</span><span>Venta</span></div>
+    <div id="lista-bancos"><div class="cargando">Cargando tasas…</div></div>
   </section>
 
-  <section>
-    <h2>Qué información se usa y para qué</h2>
+  <!-- Convertidor -->
+  <section class="tarjeta" id="convertidor" aria-labelledby="t-conv">
+    <h2 id="t-conv">Convertidor</h2>
+    <div class="controles">
+      <div>
+        <label for="fuente">Tasa a usar</label>
+        <select id="fuente"><option value="mercado">Mercado internacional (todas las monedas)</option></select>
+      </div>
 
-    <h3>1. Datos que se guardan en tu teléfono</h3>
-    <p>Para que la app funcione se guardan en el almacenamiento del propio teléfono:</p>
-    <ul>
-      <li>Las tasas de los bancos del día anterior, para mostrar si subieron (▲) o bajaron (▼).</li>
-      <li>Los precios que eliges vigilar con la campanita 🔔 y su último valor, para avisarte cuando cambian.</li>
-      <li>Si activaste la notificación fija "Dólar hoy" y otras preferencias de la app.</li>
-    </ul>
-    <p>Estos datos <strong>no se envían</strong> al desarrollador ni a nadie más, y se borran al desinstalar la app o borrar sus datos.</p>
+      <div id="modo-mercado">
+        <div class="dos">
+          <div><label for="desde">De</label><select id="desde"></select></div>
+          <div><label for="hacia">A</label><select id="hacia"></select></div>
+        </div>
+      </div>
 
-    <h3>2. Consulta de precios por internet</h3>
-    <p>Para mostrar tasas, precios de bancos, remesadoras, combustibles, bolsa y criptomonedas, la app se conecta a internet:</p>
-    <ul>
-      <li>Al servidor propio de la app (alojado en Cloudflare), que reúne los precios publicados por bancos, agentes de cambio, el MICM, la EIA y servicios de mercado.</li>
-      <li>Al servicio público de tasas ExchangeRate-API (open.er-api.com).</li>
-    </ul>
-    <p>Como en cualquier conexión a internet, esos servidores reciben la dirección IP de tu conexión y datos técnicos básicos para poder responder. La app <strong>no envía</strong> ningún dato personal ni identificador tuyo en esas consultas, y el desarrollador no usa esa información para identificarte.</p>
+      <div id="modo-banco" hidden>
+        <div class="pastillas">
+          <button type="button" id="vendo" class="activo">Vendo dólares</button>
+          <button type="button" id="compro">Compro dólares</button>
+        </div>
+      </div>
 
-    <h3>3. Revisión de precios en segundo plano y notificaciones</h3>
-    <p>Si activas avisos 🔔 o "Dólar hoy", la app consulta los precios cada cierto tiempo (más o menos cada 30 minutos) para avisarte de los cambios. Para mostrar las notificaciones, Android te pedirá permiso; puedes quitarlo cuando quieras en los ajustes del teléfono. Si apagas todos los avisos, la app deja de revisar en segundo plano.</p>
-
-    <h3>4. Publicidad (Google AdMob)</h3>
-    <p>La app muestra un anuncio en la parte de abajo de la pantalla mediante Google AdMob. Para mostrar y medir anuncios, Google puede recopilar y tratar datos como:</p>
-    <ul>
-      <li>El identificador de publicidad de tu dispositivo.</li>
-      <li>La dirección IP y una ubicación aproximada que se deduce de ella.</li>
-      <li>Información del dispositivo (modelo, sistema, idioma) e interacciones con los anuncios.</li>
-      <li>Datos de diagnóstico y rendimiento de los anuncios.</li>
-    </ul>
-    <p>Google trata estos datos según su propia política: <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Política de privacidad de Google</a> y <a href="https://policies.google.com/technologies/partner-sites" target="_blank" rel="noopener">cómo usa Google los datos de las apps que usan sus servicios</a>.</p>
-    <p>Puedes restablecer o eliminar tu identificador de publicidad, o desactivar los anuncios personalizados, en <strong>Ajustes de Android &gt; Google &gt; Anuncios</strong> (o <strong>Seguridad y privacidad &gt; Más ajustes de privacidad &gt; Anuncios</strong>, según tu teléfono).</p>
+      <div>
+        <label for="cantidad" id="etq-cantidad">Cantidad</label>
+        <input id="cantidad" type="number" inputmode="decimal" min="0" step="any" value="100">
+      </div>
+    </div>
+    <p class="resultado" id="resultado">—</p>
+    <p class="detalle" id="detalle"></p>
   </section>
 
-  <section>
-    <h2>Sitio web divisasrd.com</h2>
-    <p>La web muestra los mismos precios que la app y los consulta desde tu navegador a las mismas fuentes (el servidor de Divisas RD y open.er-api.com), que reciben la dirección IP de tu conexión como en cualquier visita a internet. Por ahora el sitio <strong>no usa cookies, ni analítica, ni anuncios</strong>. Si más adelante se añaden anuncios (por ejemplo, Google AdSense), se actualizará esta política antes de activarlos.</p>
+  <!-- App -->
+  <section class="tarjeta app" aria-labelledby="t-app">
+    <div class="logo" aria-hidden="true">$</div>
+    <p><b id="t-app">Divisas RD para Android</b><br><span class="nota">Avisos cuando cambia la tasa de tu banco o el precio de la gasolina, y el dólar del día en tu pantalla de bloqueo.</span></p>
+    <!-- Cuando la app esté publicada, cambia este botón por el enlace de Google Play -->
+    <span class="boton apagado">Próximamente en Google Play</span>
   </section>
 
-  <section>
-    <h2>Lo que la app no hace</h2>
-    <ul>
-      <li>No pide ni guarda tu nombre, correo, teléfono, contactos, fotos ni ubicación exacta (GPS).</li>
-      <li>No tiene cuentas de usuario ni inicio de sesión.</li>
-      <li>No realiza pagos ni maneja dinero: solo muestra precios informativos.</li>
-      <li>No vende ni alquila información a terceros.</li>
-    </ul>
+  <!-- Combustibles -->
+  <div class="rejilla" id="combustibles">
+    <section class="tarjeta" aria-labelledby="t-comb-rd">
+      <h2 id="t-comb-rd">Combustibles en RD</h2>
+      <p class="nota" id="semana-rd">Precios oficiales del MICM.</p>
+      <div id="lista-comb-rd"><div class="cargando">Cargando…</div></div>
+    </section>
+
+    <section class="tarjeta tabla-us" aria-labelledby="t-comb-us">
+      <h2 id="t-comb-us">Gasolina en EE. UU.</h2>
+      <p class="nota" id="semana-us">US$ por galón (EIA).</p>
+      <div class="cab"><span>Estado</span><span>Regular</span><span>Premium</span><span>Diésel</span></div>
+      <div id="lista-comb-us"><div class="cargando">Cargando…</div></div>
+      <p class="nota">* Diésel: promedio de la región.</p>
+    </section>
+  </div>
+
+  <!-- Mercados -->
+  <div class="rejilla" id="mercados" style="margin-top:16px">
+    <section class="tarjeta"><h2>Criptomonedas</h2><div id="g-cripto"><div class="cargando">Cargando…</div></div></section>
+    <section class="tarjeta"><h2>Bolsa de EE. UU.</h2><div id="g-indices"><div class="cargando">Cargando…</div></div></section>
+    <section class="tarjeta"><h2>Videojuegos</h2><div id="g-empresas"><div class="cargando">Cargando…</div></div></section>
+    <section class="tarjeta"><h2>Oro y petróleo</h2><div id="g-materias"><div class="cargando">Cargando…</div></div></section>
+  </div>
+
+  <!-- Texto para buscadores y lectores -->
+  <section class="tarjeta texto" style="margin-top:16px">
+    <h2>Preguntas frecuentes sobre la tasa del dólar en RD</h2>
+    <h3>¿Qué es la tasa de compra y la de venta?</h3>
+    <p>La <b>compra</b> es lo que el banco o la casa de cambio te paga en pesos por cada dólar que les vendes. La <b>venta</b> es lo que te cobran si tú les compras dólares. Si recibes remesas en dólares, te conviene la entidad con la compra más alta.</p>
+    <h3>¿Por qué la tasa de mercado es distinta a la de los bancos?</h3>
+    <p>La tasa de mercado es un promedio internacional. Cada banco y remesadora fija su propia compra y venta, y la diferencia es su margen.</p>
+    <h3>¿Cada cuánto se actualizan los precios?</h3>
+    <p>Las tasas de bancos, bolsa y cripto se revisan cada 30 minutos. Los combustibles de RD cambian cada semana (los fija el MICM los viernes) y los de EE. UU. también cada semana (los publica la EIA).</p>
+    <p class="nota">Precios informativos. Confirma siempre la tasa con la entidad antes de hacer una operación.</p>
   </section>
 
-  <section>
-    <h2>Precios solo informativos</h2>
-    <p>Las tasas y precios se obtienen de fuentes públicas y pueden tener retraso o diferencias con los de cada entidad. Confirma siempre la tasa con el banco, la remesadora o la casa de cambio antes de hacer una operación.</p>
-  </section>
-
-  <section>
-    <h2>Niños</h2>
-    <p>Divisas RD no está dirigida a menores de 13 años y no recopila a sabiendas información de niños. Si crees que un menor nos ha enviado datos, escríbenos y los eliminaremos.</p>
-  </section>
-
-  <section>
-    <h2>Seguridad</h2>
-    <p>Las conexiones de la app con sus fuentes de datos usan HTTPS (cifradas). Los datos guardados en tu teléfono quedan dentro del espacio privado de la app.</p>
-  </section>
-
-  <section>
-    <h2>Tus opciones</h2>
-    <ul>
-      <li>Apagar los avisos y "Dólar hoy" desde la propia app.</li>
-      <li>Quitar el permiso de notificaciones en los ajustes de Android.</li>
-      <li>Restablecer o eliminar tu identificador de publicidad.</li>
-      <li>Borrar los datos de la app o desinstalarla para eliminar todo lo guardado en el teléfono.</li>
-    </ul>
-  </section>
-
-  <section>
-    <h2>Cambios en esta política</h2>
-    <p>Si esta política cambia, se publicará aquí la versión nueva con su fecha. Los cambios importantes también se indicarán en la ficha de la app en Google Play.</p>
-  </section>
-
-  <section>
-    <h2>Contacto</h2>
-    <p>¿Dudas o quieres pedir algo sobre tus datos? Escribe a <a href="mailto:divisasrdapp@gmail.com">divisasrdapp@gmail.com</a>.</p>
-  </section>
-
-  <section lang="en">
-    <h2>English summary</h2>
-    <p class="nota">Divisas RD does not require an account and does not collect your name, email or phone number. Settings and price alerts are stored only on your device. The app fetches public exchange rates, fuel and market prices over HTTPS from its own server and from open.er-api.com. It shows ads through Google AdMob, which may use your advertising ID, IP address, approximate location and device information as described in <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Google's Privacy Policy</a>. We do not sell personal data. The app is not directed to children under 13. Contact: <a href="mailto:divisasrdapp@gmail.com">divisasrdapp@gmail.com</a>.</p>
-  </section>
+  <!-- Espacio reservado para un anuncio (AdSense), cuando se active -->
 
 </main>
 
-<footer><a href="/">← Volver a las tasas de hoy</a> · © 2026 Divisas RD</footer>
+<footer class="envoltura">
+  <p id="actualizado">&nbsp;</p>
+  <p>Fuentes: sitios de cada entidad, InfoDolar, MICM, EIA, ExchangeRate-API, Yahoo Finance, Kraken y CoinGecko.</p>
+  <p><a href="/privacidad/">Política de privacidad</a> · <a href="mailto:divisasrdapp@gmail.com">divisasrdapp@gmail.com</a></p>
+  <p>© 2026 Divisas RD</p>
+</footer>
+
+<script>
+(() => {
+  // Tu servidor de Cloudflare
+  const SERVIDOR = "https://divisas-rd.juanbatista88.workers.dev";
+  const MONEDAS = ["USD", "DOP", "EUR", "GBP", "CAD", "MXN", "COP"];
+
+  const $ = (id) => document.getElementById(id);
+  const fmt = (n, d = 2) => n == null || isNaN(n) ? "—" :
+    Number(n).toLocaleString("es-DO", { minimumFractionDigits: d, maximumFractionDigits: d });
+  const precio = (n) => n == null ? "—" : fmt(n, n < 10 ? 4 : 2);
+  const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[c]));
+
+  // Fecha de hoy
+  try {
+    $("fecha-hoy").textContent = "Compra y venta en bancos, remesadoras y casas de cambio · " +
+      new Date().toLocaleDateString("es-DO", { weekday: "long", day: "numeric", month: "long", year: "numeric" });
+  } catch (_) {}
+
+  // ---------- Colores (iguales que en la app) ----------
+  const PALETA = ["#26C6DA","#AB47BC","#66BB6A","#FF7043","#5C6BC0","#EC407A","#8D6E63","#29B6F6","#9CCC65","#FFA726"];
+  function hash(s) { let h = 0; for (const ch of s) h = (h * 31 + ch.charCodeAt(0)) | 0; return Math.abs(h); }
+  function colorEntidad(nombre) {
+    const n = nombre.toLowerCase();
+    const mapa = [["banreservas","#1E88E5"],["bhd","#00A651"],["popular","#0D47A1"],["caribe express","#FFC20E"],
+      ["scotiabank","#EC111A"],["banesco","#00965E"],["lafise","#43A047"],["vimenca","#FFD600"],["bonanza","#E53935"],
+      ["caribe","#F57C00"],["cibao","#00897B"],["nacional","#3949AB"],["romana","#8E24AA"],["peravia","#6D4C41"]];
+    for (const [k, c] of mapa) if (n.includes(k)) return c;
+    return PALETA[hash(nombre) % PALETA.length];
+  }
+  function iniciales(nombre) {
+    const p = nombre.replace("Banco ", "").replace("Asociación ", "").split(" ")
+      .filter((w) => w && w[0] === w[0].toUpperCase() && /[A-ZÁÉÍÓÚÑ]/.test(w[0]));
+    return (p.slice(0, 2).map((w) => w[0]).join("") || nombre.slice(0, 2)).toUpperCase();
+  }
+  const TIPOS = { banco: "Banco", remesadora: "Remesadora", asociacion: "Asociación de ahorros" };
+  const ACTIVOS = {
+    BTC:["₿","#F7931A"], ETH:["Ξ","#627EEA"], USDT:["₮","#26A17B"], SOL:["◎","#9945FF"], XRP:["X","#8A9BB0"],
+    SPX:["S&P","#1E88E5"], DJI:["DJ","#7E57C2"], IXIC:["NQ","#00ACC1"], ORO:["Au","#FFB300"], WTI:["Oil","#78909C"],
+    MSFT:["MS","#107C10"], SONY:["PS","#2F6FDE"], NTDOY:["N","#E60012"]
+  };
+  const COMB = { premium:["P","#E53935"], regular:["R","#43A047"], gasoilOptimo:["GO","#90A4AE"],
+                 gasoilRegular:["G","#78909C"], glp:["GLP","#FB8C00"], gasNatural:["GN","#039BE5"] };
+  const ESTADOS = { "Nueva York":"#1E88E5", "Ohio":"#E53935", "Florida":"#FB8C00", "Texas":"#8E24AA", "California":"#FDD835" };
+
+  // Al tocar una fila se abre con el nombre completo
+  document.addEventListener("click", (e) => {
+    const f = e.target.closest(".fila");
+    if (!f) return;
+    const abierta = f.classList.contains("abierta");
+    f.parentElement.querySelectorAll(".fila.abierta").forEach((x) => x.classList.remove("abierta"));
+    if (!abierta) f.classList.add("abierta");
+  });
+
+  function fila(color, icono, completo, detalle, contenido) {
+    return `<div class="fila" style="--c:${color}" tabindex="0" role="button">
+      <div class="completo">${esc(completo)}${detalle ? `<small>${esc(detalle)}</small>` : ""}</div>
+      ${icono ? `<div class="insignia">${esc(icono)}</div>` : ""}
+      ${contenido}
+    </div>`;
+  }
+
+  // ---------- Datos ----------
+  let tasas = null;      // mercado: 1 USD = X moneda
+  let entidades = [];
+
+  async function json(url) {
+    const r = await fetch(url, { cache: "no-store" });
+    if (!r.ok) throw new Error("HTTP " + r.status);
+    return r.json();
+  }
+
+  async function cargarMercado() {
+    try {
+      const j = await json("https://open.er-api.com/v6/latest/USD");
+      tasas = {};
+      MONEDAS.forEach((m) => { tasas[m] = j.rates[m]; });
+      $("usd-dop").textContent = "RD$ " + fmt(tasas.DOP);
+      $("eur-dop").textContent = "RD$ " + fmt(tasas.DOP / tasas.EUR);
+    } catch (_) {
+      $("usd-dop").textContent = "No disponible";
+    }
+    convertir();
+  }
+
+  async function cargarServidor() {
+    try {
+      const d = await json(SERVIDOR + "/tasas");
+      entidades = (d.entidades || []).filter((e) => e.compra != null || e.venta != null);
+      pintarBancos();
+      pintarSelector();
+      pintarMercados(d.mercados || []);
+      if (d.actualizado) {
+        $("actualizado").textContent = "Actualizado: " +
+          new Date(d.actualizado).toLocaleString("es-DO", { dateStyle: "medium", timeStyle: "short" });
+      }
+    } catch (_) {
+      $("lista-bancos").innerHTML = '<p class="aviso">No se pudieron cargar las tasas ahora mismo. Intenta de nuevo en un momento.</p>';
+      ["g-cripto","g-indices","g-empresas","g-materias"].forEach((id) => $(id).innerHTML = '<p class="aviso">Sin datos por ahora.</p>');
+    }
+    convertir();
+  }
+
+  async function cargarCombustibles() {
+    try {
+      const d = await json(SERVIDOR + "/combustibles");
+      pintarCombRD(d.rd);
+      pintarCombUS(d.eeuu);
+    } catch (_) {
+      $("lista-comb-rd").innerHTML = '<p class="aviso">Sin datos por ahora.</p>';
+      $("lista-comb-us").innerHTML = '<p class="aviso">Sin datos por ahora.</p>';
+    }
+  }
+
+  // ---------- Pintar ----------
+  function pintarBancos() {
+    if (!entidades.length) { $("lista-bancos").innerHTML = '<p class="aviso">Sin datos por ahora.</p>'; return; }
+    const mejor = Math.max(...entidades.map((e) => e.compra || 0));
+    const top = entidades.find((e) => e.compra === mejor);
+    if (top) $("mejor-hoy").innerHTML = `★ Mejor compra hoy: <b>${esc(top.nombre)}</b> a RD$ ${fmt(top.compra)} por dólar`;
+
+    $("lista-bancos").innerHTML = entidades.map((e) => {
+      const esMejor = e.compra != null && e.compra === mejor;
+      const tipo = TIPOS[e.tipo] || "Casa de cambio";
+      return fila(colorEntidad(e.nombre), iniciales(e.nombre), e.nombre, tipo + (esMejor ? " · ★ Mejor compra hoy" : ""),
+        `<div class="nombre"><b>${esc(e.nombre)}</b><small class="${esMejor ? "mejor" : ""}">${esMejor ? "★ Mejor compra" : tipo}</small></div>
+         <div class="num">${fmt(e.compra)}</div><div class="num">${fmt(e.venta)}</div>`);
+    }).join("");
+  }
+
+  function pintarMercados(lista) {
+    const grupos = { cripto: "g-cripto", indices: "g-indices", empresas: "g-empresas", materias: "g-materias" };
+    for (const [g, id] of Object.entries(grupos)) {
+      const items = lista.filter((a) => a.grupo === g);
+      $(id).innerHTML = items.length ? items.map((a) => {
+        const [ic, col] = ACTIVOS[a.simbolo] || [a.simbolo.slice(0, 2), "#607D8B"];
+        const c = a.cambio;
+        const clase = c == null ? "" : c > 0 ? "sube" : c < 0 ? "baja" : "";
+        const flecha = c == null ? "" : (c > 0 ? "▲ +" : c < 0 ? "▼ " : "") + fmt(c) + "%";
+        const enPesos = g === "cripto" && tasas && a.precio != null ? `<small>RD$ ${precio(a.precio * tasas.DOP)}</small>` : "";
+        return fila(col, ic, a.nombre, "Símbolo: " + a.simbolo,
+          `<div class="nombre"><b>${esc(a.nombre)}</b><small>${esc(a.simbolo)}</small></div>
+           <div class="valor"><b>US$ ${precio(a.precio)}</b>${enPesos}<small class="${clase}">${flecha}</small></div>`);
+      }).join("") : '<p class="nota">Sin datos por ahora.</p>';
+    }
+  }
+
+  function pintarCombRD(rd) {
+    if (!rd || !rd.precios) { $("lista-comb-rd").innerHTML = '<p class="nota">Sin datos por ahora.</p>'; return; }
+    $("semana-rd").textContent = (rd.enVivo ? "Semana del " : "Última semana registrada: ") + (rd.semana || "—") + " · Precios oficiales del MICM.";
+    $("lista-comb-rd").innerHTML = rd.precios.map((p) => {
+      const [ic, col] = COMB[p.clave] || ["?", "#607D8B"];
+      return fila(col, ic, p.nombre, "Precio oficial por " + p.unidad,
+        `<div class="nombre"><b>${esc(p.nombre)}</b><small>por ${esc(p.unidad)}</small></div>
+         <div class="valor"><b style="color:var(--dorado)">RD$ ${fmt(p.precio)}</b></div>`);
+    }).join("");
+  }
+
+  function pintarCombUS(us) {
+    if (!us || !us.estados) { $("lista-comb-us").innerHTML = '<p class="nota">Sin datos por ahora.</p>'; return; }
+    $("semana-us").textContent = "US$ por galón · semana del " + (us.semana || "—") + " (EIA).";
+    const g = (n) => n == null ? "—" : "$" + Number(n).toFixed(2);
+    $("lista-comb-us").innerHTML = us.estados.map((e) =>
+      fila(ESTADOS[e.nombre] || "#FFC107", "", e.nombre, e.dieselRegional ? "Diésel: promedio de su región" : "",
+        `<div class="nombre"><b>${esc(e.nombre)}</b></div>
+         <div class="num sube">${g(e.regular)}</div>
+         <div class="num" style="color:var(--dorado)">${g(e.premium)}</div>
+         <div class="num">${g(e.diesel)}${e.dieselRegional && e.diesel != null ? "*" : ""}</div>`)
+    ).join("");
+  }
+
+  // ---------- Convertidor ----------
+  let vendo = true;
+  MONEDAS.forEach((m) => {
+    $("desde").add(new Option(m, m, m === "USD", m === "USD"));
+    $("hacia").add(new Option(m, m, m === "DOP", m === "DOP"));
+  });
+
+  function pintarSelector() {
+    const sel = $("fuente");
+    const actual = sel.value;
+    sel.length = 1;
+    entidades.forEach((e) => sel.add(new Option(`${e.nombre} · compra ${fmt(e.compra)} / venta ${fmt(e.venta)}`, e.nombre)));
+    sel.value = [...sel.options].some((o) => o.value === actual) ? actual : "mercado";
+  }
+
+  function convertir() {
+    const monto = parseFloat(String($("cantidad").value).replace(",", ".")) || 0;
+    const fuente = $("fuente").value;
+    const enBanco = fuente !== "mercado";
+    $("modo-mercado").hidden = enBanco;
+    $("modo-banco").hidden = !enBanco;
+
+    if (!enBanco) {
+      $("etq-cantidad").textContent = "Cantidad";
+      if (!tasas) { $("resultado").textContent = "—"; $("detalle").textContent = "Cargando tasa de mercado…"; return; }
+      const de = $("desde").value, a = $("hacia").value;
+      const r = monto / tasas[de] * tasas[a];
+      $("resultado").textContent = `${fmt(monto)} ${de} = ${fmt(r)} ${a}`;
+      $("detalle").textContent = "Tasa de mercado internacional.";
+      return;
+    }
+
+    const e = entidades.find((x) => x.nombre === fuente);
+    const tasa = e && (vendo ? e.compra : e.venta);
+    $("etq-cantidad").textContent = "Cantidad en dólares (US$)";
+    if (tasa == null) {
+      $("resultado").textContent = "—";
+      $("detalle").textContent = `${fuente} no publica precio de ${vendo ? "compra" : "venta"}. Prueba con otra entidad.`;
+      return;
+    }
+    $("resultado").textContent = (vendo ? "Te dan " : "Pagas ") + "RD$ " + fmt(monto * tasa);
+    $("detalle").textContent = `${e.nombre} · ${vendo ? "compra" : "venta"} a RD$ ${fmt(tasa)} por dólar`;
+  }
+
+  ["cantidad", "desde", "hacia", "fuente"].forEach((id) => $(id).addEventListener("input", convertir));
+  $("fuente").addEventListener("change", convertir);
+  $("vendo").addEventListener("click", () => { vendo = true; $("vendo").classList.add("activo"); $("compro").classList.remove("activo"); convertir(); });
+  $("compro").addEventListener("click", () => { vendo = false; $("compro").classList.add("activo"); $("vendo").classList.remove("activo"); convertir(); });
+
+  // ---------- Arranque y actualización cada 30 minutos ----------
+  function cargarTodo() { cargarMercado(); cargarServidor(); cargarCombustibles(); }
+  cargarTodo();
+  setInterval(cargarTodo, 30 * 60 * 1000);
+})();
+</script>
 </body>
 </html>
