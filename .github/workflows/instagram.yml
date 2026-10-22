@@ -1,5 +1,5 @@
 # =====================================================================
-#  Divisas RD - Publica en Instagram (@divisa_rd) automáticamente
+#  Divisas RD - Publica en Instagram (@divisas_rd) automáticamente
 #   - Todos los días a las 8:30 a. m. (hora de RD): tasa del dólar
 #   - Viernes 7:00 p. m. y, si el MICM se atrasó, sábado 8:00 a. m.: combustibles
 #  RD está siempre en UTC-4 (no cambia la hora), por eso los horarios en UTC son fijos.
@@ -104,6 +104,16 @@ jobs:
         run: |
           ARCHIVO="${{ steps.imagen.outputs.archivo }}"
           node instagram/publicar.mjs "https://divisasrd.com/ig/$ARCHIVO?v=${{ github.run_id }}" "ig/${ARCHIVO%.jpg}.txt"
+
+      # Si la historia falla, no se marca error: la publicación del perfil ya salió
+      - name: Publicar también en la historia
+        if: steps.imagen.outputs.saltar != 'true' && steps.plan.outputs.publicar == 'si'
+        continue-on-error: true
+        env:
+          IG_TOKEN: ${{ secrets.IG_TOKEN }}
+          IG_USER_ID: ${{ secrets.IG_USER_ID }}
+        run: |
+          node instagram/publicar.mjs --historia "https://divisasrd.com/ig/${{ steps.imagen.outputs.historia }}?v=${{ github.run_id }}"
 
       - name: Marcar la semana de combustibles como publicada
         if: steps.imagen.outputs.saltar != 'true' && steps.plan.outputs.publicar == 'si' && steps.plan.outputs.modo == 'combustibles'
