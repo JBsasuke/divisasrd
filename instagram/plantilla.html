@@ -4,6 +4,12 @@
 <meta charset="utf-8">
 <title>Divisas RD · Instagram</title>
 <style>
+  @font-face { font-family: "Inter RD"; font-weight: 400; src: url("fuentes/Inter-Regular.woff2") format("woff2"); }
+  @font-face { font-family: "Inter RD"; font-weight: 500; src: url("fuentes/Inter-Medium.woff2") format("woff2"); }
+  @font-face { font-family: "Inter RD"; font-weight: 600; src: url("fuentes/Inter-SemiBold.woff2") format("woff2"); }
+  @font-face { font-family: "Inter RD"; font-weight: 700; src: url("fuentes/Inter-Bold.woff2") format("woff2"); }
+  @font-face { font-family: "Inter RD"; font-weight: 800; src: url("fuentes/Inter-ExtraBold.woff2") format("woff2"); }
+  @font-face { font-family: "Inter RD"; font-weight: 900; src: url("fuentes/Inter-Black.woff2") format("woff2"); }
   :root {
     --noche: #061428; --bandera: #002d62; --claro: #0b4a8f;
     --dorado: #ffc107; --dorado2: #ffe082; --blanco: #fff; --suave: #b8c7e0;
@@ -12,7 +18,7 @@
   * { box-sizing: border-box; margin: 0; padding: 0; }
   html, body { width: 1080px; height: 1350px; overflow: hidden; }
   body {
-    font-family: "Inter", system-ui, sans-serif; color: var(--blanco);
+    font-family: "Inter RD", "Inter", system-ui, sans-serif; color: var(--blanco);
     background: radial-gradient(1100px 700px at 85% -10%, rgba(255,193,7,.16), transparent 60%),
                 linear-gradient(170deg, var(--noche) 0%, var(--bandera) 58%, var(--claro) 100%);
     padding: 64px 64px 52px; display: flex; flex-direction: column;

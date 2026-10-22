@@ -5,7 +5,7 @@
 //  Con DATOS_LOCALES=carpeta lee los .json de esa carpeta en vez de internet.
 // =====================================================================
 import { chromium } from "playwright";
-import { readFile, writeFile, mkdir, appendFile } from "node:fs/promises";
+import { readFile, writeFile, mkdir, appendFile, rm } from "node:fs/promises";
 import { fileURLToPath } from "node:url";
 import path from "node:path";
 
@@ -51,7 +51,10 @@ if (modo === "combustibles") {
   }
 }
 
-const navegador = await chromium.launch();
+// En GitHub se usa el Google Chrome que ya trae la máquina (no hay que descargar nada)
+let navegador;
+try { navegador = await chromium.launch(process.env.CI ? { channel: "chrome" } : {}); }
+catch (_) { navegador = await chromium.launch(); }
 const pagina = await navegador.newPage({ viewport: { width: 1080, height: 1350 }, deviceScaleFactor: 1 });
 await pagina.goto("file://" + path.join(AQUI, "plantilla.html"));
 await pagina.evaluate(([m, d]) => window.pintar(m, d), [modo, datos]);
@@ -63,9 +66,12 @@ await pagina.screenshot({ path: salida, type: "jpeg", quality: 92 });
 const salidaHistoria = salida.replace(/\.jpg$/, "-historia.jpg");
 const imagenBase64 = (await readFile(salida)).toString("base64");
 const historia = await navegador.newPage({ viewport: { width: 1080, height: 1920 }, deviceScaleFactor: 1 });
-await historia.setContent(`<!doctype html><html><head><meta charset="utf-8"><style>
+const archivoHistoria = path.join(AQUI, "historia-temporal.html");
+await writeFile(archivoHistoria, `<!doctype html><html><head><meta charset="utf-8"><style>
+  @font-face { font-family: "Inter RD"; font-weight: 400; src: url("fuentes/Inter-Regular.woff2") format("woff2"); }
+  @font-face { font-family: "Inter RD"; font-weight: 800; src: url("fuentes/Inter-ExtraBold.woff2") format("woff2"); }
   * { margin: 0; box-sizing: border-box; }
-  body { width: 1080px; height: 1920px; overflow: hidden; font-family: Inter, system-ui, sans-serif; color: #fff;
+  body { width: 1080px; height: 1920px; overflow: hidden; font-family: "Inter RD", Inter, system-ui, sans-serif; color: #fff;
          background: linear-gradient(170deg, #061428 0%, #002d62 55%, #0b4a8f 100%);
          display: flex; flex-direction: column; align-items: center; justify-content: space-between; }
   .franja { height: 335px; width: 100%; display: flex; align-items: center; justify-content: center; text-align: center; }
@@ -79,8 +85,10 @@ await historia.setContent(`<!doctype html><html><head><meta charset="utf-8"><sty
   <img src="data:image/jpeg;base64,${imagenBase64}">
   <div class="franja abajo">Todas las tasas en<b>divisasrd.com</b></div>
 </body></html>`);
+await historia.goto("file://" + archivoHistoria);
 await historia.evaluate(() => document.fonts.ready);
 await historia.screenshot({ path: salidaHistoria, type: "jpeg", quality: 90 });
+await rm(archivoHistoria, { force: true });
 await navegador.close();
 
 // Texto de la publicación
