@@ -315,7 +315,7 @@
     <section class="tarjeta"><h2>Bolsa de EE. UU.</h2><div id="g-indices"><div class="cargando">Cargando…</div></div><p class="nota act-mercados" style="margin-top:8px"></p></section>
     <section class="tarjeta"><h2>Grandes empresas</h2><div id="g-grandes"><div class="cargando">Cargando…</div></div><p class="nota act-mercados" style="margin-top:8px"></p></section>
     <section class="tarjeta"><h2>Videojuegos</h2><div id="g-empresas"><div class="cargando">Cargando…</div></div><p class="nota act-mercados" style="margin-top:8px"></p></section>
-    <section class="tarjeta"><h2>Oro y petróleo</h2><div id="g-materias"><div class="cargando">Cargando…</div></div><p class="nota act-mercados" style="margin-top:8px"></p></section>
+    <section class="tarjeta"><h2>Oro, plata y materias primas</h2><div id="g-materias"><div class="cargando">Cargando…</div></div><p class="nota act-mercados" style="margin-top:8px"></p></section>
   </div>
 
   <!-- Texto para buscadores y lectores -->
@@ -403,12 +403,15 @@
   const ACTIVOS = {
     BTC:["₿","#F7931A"], ETH:["Ξ","#627EEA"], USDT:["₮","#26A17B"], SOL:["◎","#9945FF"], XRP:["X","#8A9BB0"],
     SPX:["S&P","#1E88E5"], DJI:["DJ","#7E57C2"], IXIC:["NQ","#00ACC1"], ORO:["Au","#FFB300"], WTI:["Oil","#78909C"],
+    PLATA:["Ag","#90A4AE"], PLATINO:["Pt","#78909C"], COBRE:["Cu","#B87333"], GASNAT:["GN","#039BE5"],
+    CAFE:["Cf","#6D4C41"], CACAO:["Cc","#8D6E63"],
     MSFT:["MS","#107C10"], SONY:["PS","#2F6FDE"], NTDOY:["N","#E60012"],
     AAPL:["A","#8E8E93"], NVDA:["NV","#76B900"], GOOGL:["G","#4285F4"], AMZN:["a","#FF9900"],
     META:["M","#0866FF"], TSLA:["T","#CC0000"]
   };
   const COMB = { premium:["P","#E53935"], regular:["R","#43A047"], gasoilOptimo:["GO","#90A4AE"],
-                 gasoilRegular:["G","#78909C"], glp:["GLP","#FB8C00"], gasNatural:["GN","#039BE5"] };
+                 gasoilRegular:["G","#78909C"], glp:["GLP","#FB8C00"], gasNatural:["GN","#039BE5"],
+                 avtur:["AV","#0288D1"], kerosene:["K","#7CB342"], fuelOil6:["F6","#5D4037"], fuelOil1:["F1","#795548"] };
   const ESTADOS = { "Nueva York":"#1E88E5", "Ohio":"#E53935", "Florida":"#FB8C00", "Texas":"#8E24AA", "California":"#FDD835" };
 
   // Al tocar una fila se abre con el nombre completo
@@ -546,7 +549,7 @@
   function pintarCombRD(rd) {
     if (!rd || !rd.precios) { $("lista-comb-rd").innerHTML = '<p class="nota">Sin datos por ahora.</p>'; return; }
     $("semana-rd").textContent = (rd.enVivo ? "Semana del " : "Última semana registrada: ") + (rd.semana || "—") + " · Precios oficiales del MICM.";
-    $("lista-comb-rd").innerHTML = rd.precios.map((p) => {
+    $("lista-comb-rd").innerHTML = rd.precios.filter((p) => p.precio != null).map((p) => {
       const [ic, col] = COMB[p.clave] || ["?", "#607D8B"];
       return fila(col, ic, p.nombre, "Precio oficial por " + p.unidad,
         `<div class="nombre"><b>${esc(p.nombre)}</b><small>por ${esc(p.unidad)}</small></div>
