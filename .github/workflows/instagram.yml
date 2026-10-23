@@ -1,5 +1,5 @@
 # =====================================================================
-#  Divisas RD - Publica en Instagram y X automáticamente
+#  Divisas RD - Publica automáticamente en Instagram
 #   - Todos los días a las 8:30 a. m. (hora de RD): tasa del dólar
 #   - Viernes 7:00 p. m. y, si el MICM se atrasó, sábado 8:00 a. m.: combustibles
 #  RD está siempre en UTC-4 (no cambia la hora), por eso los horarios en UTC son fijos.
@@ -19,7 +19,7 @@ on:
         options: [tasa, combustibles]
         default: tasa
       publicar:
-        description: "¿Publicar en Instagram y X? (no = solo crear la imagen)"
+        description: "¿Publicar en Instagram? (no = solo crear la imagen)"
         type: choice
         options: ["no", "si"]
         default: "no"
@@ -105,20 +105,6 @@ jobs:
         run: |
           ARCHIVO="${{ steps.imagen.outputs.archivo }}"
           node instagram/publicar.mjs "https://divisasrd.com/ig/$ARCHIVO?v=${{ github.run_id }}" "ig/${ARCHIVO%.jpg}.txt"
-
-      # Publicar también en X. Si X falla, Instagram y el control de semana siguen funcionando.
-      - name: Publicar en X
-        id: publicar_x
-        if: steps.imagen.outcome == 'success' && steps.imagen.outputs.saltar != 'true' && steps.plan.outputs.publicar == 'si' && !cancelled()
-        continue-on-error: true
-        env:
-          X_API_KEY: ${{ secrets.X_API_KEY }}
-          X_API_SECRET: ${{ secrets.X_API_SECRET }}
-          X_ACCESS_TOKEN: ${{ secrets.X_ACCESS_TOKEN }}
-          X_ACCESS_TOKEN_SECRET: ${{ secrets.X_ACCESS_TOKEN_SECRET }}
-        run: |
-          ARCHIVO="${{ steps.imagen.outputs.archivo }}"
-          node instagram/x-publicar.mjs "ig/$ARCHIVO" "ig/${ARCHIVO%.jpg}.txt"
 
       # Si la historia falla, no se marca error: la publicación del perfil ya salió
       - name: Publicar también en la historia
