@@ -3,6 +3,8 @@
   "private": true,
   "type": "module",
   "dependencies": {
-    "playwright": "1.48.2"
+    "playwright": "1.48.2",
+    "twitter-api-v2": "^1.28.0",
+    "twitter-text": "^3.1.0"
   }
 }
