@@ -16,16 +16,17 @@ const original = (await readFile(textPath, "utf8")).trim();
 const suffix = "\n\nhttps://divisasrd.com";
 let body = original;
 let text = body + suffix;
+let parsed = parseTweet(text);
 
-// X uses weighted character counting (URLs have a fixed weight). Shorten safely
-// until the post fits; don't split surrogate pairs or leave trailing punctuation.
-while (!parseTweet(text).valid && Array.from(body).length > 0) {
+// X counts Unicode and URLs with its own weighted rules. Shorten safely until
+// the text is valid and within 280 weighted characters.
+while ((!parsed.valid || parsed.weightedLength > 280) && Array.from(body).length > 0) {
   const chars = Array.from(body);
   chars.pop();
   body = chars.join("").replace(/[\\s,;:]+$/, "").trimEnd();
-  text = body + "…"+ suffix;
+  text = body + "…" + suffix;
+  parsed = parseTweet(text);
 }
-const parsed = parseTweet(text);
 if (!parsed.valid || parsed.weightedLength > 280) {
   throw new Error("The generated caption could not be shortened to X's post limit.");
 }
