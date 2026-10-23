@@ -8,9 +8,9 @@ name: Instagram
 
 on:
   schedule:
-    - cron: "30 12 * * *"   # 8:30 a. m. RD, todos los días  -> tasa
-    - cron: "0 23 * * 5"    # 7:00 p. m. RD, viernes          -> combustibles
-    - cron: "0 12 * * 6"    # 8:00 a. m. RD, sábado (respaldo) -> combustibles, solo si no salió el viernes
+    - cron: "37 12 * * *"   # 8:37 a. m. RD, todos los días  -> tasa
+    - cron: "17 23 * * 5"    # 7:17 p. m. RD, viernes          -> combustibles
+    - cron: "23 12 * * 6"    # 8:23 a. m. RD, sábado (respaldo) -> combustibles, solo si no salió el viernes
   workflow_dispatch:
     inputs:
       modo:
