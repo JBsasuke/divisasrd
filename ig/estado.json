@@ -1,8 +1,9 @@
 {
-  "fecha": "2026-10-22",
-  "dolar": 61.409228,
-  "dolarAnterior": null,
+  "fecha": "2026-10-23",
+  "dolar": 61.41887,
+  "dolarAnterior": 61.409228,
   "usadas": [
+    "mejor_compra:6",
     "btc_baja:3"
   ]
 }
