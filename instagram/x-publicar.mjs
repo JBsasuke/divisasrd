@@ -48,8 +48,11 @@ try {
   mediaId = await client.v1.uploadMedia(imagePath);
   console.log("Image uploaded; publishing post with attached image…");
 } catch (error) {
-  console.warn("X rejected media upload; will publish the text with the public image URL instead.");
   console.warn(`Media upload error: ${error?.code ?? "unknown"} ${error?.message ?? ""}`);
+  if (error?.code === 401 || /code 89|Invalid or expired token/i.test(error?.message ?? "")) {
+    throw new Error("X OAuth 1.0 credentials were rejected (401/code 89). Check that GitHub secrets X_API_KEY, X_API_SECRET, X_ACCESS_TOKEN, and X_ACCESS_TOKEN_SECRET are the matching OAuth 1.0 values for this app. Do not use the OAuth 2.0 access token here.");
+  }
+  console.warn("X rejected media upload; will publish the text with the public image URL instead.");
 }
 
 let post;
