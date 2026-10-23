@@ -1,0 +1,187 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>KiloClaro · Instagram</title>
+<style>
+  @font-face { font-family: "Inter KC"; font-weight: 400; src: url("fuentes/Inter-Regular.woff2") format("woff2"); }
+  @font-face { font-family: "Inter KC"; font-weight: 500; src: url("fuentes/Inter-Medium.woff2") format("woff2"); }
+  @font-face { font-family: "Inter KC"; font-weight: 600; src: url("fuentes/Inter-SemiBold.woff2") format("woff2"); }
+  @font-face { font-family: "Inter KC"; font-weight: 700; src: url("fuentes/Inter-Bold.woff2") format("woff2"); }
+  @font-face { font-family: "Inter KC"; font-weight: 800; src: url("fuentes/Inter-ExtraBold.woff2") format("woff2"); }
+  @font-face { font-family: "Inter KC"; font-weight: 900; src: url("fuentes/Inter-Black.woff2") format("woff2"); }
+  :root {
+    --fondo1: #08101f; --fondo2: #0e2238; --tarjeta: rgba(255,255,255,.06); --borde: rgba(255,255,255,.12);
+    --verde: #39d98a; --verde2: #22b573; --azul: #3d8bff; --amarillo: #ffc83d;
+    --blanco: #ffffff; --suave: #b6c3d8; --tenue: #7f8ea8;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { width: 1080px; overflow: hidden; }
+  body {
+    height: 1350px;
+    font-family: "Inter KC", Inter, system-ui, sans-serif; color: var(--blanco);
+    background:
+      radial-gradient(900px 600px at 100% 0%, rgba(57,217,138,.20), transparent 60%),
+      radial-gradient(800px 600px at 0% 100%, rgba(61,139,255,.18), transparent 60%),
+      linear-gradient(165deg, var(--fondo1) 0%, var(--fondo2) 100%);
+    padding: 64px 66px 54px; display: flex; flex-direction: column;
+    -webkit-font-smoothing: antialiased;
+  }
+  body.historia { height: 1920px; padding: 260px 66px 300px; }
+  .num { font-variant-numeric: tabular-nums; letter-spacing: -0.01em; }
+
+  .cab { display: flex; align-items: center; gap: 22px; }
+  .cab img { width: 96px; height: 96px; flex: none; filter: drop-shadow(0 6px 18px rgba(0,0,0,.35)); }
+  .marca b { display: block; font-size: 50px; font-weight: 800; line-height: 1; letter-spacing: -0.02em; }
+  .marca span { display: block; margin-top: 8px; font-size: 23px; color: var(--verde); font-weight: 700; letter-spacing: .12em; }
+  .fecha { margin-left: auto; text-align: right; font-size: 24px; color: var(--suave); font-weight: 600; line-height: 1.35; }
+
+  .cuerpo { flex: 1; display: flex; flex-direction: column; justify-content: center; padding: 30px 0; }
+  .etiqueta { align-self: flex-start; display: inline-flex; align-items: center; gap: 12px;
+    padding: 12px 22px; border-radius: 999px; font-size: 24px; font-weight: 800; letter-spacing: .12em;
+    background: rgba(57,217,138,.14); color: var(--verde); border: 2px solid rgba(57,217,138,.45); }
+  .etiqueta svg { width: 26px; height: 26px; }
+  .etiqueta.amarilla { background: rgba(255,200,61,.14); color: var(--amarillo); border-color: rgba(255,200,61,.5); }
+  .etiqueta.azul { background: rgba(61,139,255,.16); color: #8fbaff; border-color: rgba(61,139,255,.5); }
+
+  h1 { margin-top: 34px; font-size: 76px; line-height: 1.06; font-weight: 900; letter-spacing: -0.03em; }
+  h1.mediano { font-size: 64px; }
+  .texto { margin-top: 28px; font-size: 38px; line-height: 1.42; color: var(--suave); font-weight: 500; }
+
+  .cita { font-size: 64px; line-height: 1.22; font-weight: 800; letter-spacing: -0.02em; margin-top: 40px; }
+  .cita.larga { font-size: 54px; }
+  .comillas { font-size: 200px; line-height: .6; color: var(--verde); font-weight: 900; height: 90px; margin-top: 40px; }
+
+  .pasos { margin-top: 40px; display: grid; gap: 20px; }
+  .paso { display: flex; align-items: center; gap: 24px; padding: 24px 28px; border-radius: 26px; background: var(--tarjeta); border: 2px solid var(--borde); font-size: 34px; font-weight: 600; }
+  .paso i { flex: none; width: 62px; height: 62px; border-radius: 50%; display: grid; place-items: center; font-style: normal; font-weight: 900; font-size: 32px; color: #07130e; background: var(--verde); }
+
+  /* Ejemplo de factura */
+  .si { margin-top: 30px; font-size: 44px; font-weight: 700; color: var(--suave); }
+  .si b { color: var(--blanco); }
+  .total { margin-top: 26px; padding: 34px 40px; border-radius: 34px; border: 3px solid var(--verde);
+    background: linear-gradient(180deg, rgba(57,217,138,.16), rgba(57,217,138,.04)); }
+  .total small { display: block; font-size: 24px; font-weight: 800; color: var(--verde); letter-spacing: .14em; }
+  .total b { display: block; margin-top: 6px; font-size: 112px; font-weight: 900; letter-spacing: -0.03em; line-height: 1; }
+  .filas { margin-top: 26px; display: grid; gap: 6px; }
+  .fila { display: flex; justify-content: space-between; font-size: 30px; padding: 10px 6px; border-bottom: 1px solid var(--borde); color: var(--suave); }
+  .fila b { color: var(--blanco); font-weight: 700; }
+  .fila.tenue, .fila.tenue b { color: var(--tenue); }
+
+  /* Precio del kWh */
+  table { width: 100%; margin-top: 34px; border-collapse: separate; border-spacing: 0; font-size: 31px; }
+  th { text-align: right; font-size: 25px; letter-spacing: .06em; color: var(--verde); padding: 0 12px 16px; font-weight: 800; }
+  th:first-child, td:first-child { text-align: left; }
+  td { padding: 18px 12px; border-top: 1px solid var(--borde); text-align: right; font-weight: 700; }
+  td:first-child { color: var(--suave); font-weight: 600; }
+  tr.cargo td { color: var(--amarillo); }
+  tr.cargo td:first-child { color: var(--suave); }
+  .nota { margin-top: 22px; font-size: 25px; color: var(--tenue); line-height: 1.4; }
+  .cepm { margin-top: 24px; padding: 20px 26px; border-radius: 22px; background: var(--tarjeta); border: 2px solid var(--borde); font-size: 29px; color: var(--suave); }
+  .cepm b { color: var(--blanco); }
+
+  .verde { color: var(--verde); }
+  .zona { margin-top: 18px; font-size: 30px; color: var(--verde); font-weight: 700; }
+  .frase-ed { margin-top: 26px; font-size: 32px; line-height: 1.35; font-weight: 700; color: var(--blanco); }
+  .tiempo { display: flex; align-items: center; gap: 30px; padding: 30px 36px; border-radius: 34px; margin-bottom: 34px;
+    background: linear-gradient(135deg, rgba(255,200,61,.18), rgba(61,139,255,.10)); border: 2px solid rgba(255,200,61,.35); }
+  .icono-tiempo svg { width: 150px; height: 150px; display: block; }
+  .grados { font-size: 120px; font-weight: 900; line-height: .95; letter-spacing: -0.04em; }
+  .grados span { font-size: 50px; color: var(--suave); font-weight: 700; margin-left: 12px; letter-spacing: -0.02em; }
+  .lugar { margin-top: 10px; font-size: 28px; color: var(--suave); font-weight: 600; }
+  .chips { display: flex; gap: 14px; flex-wrap: wrap; }
+  .chips .etiqueta { align-self: auto; }
+  .pie { display: flex; align-items: center; justify-content: space-between; gap: 20px;
+    padding: 26px 32px; border-radius: 28px; background: rgba(255,255,255,.07); border: 2px solid var(--borde); }
+  .pie div { font-size: 26px; color: var(--suave); line-height: 1.3; }
+  .pie div b { display: block; font-size: 38px; color: var(--blanco); font-weight: 800; letter-spacing: -0.01em; }
+  .pie span { font-size: 20px; color: var(--tenue); text-align: right; max-width: 290px; line-height: 1.35; }
+  .rayo { width: 64px; height: 64px; flex: none; }
+</style>
+</head>
+<body>
+  <div class="cab">
+    <img src="kiloclaro-logo.svg" alt="">
+    <div class="marca"><b>KiloClaro</b><span>TU CONSUMO, EN TUS MANOS</span></div>
+    <div class="fecha" id="fecha"></div>
+  </div>
+  <div class="cuerpo" id="cuerpo"></div>
+  <div class="pie">
+    <svg class="rayo" viewBox="0 0 24 24"><path fill="#ffc83d" d="M13.5 2 4 14h6.5L9.5 22 20 9.5h-6.6z"/></svg>
+    <div>Calcula tu factura gratis<b>kiloclarord.com</b></div>
+    <span id="aviso-pie">Estimación orientativa. La factura de tu distribuidora es la que vale.</span>
+  </div>
+
+<script>
+  const ICONOS = {
+    hoja: '<svg viewBox="0 0 24 24"><path fill="currentColor" d="M20 3C10 3 4 8 4 15c0 2 .6 3.7 1.6 5l1.5-1.5C9 14 12 11 16 9c-3.4 2.4-6 5.6-7.6 10.4C9.5 20.4 11 21 13 21c6 0 8-7 7-18z"/></svg>',
+    bombillo: '<svg viewBox="0 0 24 24"><path fill="currentColor" d="M12 2a7 7 0 0 0-4 12.7V17a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-2.3A7 7 0 0 0 12 2zm-3 18h6v1a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1z"/></svg>',
+    sonrisa: '<svg viewBox="0 0 24 24"><path fill="currentColor" d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zM8.5 8a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3zm7 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3zM12 18a6 6 0 0 1-5.2-3h10.4A6 6 0 0 1 12 18z"/></svg>',
+    reloj: '<svg viewBox="0 0 24 24"><path fill="currentColor" d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm1 10.4 3.5 2.1-.8 1.3L11 13V6h2z"/></svg>',
+    factura: '<svg viewBox="0 0 24 24"><path fill="currentColor" d="M6 2h12a1 1 0 0 1 1 1v19l-3-2-2 2-2-2-2 2-2-2-3 2V3a1 1 0 0 1 1-1zm2 5v2h8V7zm0 4v2h8v-2zm0 4v2h5v-2z"/></svg>',
+    rayo: '<svg viewBox="0 0 24 24"><path fill="currentColor" d="M13.5 2 4 14h6.5L9.5 22 20 9.5h-6.6z"/></svg>',
+  };
+  const ICONOS_TIEMPO = {
+    sol: '<svg viewBox="0 0 64 64"><circle cx="32" cy="32" r="13" fill="#ffc83d"/><g stroke="#ffc83d" stroke-width="5" stroke-linecap="round"><path d="M32 5v8M32 51v8M5 32h8M51 32h8M13 13l6 6M45 45l6 6M13 51l6-6M45 19l6-6"/></g></svg>',
+    nubes: '<svg viewBox="0 0 64 64"><circle cx="24" cy="24" r="11" fill="#ffc83d"/><path fill="#dfe7f3" d="M20 50a10 10 0 0 1 1-20 14 14 0 0 1 27 4 8 8 0 0 1-1 16z"/></svg>',
+    lluvia: '<svg viewBox="0 0 64 64"><path fill="#dfe7f3" d="M18 40a10 10 0 0 1 1-20 14 14 0 0 1 27 4 8 8 0 0 1-1 16z"/><g stroke="#3d8bff" stroke-width="4" stroke-linecap="round"><path d="M22 46l-3 8M32 46l-3 8M42 46l-3 8"/></g></svg>',
+    tormenta: '<svg viewBox="0 0 64 64"><path fill="#b6c3d8" d="M18 38a10 10 0 0 1 1-20 14 14 0 0 1 27 4 8 8 0 0 1-1 16z"/><path fill="#ffc83d" d="M34 36 24 50h7l-3 10 12-15h-7l4-9z"/></svg>',
+  };
+  const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+  const fmt = (n) => Number(n).toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  const kwh = (n) => Number(n).toLocaleString("en-US", { maximumFractionDigits: 0 });
+  const etiqueta = (texto, icono, clase = "") => `<div class="etiqueta ${clase}">${ICONOS[icono]}${esc(texto)}</div>`;
+
+  window.pintar = (tipo, d, formato) => {
+    document.body.classList.toggle("historia", formato === "historia");
+    document.getElementById("fecha").innerHTML = esc(d.fecha).replace(" · ", "<br>");
+    const c = document.getElementById("cuerpo");
+    let h = "";
+    if (tipo === "consejo" || tipo === "truco") {
+      h = etiqueta(tipo === "consejo" ? "CONSEJO DE AHORRO" : "TRUCO KILOCLARO", tipo === "consejo" ? "hoja" : "bombillo", tipo === "truco" ? "azul" : "") +
+          `<h1 class="${d.titulo.length > 34 ? "mediano" : ""}">${esc(d.titulo)}</h1><p class="texto">${esc(d.texto)}</p>`;
+    } else if (tipo === "frase") {
+      h = etiqueta("PARA REÍR UN POCO", "sonrisa", "amarilla") +
+          `<div class="comillas">“</div><p class="cita ${d.texto.length > 110 ? "larga" : ""}">${esc(d.texto)}</p>`;
+    } else if (tipo === "recordatorio") {
+      h = etiqueta("ESTA SEMANA", "reloj") + `<h1 class="mediano">${esc(d.titulo)}</h1><p class="texto">${esc(d.texto)}</p>` +
+          `<div class="pasos"><div class="paso"><i>1</i>Mañana: mira el contador y anótalo</div>` +
+          `<div class="paso"><i>2</i>Noche: anótalo otra vez</div>` +
+          `<div class="paso"><i>3</i>KiloClaro te da tu estimado del mes</div></div>`;
+    } else if (tipo === "ejemplo") {
+      // Una distribuidora por imagen, con su zona, su total y el desglose
+      const f = d.factura;
+      h = etiqueta(`EJEMPLO DE FACTURA · ${d.distribuidora}`, "factura", "azul") +
+          `<p class="zona">${esc(d.zona)}</p>` +
+          `<p class="si">Si gastas <b class="num">${kwh(f.kwh)} kWh</b> al mes</p>` +
+          `<div class="total"><small>TU FACTURA EN ${esc(d.distribuidora)} SERÍA</small><b class="num">RD$ ${fmt(f.total)}</b></div>` +
+          `<div class="filas">` +
+          f.lineas.map((l) => `<div class="fila"><span>${kwh(l.kwh)} kWh × RD$ ${fmt(l.precio)}</span><b class="num">RD$ ${fmt(l.importe)}</b></div>`).join("") +
+          (f.cargo > 0 ? `<div class="fila"><span>Cargo fijo</span><b class="num">RD$ ${fmt(f.cargo)}</b></div>` : "") +
+          (f.itbis > 0 ? `<div class="fila"><span>ITBIS 18 %</span><b class="num">RD$ ${fmt(f.itbis)}</b></div>` : "") +
+          `</div><p class="frase-ed">${esc(d.frase)}</p>` +
+          `<p class="nota">Tarifa ${esc(d.codigo)} residencial · ${esc(String(d.vigencia).replace("-", " – "))}</p>`;
+    } else if (tipo === "clima") {
+      // Consejo del día según el tiempo de hoy y la temporada
+      const k = d.clima;
+      h = (k ? `<div class="tiempo"><div class="icono-tiempo">${ICONOS_TIEMPO[k.cielo] || ICONOS_TIEMPO.sol}</div>` +
+               `<div><div class="grados num">${Math.round(k.max)}°<span>/ ${Math.round(k.min)}°</span></div>` +
+               `<div class="lugar">Hoy en ${esc(k.lugar)} · ${esc(k.descripcion)}${k.lluvia != null ? ` · lluvia ${Math.round(k.lluvia)} %` : ""}</div></div></div>` : "") +
+          `<div class="chips">${etiqueta(d.etiqueta, "hoja", d.clase || "")}${d.temporada ? `<div class="etiqueta azul">${esc(d.temporada)}</div>` : ""}</div>` +
+          `<h1 class="${d.titulo.length > 34 ? "mediano" : ""}">${esc(d.titulo)}</h1><p class="texto">${esc(d.texto)}</p>`;
+    } else if (tipo === "precio") {
+      const cols = d.tabla;
+      const rangos = ["0 – 200 kWh", "201 – 300 kWh", "301 – 700 kWh", "701 kWh o más"];
+      h = etiqueta("PRECIO DEL kWh", "rayo") + `<h1 class="mediano">Tarifas de la luz</h1><p class="texto" style="margin-top:12px">${esc(String(d.vigencia).replace("-", " – "))}</p>` +
+          `<table><tr><th>RD$ por kWh</th>${cols.map((x) => `<th>${esc(x.distribuidora)}</th>`).join("")}</tr>` +
+          rangos.map((r, i) => `<tr><td>${r}</td>${cols.map((x) => `<td class="num">${x.tramos[i] != null ? fmt(x.tramos[i]) : "—"}</td>`).join("")}</tr>`).join("") +
+          `<tr class="cargo"><td>Cargo fijo ≤100 kWh</td>${cols.map((x) => `<td class="num">${x.cargoBajo != null ? fmt(x.cargoBajo) : "—"}</td>`).join("")}</tr>` +
+          `<tr class="cargo"><td>Cargo fijo &gt;100 kWh</td>${cols.map((x) => `<td class="num">${x.cargoAlto != null ? fmt(x.cargoAlto) : "—"}</td>`).join("")}</tr></table>` +
+          (d.cepm != null ? `<div class="cepm">CEPM (Punta Cana y Bávaro): <b class="num">RD$ ${fmt(d.cepm)}</b> por kWh</div>` : "") +
+          `<p class="nota">Tarifa residencial BTS-1 · ITBIS 18 % desde 701 kWh · Fuente: SIE</p>`;
+    }
+    c.innerHTML = h;
+  };
+</script>
+</body>
+</html>
