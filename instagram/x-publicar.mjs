@@ -1,4 +1,5 @@
 import { readFile } from "node:fs/promises";
+import { basename } from "node:path";
 import { TwitterApi } from "twitter-api-v2";
 import twitterText from "twitter-text";
 const { parseTweet } = twitterText;
@@ -13,18 +14,19 @@ if (!imagePath || !textPath) {
   throw new Error("Usage: node instagram/x-publicar.mjs <image.jpg> <caption.txt>");
 }
 
+const imageUrl = `https://divisasrd.com/ig/${basename(imagePath)}`;
 const original = (await readFile(textPath, "utf8")).trim();
-const suffix = "\n\nhttps://divisasrd.com";
+const suffix = `\n\n${imageUrl}`;
 let body = original;
 let text = body + suffix;
 let parsed = parseTweet(text);
 
 // X counts Unicode and URLs with its own weighted rules. Shorten safely until
-// the text is valid and within 280 weighted characters.
+// the caption plus public image URL fits the 280-character limit.
 while ((!parsed.valid || parsed.weightedLength > 280) && Array.from(body).length > 0) {
   const chars = Array.from(body);
   chars.pop();
-  body = chars.join("").replace(/[\\s,;:]+$/, "").trimEnd();
+  body = chars.join("").replace(/[\s,;:]+$/, "").trimEnd();
   text = body + "…" + suffix;
   parsed = parseTweet(text);
 }
@@ -40,8 +42,20 @@ const client = new TwitterApi({
 });
 
 console.log(`Caption length for X: ${parsed.weightedLength}/280`);
-console.log("Uploading image to X…");
-const mediaId = await client.v1.uploadMedia(imagePath);
-console.log("Publishing post to X…");
-const post = await client.v2.tweet({ text, media: { media_ids: [mediaId] } });
+let mediaId;
+try {
+  console.log("Trying to upload image to X…");
+  mediaId = await client.v1.uploadMedia(imagePath);
+  console.log("Image uploaded; publishing post with attached image…");
+} catch (error) {
+  console.warn("X rejected media upload; will publish the text with the public image URL instead.");
+  console.warn(`Media upload error: ${error?.code ?? "unknown"} ${error?.message ?? ""}`);
+}
+
+let post;
+if (mediaId) {
+  post = await client.v2.tweet({ text, media: { media_ids: [mediaId] } });
+} else {
+  post = await client.v2.tweet({ text });
+}
 console.log(`X post published: ${post.data.id}`);
