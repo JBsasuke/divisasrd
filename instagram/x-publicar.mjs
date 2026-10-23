@@ -1,6 +1,7 @@
 import { readFile } from "node:fs/promises";
 import { TwitterApi } from "twitter-api-v2";
-import { parseTweet } from "twitter-text";
+import twitterText from "twitter-text";
+const { parseTweet } = twitterText;
 
 const [imagePath, textPath] = process.argv.slice(2);
 const env = process.env;
