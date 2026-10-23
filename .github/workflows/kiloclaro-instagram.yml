@@ -1,0 +1,163 @@
+# =====================================================================
+#  KiloClaro - Publica en Instagram (@KiloClaroRD) automáticamente
+#   Todos los días, en el perfil y en la historia (hora de RD):
+#     ~9:07 a. m.  consejo del día según el tiempo de hoy y la temporada (respaldo 10:37)
+#     ~12:03 p. m. lunes recordatorio · martes consejo · miércoles ejemplo de factura
+#                 (4 publicaciones, una por distribuidora) · jueves truco · viernes frase
+#                 · sábado consejo · domingo frase
+#   Si cambian las tarifas de la luz en el servidor, ese día sale la tabla del precio del kWh.
+#  GitHub a veces atrasa o se salta los horarios: cada publicación tiene un segundo intento
+#  que solo publica si la primera no salió (ig/kc/publicado-*.txt guarda el último día).
+#  Las imágenes se suben a divisasrd.com/ig/kc/ (el mismo sitio que ya usa Divisas RD).
+#  RD está siempre en UTC-4, por eso la hora en UTC es fija.
+# =====================================================================
+name: Instagram KiloClaro
+
+on:
+  schedule:
+    - cron: "7 13 * * *"    # 9:07 a. m. RD   -> consejo según el clima
+    - cron: "37 14 * * *"   # 10:37 a. m. RD  -> respaldo del clima
+    - cron: "3 16 * * *"    # 12:03 p. m. RD  -> lo que toca ese día
+    - cron: "33 17 * * *"   # 1:33 p. m. RD   -> respaldo del mediodía
+  workflow_dispatch:
+    inputs:
+      tipo:
+        description: "¿Qué publicación?"
+        type: choice
+        options: [auto, clima, precio, consejo, truco, frase, recordatorio, ejemplo]
+        default: auto
+      publicar:
+        description: "¿Publicar en Instagram? (no = solo crear la imagen)"
+        type: choice
+        options: ["no", "si"]
+        default: "no"
+
+permissions:
+  contents: write
+
+# El mismo grupo que Divisas RD: nunca suben imágenes al repositorio a la vez
+concurrency:
+  group: instagram
+  cancel-in-progress: false
+
+jobs:
+  publicar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Decidir qué se publica
+        id: plan
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo "tipo=${{ inputs.tipo }}" >> "$GITHUB_OUTPUT"
+            echo "publicar=${{ inputs.publicar }}" >> "$GITHUB_OUTPUT"
+          else
+            case "${{ github.event.schedule }}" in
+              "7 13 * * *"|"37 14 * * *") TIPO=clima; MARCA=ig/kc/publicado-clima.txt ;;
+              *) TIPO=auto; MARCA=ig/kc/publicado-dia.txt ;;
+            esac
+            echo "tipo=$TIPO" >> "$GITHUB_OUTPUT"
+            echo "marca=$MARCA" >> "$GITHUB_OUTPUT"
+            HOY=$(TZ=America/Santo_Domingo date +%F)
+            if [ "$(cat $MARCA 2>/dev/null)" = "$HOY" ]; then
+              echo "Hoy ya se publicó ($MARCA)"; echo "publicar=ya" >> "$GITHUB_OUTPUT"
+            else
+              echo "publicar=si" >> "$GITHUB_OUTPUT"
+            fi
+          fi
+
+      - uses: actions/setup-node@v4
+        if: steps.plan.outputs.publicar != 'ya'
+        with:
+          node-version: 20
+
+      - name: Preparar
+        if: steps.plan.outputs.publicar != 'ya'
+        working-directory: instagram
+        env:
+          PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: "1"
+        run: npm install --no-audit --no-fund
+
+      - name: Crear la imagen
+        id: imagen
+        if: steps.plan.outputs.publicar != 'ya'
+        run: node instagram/kiloclaro-generar.mjs ${{ steps.plan.outputs.tipo }}
+
+      - name: Subir la imagen a divisasrd.com/ig/kc
+        if: steps.plan.outputs.publicar != 'ya'
+        run: |
+          # Deja solo las imágenes de los últimos 7 días (la fecha va en el nombre del archivo)
+          LIMITE=$(date -u -d '7 days ago' +%F)
+          for f in ig/kc/kc-*-20[0-9][0-9]-[0-9][0-9]-[0-9][0-9]*; do
+            [ -e "$f" ] || continue
+            FECHA=$(echo "$f" | grep -oE '20[0-9]{2}-[0-9]{2}-[0-9]{2}')
+            if [[ "$FECHA" < "$LIMITE" ]]; then rm -f "$f"; fi
+          done
+          git config user.name "kiloclaro-bot"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add -A ig/kc
+          git commit -m "Instagram KiloClaro: ${{ steps.imagen.outputs.lista }}" || echo "Sin cambios"
+          git pull --rebase
+          git push
+
+      # Puede haber varias publicaciones (el miércoles salen 4, una por distribuidora)
+      - name: Publicar en Instagram (perfil e historia)
+        if: steps.plan.outputs.publicar == 'si'
+        env:
+          IG_TOKEN: ${{ secrets.KC_IG_TOKEN }}
+        run: |
+          FALLOS=0
+          for NOMBRE in ${{ steps.imagen.outputs.lista }}; do
+            URL="https://divisasrd.com/ig/kc/$NOMBRE.jpg"
+            LISTA=0
+            for i in $(seq 1 30); do
+              if curl -sfI "$URL" | grep -qi '^content-type: image/jpeg'; then LISTA=1; break; fi
+              sleep 10
+            done
+            if [ "$LISTA" != "1" ]; then echo "::error::$NOMBRE no apareció en divisasrd.com"; FALLOS=$((FALLOS+1)); continue; fi
+            echo "== $NOMBRE =="
+            if node instagram/publicar.mjs "$URL?v=${{ github.run_id }}" "ig/kc/$NOMBRE.txt"; then
+              # Si la historia falla no se marca error: la publicación del perfil ya salió
+              node instagram/publicar.mjs --historia "https://divisasrd.com/ig/kc/$NOMBRE-historia.jpg?v=${{ github.run_id }}" \
+                || echo "::warning::La historia de $NOMBRE no salió"
+            else
+              FALLOS=$((FALLOS+1))
+            fi
+            sleep 60   # un minuto entre publicaciones
+          done
+          if [ "$FALLOS" != "0" ]; then echo "$FALLOS publicación(es) fallaron"; exit 1; fi
+
+      - name: Marcar el día como publicado
+        if: steps.plan.outputs.publicar == 'si' && steps.plan.outputs.marca != ''
+        run: |
+          TZ=America/Santo_Domingo date +%F > "${{ steps.plan.outputs.marca }}"
+          git add "${{ steps.plan.outputs.marca }}"
+          git commit -m "Instagram KiloClaro: publicado ($(basename ${{ steps.plan.outputs.marca }} .txt))" || true
+          git pull --rebase
+          git push
+
+      # La tabla de precios se marca como publicada solo si Instagram la aceptó
+      - name: Marcar la tarifa como publicada
+        if: steps.plan.outputs.publicar == 'si' && steps.imagen.outputs.tipo == 'precio'
+        run: |
+          echo "${{ steps.imagen.outputs.firma }}" > ig/kc/tarifa-publicada.txt
+          git add ig/kc/tarifa-publicada.txt
+          git commit -m "Instagram KiloClaro: tarifa publicada" || true
+          git pull --rebase
+          git push
+
+      # El token de Instagram dura 60 días: cada lunes se renueva solo (necesita el secret GH_PAT)
+      - name: Renovar el token de Instagram (lunes)
+        if: github.event_name == 'schedule' && steps.plan.outputs.tipo == 'auto' && steps.plan.outputs.publicar == 'si'
+        env:
+          IG_TOKEN: ${{ secrets.KC_IG_TOKEN }}
+          GH_TOKEN: ${{ secrets.GH_PAT }}
+        run: |
+          if [ "$(date -u +%u)" != "1" ]; then echo "Hoy no toca renovar"; exit 0; fi
+          if [ -z "$GH_TOKEN" ]; then echo "::warning::Falta el secret GH_PAT: el token de KiloClaro no se renueva solo"; exit 0; fi
+          node instagram/renovar-token.mjs "$RUNNER_TEMP/kc_token"
+          gh secret set KC_IG_TOKEN --repo "${{ github.repository }}" < "$RUNNER_TEMP/kc_token"
+          rm -f "$RUNNER_TEMP/kc_token"
+          echo "KC_IG_TOKEN actualizado"

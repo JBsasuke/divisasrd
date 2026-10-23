@@ -1,16 +1,20 @@
 # =====================================================================
-#  Divisas RD - Publica automáticamente en Instagram
-#   - Todos los días a las 8:30 a. m. (hora de RD): tasa del dólar
-#   - Viernes 7:00 p. m. y, si el MICM se atrasó, sábado 8:00 a. m.: combustibles
+#  Divisas RD - Publica en Instagram (@divisas_rd) automáticamente
+#   - Todos los días ~8:13 a. m. (hora de RD): tasa del dólar. Respaldo a las 9:43 a. m.
+#   - Viernes ~7:07 p. m. y, si el MICM se atrasó, sábado 8:11 a. m.: combustibles
 #  RD está siempre en UTC-4 (no cambia la hora), por eso los horarios en UTC son fijos.
+#  GitHub a veces atrasa o se salta los horarios (sobre todo a la hora en punto):
+#  por eso se usan minutos "raros" y un segundo intento que solo publica si el
+#  primero no salió (ig/publicado-tasa.txt guarda el último día publicado).
 # =====================================================================
 name: Instagram
 
 on:
   schedule:
-    - cron: "37 12 * * *"   # 8:37 a. m. RD, todos los días  -> tasa
-    - cron: "17 23 * * 5"    # 7:17 p. m. RD, viernes          -> combustibles
-    - cron: "23 12 * * 6"    # 8:23 a. m. RD, sábado (respaldo) -> combustibles, solo si no salió el viernes
+    - cron: "13 12 * * *"   # 8:13 a. m. RD, todos los días   -> tasa
+    - cron: "43 13 * * *"   # 9:43 a. m. RD (respaldo)        -> tasa, solo si no salió a las 8
+    - cron: "7 23 * * 5"    # 7:07 p. m. RD, viernes           -> combustibles
+    - cron: "11 12 * * 6"   # 8:11 a. m. RD, sábado (respaldo) -> combustibles, solo si no salió el viernes
   workflow_dispatch:
     inputs:
       modo:
@@ -44,21 +48,29 @@ jobs:
           if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
             echo "modo=${{ inputs.modo }}" >> "$GITHUB_OUTPUT"
             echo "publicar=${{ inputs.publicar }}" >> "$GITHUB_OUTPUT"
-          elif [ "${{ github.event.schedule }}" = "37 12 * * *" ]; then
+          elif [ "${{ github.event.schedule }}" = "13 12 * * *" ] || [ "${{ github.event.schedule }}" = "43 13 * * *" ]; then
             echo "modo=tasa" >> "$GITHUB_OUTPUT"
-            echo "publicar=si" >> "$GITHUB_OUTPUT"
+            # Si la tasa de hoy ya salió (el respaldo llega tarde), no se repite
+            HOY=$(TZ=America/Santo_Domingo date +%F)
+            if [ "$(cat ig/publicado-tasa.txt 2>/dev/null)" = "$HOY" ]; then
+              echo "La tasa de hoy ya se publicó"; echo "publicar=ya" >> "$GITHUB_OUTPUT"
+            else
+              echo "publicar=si" >> "$GITHUB_OUTPUT"
+            fi
           else
             echo "modo=combustibles" >> "$GITHUB_OUTPUT"
             echo "publicar=si" >> "$GITHUB_OUTPUT"
           fi
 
       - uses: actions/setup-node@v4
+        if: steps.plan.outputs.publicar != 'ya'
         with:
           node-version: 20
 
       # Usa el Google Chrome que ya trae GitHub y la letra incluida en instagram/fuentes:
       # no se descarga ningún navegador ni se instala nada del sistema
       - name: Preparar
+        if: steps.plan.outputs.publicar != 'ya'
         working-directory: instagram
         env:
           PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: "1"
@@ -66,10 +78,11 @@ jobs:
 
       - name: Crear la imagen
         id: imagen
+        if: steps.plan.outputs.publicar != 'ya'
         run: node instagram/generar.mjs ${{ steps.plan.outputs.modo }}
 
       - name: Subir la imagen a divisasrd.com
-        if: steps.imagen.outputs.saltar != 'true'
+        if: steps.plan.outputs.publicar != 'ya' && steps.imagen.outputs.saltar != 'true'
         run: |
           # Deja solo las imágenes de los últimos 7 días (la fecha va en el nombre del archivo)
           LIMITE=$(date -u -d '7 days ago' +%F)
@@ -116,6 +129,15 @@ jobs:
         run: |
           node instagram/publicar.mjs --historia "https://divisasrd.com/ig/${{ steps.imagen.outputs.historia }}?v=${{ github.run_id }}"
 
+      - name: Marcar la tasa de hoy como publicada
+        if: steps.imagen.outputs.saltar != 'true' && steps.plan.outputs.publicar == 'si' && steps.plan.outputs.modo == 'tasa'
+        run: |
+          TZ=America/Santo_Domingo date +%F > ig/publicado-tasa.txt
+          git add ig/publicado-tasa.txt
+          git commit -m "Instagram: tasa publicada" || true
+          git pull --rebase
+          git push
+
       - name: Marcar la semana de combustibles como publicada
         if: steps.imagen.outputs.saltar != 'true' && steps.plan.outputs.publicar == 'si' && steps.plan.outputs.modo == 'combustibles'
         run: |
@@ -128,7 +150,7 @@ jobs:
       # El token de Instagram dura 60 días. Cada lunes se renueva y se guarda solo,
       # si existe el secret GH_PAT (token de GitHub con permiso para editar secrets).
       - name: Renovar el token de Instagram (lunes)
-        if: github.event.schedule == '37 12 * * *'
+        if: github.event_name == 'schedule' && steps.plan.outputs.modo == 'tasa' && steps.plan.outputs.publicar == 'si'
         env:
           IG_TOKEN: ${{ secrets.IG_TOKEN }}
           GH_TOKEN: ${{ secrets.GH_PAT }}
