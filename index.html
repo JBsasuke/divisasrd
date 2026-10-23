@@ -3,770 +3,1073 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Tasa del dólar hoy en RD · Bancos, remesas y combustibles | Divisas RD</title>
-<meta name="description" content="Tasa del dólar y del euro hoy en República Dominicana: compra y venta en Banreservas, Popular, BHD, Caribe Express y casas de cambio. Convertidor, combustibles, cripto y bolsa, actualizado al día.">
-<link rel="canonical" href="https://divisasrd.com/">
-<meta name="theme-color" content="#061428">
+<title>KiloClaro · Calcula tu factura de luz en RD</title>
+<meta name="description" content="Calcula tu factura de luz en República Dominicana: Edesur, Edenorte, Edeeste y CEPM. Precio del kWh por tramos, cargo fijo, ITBIS, kWh desde el monto y tu historial por mes.">
+<link rel="canonical" href="https://kiloclarord.com/">
+<meta name="theme-color" content="#F3F6FA" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0C101C" media="(prefers-color-scheme: dark)">
 <meta property="og:type" content="website">
-<meta property="og:title" content="Tasa del dólar hoy en RD | Divisas RD">
-<meta property="og:description" content="Compra y venta del dólar en bancos, remesadoras y casas de cambio de República Dominicana, actualizado al día.">
-<meta property="og:url" content="https://divisasrd.com/">
+<meta property="og:title" content="KiloClaro · Tu factura de luz en RD">
+<meta property="og:description" content="Pon tus kWh y te decimos cuánto te llega la factura, con el desglose por tramos.">
+<meta property="og:url" content="https://kiloclarord.com/">
+<meta property="og:image" content="https://kiloclarord.com/icono-512.png">
 <meta property="og:locale" content="es_DO">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='0' y2='1'%3E%3Cstop offset='0' stop-color='%23ffd54f'/%3E%3Cstop offset='.5' stop-color='%23ffc107'/%3E%3Cstop offset='1' stop-color='%23e0a000'/%3E%3C/linearGradient%3E%3C/defs%3E%3Ccircle cx='32' cy='32' r='30' fill='url(%23g)'/%3E%3Ctext x='32' y='44' text-anchor='middle' font-family='Arial' font-weight='900' font-size='36' fill='%23fff'%3E$%3C/text%3E%3C/svg%3E">
+<link rel="icon" href="/logo.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/icono-512.png">
 <link rel="manifest" href="/manifest.json">
-<link rel="apple-touch-icon" href="/icono-192.png">
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"WebSite","name":"Divisas RD","url":"https://divisasrd.com/","inLanguage":"es-DO","description":"Tasa del dólar hoy en República Dominicana en bancos, remesadoras y casas de cambio.","sameAs":["https://www.instagram.com/divisas_rd/"]}
+{"@context":"https://schema.org","@type":"WebApplication","name":"KiloClaro","url":"https://kiloclarord.com/","applicationCategory":"UtilitiesApplication","inLanguage":"es-DO","description":"Calculadora de la factura de luz en República Dominicana por tramos de consumo.","offers":{"@type":"Offer","price":"0","priceCurrency":"DOP"}}
 </script>
 <style>
   :root {
-    --noche: #061428;
-    --bandera: #002d62;
-    --claro: #0b4a8f;
-    --dorado: #ffc107;
-    --blanco: #ffffff;
-    --suave: #b8c7e0;
-    --sube: #4cd964;
-    --baja: #ff5a5f;
-    --tarjeta: rgba(255,255,255,.07);
-    --borde: rgba(255,193,7,.25);
+    --fondo: #F3F6FA; --tarjeta: #FFFFFF; --borde: #DCE3EE; --campo: #F7F9FC; --campo-borde: #C9D3E3;
+    --texto: #0E1726; --texto-suave: #1F2A3D; --texto-2: #4B5872; --texto-3: #7A869C; --pista: #98A3B8;
+    --verde: #16955C; --boton-1: #22B573; --boton-2: #1FA3C4; --texto-boton: #FFFFFF;
+    --boton-oscuro: #EAF6F0; --texto-boton-oscuro: #0E1726;
+    --total-1: #E2F6EC; --total-2: #FFFFFF;
+    --aviso-fondo: #FFF4CC; --aviso-borde: #E0A800; --aviso-texto: #7A5A00;
+    --barra-real: #22B573; --barra-proy: #3D8BFF; --barra-mes: #9AA6BC; --linea: #DCE3EE;
+    --rojo: #D93A3F; --sol: #F0A800; --luna: #4A6CF7;
+    color-scheme: light;
   }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-tema="claro"]) {
+      --fondo: #0C101C; --tarjeta: #151C2D; --borde: #26344F; --campo: #0F1524; --campo-borde: #2F3E5C;
+      --texto: #FFFFFF; --texto-suave: #EAF0FF; --texto-2: #AAB5CC; --texto-3: #74819B; --pista: #5F6C86;
+      --verde: #39C982; --boton-1: #39C982; --boton-2: #2FB5D6; --texto-boton: #07130E;
+      --boton-oscuro: #1D2740; --texto-boton-oscuro: #FFFFFF;
+      --total-1: #1A3A30; --total-2: #151C2D;
+      --aviso-fondo: rgba(255,193,7,.2); --aviso-borde: #FFC107; --aviso-texto: #FFD54F;
+      --barra-real: #40DC96; --barra-proy: #55A8FF; --barra-mes: #5B6A86; --linea: #465167;
+      --rojo: #FF6B6F; --sol: #FFC83D; --luna: #7C93FF;
+      color-scheme: dark;
+    }
+  }
+  :root[data-tema="oscuro"] {
+    --fondo: #0C101C; --tarjeta: #151C2D; --borde: #26344F; --campo: #0F1524; --campo-borde: #2F3E5C;
+    --texto: #FFFFFF; --texto-suave: #EAF0FF; --texto-2: #AAB5CC; --texto-3: #74819B; --pista: #5F6C86;
+    --verde: #39C982; --boton-1: #39C982; --boton-2: #2FB5D6; --texto-boton: #07130E;
+    --boton-oscuro: #1D2740; --texto-boton-oscuro: #FFFFFF;
+    --total-1: #1A3A30; --total-2: #151C2D;
+    --aviso-fondo: rgba(255,193,7,.2); --aviso-borde: #FFC107; --aviso-texto: #FFD54F;
+    --barra-real: #40DC96; --barra-proy: #55A8FF; --barra-mes: #5B6A86; --linea: #465167;
+    --rojo: #FF6B6F; --sol: #FFC83D; --luna: #7C93FF;
+    color-scheme: dark;
+  }
+
   * { box-sizing: border-box; }
-  html { scroll-behavior: smooth; }
+  html { -webkit-text-size-adjust: 100%; }
   body {
-    margin: 0;
-    min-height: 100vh;
-    color: var(--blanco);
-    background: var(--noche) linear-gradient(180deg, var(--noche) 0%, var(--bandera) 55%, var(--claro) 100%);
-    font: 16px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    margin: 0; background: var(--fondo); color: var(--texto);
+    font: 16px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, Inter, sans-serif;
   }
-  a { color: var(--dorado); }
-  .envoltura { max-width: 980px; margin: 0 auto; padding: 0 16px; }
+  .envoltura { max-width: 1040px; margin: 0 auto; padding: 0 16px 40px; }
+  a { color: var(--verde); }
 
-  /* Encabezado */
-  header { padding: 20px 0 8px; }
-  .barra { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
-  .marca { display: flex; align-items: center; gap: 12px; text-decoration: none; color: inherit; }
-  .logo {
-    width: 46px; height: 46px; border-radius: 50%; flex: none;
-    display: grid; place-items: center;
-    background: linear-gradient(#ffd54f, var(--dorado) 50%, #e0a000);
-    border: 1.5px solid rgba(255,255,255,.7);
-    box-shadow: 0 0 14px rgba(255,193,7,.45);
-    font-weight: 900; font-size: 26px; color: #fff;
-  }
-  .marca b { display: block; font-size: 24px; line-height: 1.1; }
-  .marca span { color: var(--dorado); font-size: 13px; }
-  nav { display: flex; gap: 6px; flex-wrap: wrap; }
-  nav a {
-    color: var(--suave); text-decoration: none; font-size: 14px;
-    padding: 6px 10px; border-radius: 999px; border: 1px solid transparent;
-  }
-  nav a:hover { border-color: var(--borde); color: #fff; }
+  header { text-align: center; padding: 18px 0 4px; position: relative; }
+  header .logo { width: 92px; height: 92px; display: block; margin: 0 auto; }
+  header h1 { margin: 10px 0 0; font-size: 32px; line-height: 1.1; letter-spacing: -0.02em; }
+  header .lema { color: var(--verde); font-weight: 800; font-size: 12px; letter-spacing: .14em; margin-top: 4px; }
+  header .intro { color: var(--texto-2); max-width: 560px; margin: 10px auto 0; font-size: 15px; }
+  .tema { position: absolute; right: 0; top: 18px; border: 1px solid var(--borde); background: var(--tarjeta);
+          color: var(--texto); border-radius: 999px; padding: 6px 12px; font-size: 14px; cursor: pointer; }
 
-  h1 { font-size: clamp(24px, 5vw, 34px); margin: 18px 0 4px; line-height: 1.2; }
-  .sub { color: var(--suave); margin: 0 0 18px; }
+  /* Teléfono: una columna en el orden de --orden. Computadora: dos columnas independientes (sin huecos). */
+  .rejilla { display: grid; grid-template-columns: 1fr; gap: 14px; margin-top: 16px; }
+  .columna { display: contents; }
+  .columna > .tarjeta { order: var(--orden, 20); }
+  .rejilla > .ancho { order: 30; }
+  @media (min-width: 860px) {
+    .rejilla { grid-template-columns: 1fr 1fr; align-items: start; gap: 16px; }
+    .columna { display: flex; flex-direction: column; gap: 16px; min-width: 0; }
+    .ancho { grid-column: 1 / -1; }
+  }
 
-  /* Tarjetas */
-  .tarjeta {
-    background: var(--tarjeta);
-    border: 1px solid var(--borde);
-    border-radius: 18px;
-    padding: 16px;
-    margin-bottom: 16px;
-  }
-  .tarjeta h2 { color: var(--dorado); font-size: 20px; margin: 0 0 4px; }
-  .nota { color: var(--suave); font-size: 13px; margin: 0 0 10px; }
+  .tarjeta { background: var(--tarjeta); border: 1px solid var(--borde); border-radius: 18px; padding: 16px 16px 18px; }
+  .tarjeta h2 { margin: 0; font-size: 18px; }
+  .nota { color: var(--texto-2); font-size: 13px; margin: 4px 0 0; }
+  .nota-3 { color: var(--texto-3); font-size: 12px; }
 
-  .destacada {
-    border: 2px solid transparent;
-    background:
-      linear-gradient(180deg, rgba(255,193,7,.18), rgba(255,255,255,.05)) padding-box,
-      linear-gradient(#08203f, #08203f) padding-box,
-      linear-gradient(135deg, #ffe082, var(--dorado), #e0a000) border-box;
-    box-shadow: 0 6px 24px rgba(255,193,7,.18);
-  }
-  .grande { display: flex; gap: 24px; flex-wrap: wrap; align-items: baseline; }
-  .grande div { min-width: 200px; }
-  .grande small { color: var(--suave); display: block; }
-  .grande strong { font-size: clamp(28px, 7vw, 40px); }
+  .aviso { display: inline-block; margin-top: 10px; padding: 5px 10px; border-radius: 10px; font-size: 12px;
+           background: var(--aviso-fondo); border: 1px solid var(--aviso-borde); color: var(--aviso-texto); }
 
-  /* Filas tipo tarjetita con borde de color */
-  .fila {
-    --c: #607d8b;
-    display: flex; align-items: center; gap: 10px;
-    padding: 8px 10px; margin: 6px 0;
-    border-radius: 14px;
-    border: 1px solid color-mix(in srgb, var(--c) 65%, transparent);
-    background: color-mix(in srgb, var(--c) 14%, rgba(6,20,40,.55));
-    box-shadow: 0 2px 6px color-mix(in srgb, var(--c) 25%, transparent);
-    cursor: pointer;
-    transition: background .15s, box-shadow .15s;
-  }
-  .fila.abierta {
-    border-width: 2px; border-color: var(--c);
-    background: color-mix(in srgb, var(--c) 28%, rgba(6,20,40,.55));
-    box-shadow: 0 4px 16px color-mix(in srgb, var(--c) 45%, transparent);
-    flex-wrap: wrap;
-  }
-  .fila .completo { display: none; width: 100%; font-weight: 700; }
-  .fila .completo small { display: block; font-weight: 400; color: var(--suave); }
-  .fila .completo { position: relative; padding-right: 120px; min-height: 34px; }
-  .campana {
-    position: absolute; right: 0; top: 0;
-    padding: 6px 10px; border-radius: 999px; font-size: 13px; font-weight: 700;
-    border: 1px solid var(--dorado); background: rgba(255,255,255,.15); color: #fff; cursor: pointer;
-  }
-  .campana.on { background: var(--dorado); color: var(--noche); }
-  .fila .vigilado { font-size: 12px; margin-left: -4px; }
-  .fila.abierta .vigilado { display: none; }
-  .avisos { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-top: 12px;
-            padding: 10px 12px; border-radius: 12px; background: rgba(255,255,255,.08); }
-  .avisos p { margin: 0; flex: 1; min-width: 200px; font-size: 14px; }
-  .avisos small { display: block; color: var(--suave); font-size: 12px; }
-  .avisos button { padding: 8px 14px; border-radius: 999px; border: 0; background: var(--dorado);
-                   color: var(--noche); font-weight: 800; cursor: pointer; font-size: 14px; }
-  .avisos button:disabled { background: rgba(255,255,255,.2); color: var(--suave); cursor: default; }
-  .fila.abierta .completo { display: block; }
-  .insignia {
-    width: 34px; height: 34px; border-radius: 50%; flex: none;
-    display: grid; place-items: center;
-    background: var(--c); color: #fff; font-weight: 700; font-size: 13px;
-    border: 1px solid rgba(255,255,255,.35);
-  }
-  .nombre { flex: 1; min-width: 0; }
-  .nombre b { display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-weight: 600; }
-  .nombre small { color: var(--suave); font-size: 12px; }
-  .nombre small.mejor { color: var(--sube); }
-  .num { width: 76px; text-align: right; font-weight: 600; font-variant-numeric: tabular-nums; }
-  .cab { display: flex; gap: 10px; padding: 0 10px; color: var(--suave); font-size: 13px; font-weight: 700; }
-  .cab span:first-child { flex: 1; }
-  .cab span { width: 76px; text-align: right; }
-  .cab span:first-child { text-align: left; }
+  .filas { margin-top: 10px; }
+  .fila { display: flex; justify-content: space-between; gap: 12px; padding: 6px 0; font-size: 15px; }
+  .fila span:first-child { color: var(--texto-2); }
+  .fila b { font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .fila.total { border-top: 1px solid var(--borde); margin-top: 6px; padding-top: 10px; }
+  .fila.total span:first-child { color: var(--texto); font-weight: 800; }
+  .fila.total b { color: var(--verde); font-size: 17px; }
+  .verde { color: var(--verde); }
+  .tenue { color: var(--texto-3) !important; }
 
-  .valor { text-align: right; }
-  .valor b { display: block; font-variant-numeric: tabular-nums; }
-  .valor small { display: block; font-size: 12px; color: var(--suave); }
-  .sube { color: var(--sube) !important; }
-  .baja { color: var(--baja) !important; }
-
-  /* Convertidor */
-  .controles { display: grid; gap: 10px; }
-  label { color: var(--suave); font-size: 13px; display: block; margin-bottom: 4px; }
+  label { display: block; font-size: 13px; font-weight: 700; color: var(--texto-suave); margin: 12px 0 6px; }
   input, select {
-    width: 100%; padding: 10px 12px; border-radius: 12px;
-    border: 1px solid var(--suave); background: rgba(6,20,40,.6); color: #fff;
-    font-size: 16px;
+    width: 100%; height: 48px; padding: 0 14px; border-radius: 12px; font: inherit; font-size: 16px;
+    background: var(--campo); border: 1px solid var(--campo-borde); color: var(--texto);
   }
-  select option { color: #000; }
-  .dos { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-  .pastillas { display: flex; gap: 8px; flex-wrap: wrap; }
-  .pastillas button {
-    flex: 1; min-width: 130px; padding: 10px; border-radius: 999px; font-size: 15px;
-    border: 1px solid var(--dorado); background: transparent; color: #fff; cursor: pointer;
-  }
-  .pastillas button.activo { background: var(--dorado); color: var(--noche); font-weight: 700; }
-  .resultado { font-size: clamp(24px, 6vw, 32px); font-weight: 800; color: var(--dorado); margin: 12px 0 0; }
-  .detalle { color: var(--suave); font-size: 13px; }
+  input::placeholder { color: var(--pista); }
+  input:focus, select:focus { outline: 2px solid var(--verde); outline-offset: 1px; }
+  .dos { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
 
-  .rejilla { display: grid; grid-template-columns: repeat(auto-fit, minmax(290px, 1fr)); gap: 16px; }
-  .rejilla .tarjeta { margin-bottom: 0; }
-
-  .tabla-us .num { width: 64px; }
-  .tabla-us .cab span { width: 64px; }
-
-  .cargando { color: var(--suave); padding: 8px 0; }
-  .aviso { color: var(--baja); font-size: 14px; }
-
-  .app {
-    display: flex; align-items: center; gap: 14px; flex-wrap: wrap;
-  }
-  .app p { flex: 1; min-width: 220px; margin: 0; }
   .boton {
-    display: inline-block; padding: 12px 18px; border-radius: 999px;
-    background: var(--dorado); color: var(--noche); font-weight: 800; text-decoration: none;
+    width: 100%; min-height: 50px; margin-top: 14px; border: 0; border-radius: 14px; cursor: pointer;
+    font: inherit; font-weight: 800; font-size: 15px; letter-spacing: .02em;
+    background: linear-gradient(90deg, var(--boton-1), var(--boton-2)); color: var(--texto-boton);
   }
-  .boton.apagado { background: rgba(255,255,255,.15); color: var(--suave); }
-  .botones-app { display: flex; gap: 10px; flex-wrap: wrap; }
-  .boton.ig { background: linear-gradient(45deg, #f09433, #dc2743 50%, #bc1888); color: #fff; }
+  .boton.oscuro { background: var(--boton-oscuro); color: var(--texto-boton-oscuro); border: 1px solid var(--verde); min-height: 46px; font-size: 14px; }
+  .boton:disabled { opacity: .6; cursor: default; }
 
-  .texto h2 { color: var(--dorado); font-size: 18px; margin: 0 0 6px; }
-  .texto h3 { font-size: 16px; margin: 14px 0 4px; }
-  .texto p { color: #dce5f3; margin: 0 0 8px; }
+  .interruptor { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 14px; font-weight: 700; font-size: 15px; cursor: pointer; }
+  .interruptor input { display: none; }
+  .interruptor .pista-sw { width: 46px; height: 26px; border-radius: 999px; background: var(--campo-borde); position: relative; flex: none; transition: background .15s; }
+  .interruptor .pista-sw::after { content: ""; position: absolute; top: 3px; left: 3px; width: 20px; height: 20px; border-radius: 50%; background: #fff; transition: left .15s; box-shadow: 0 1px 3px rgba(0,0,0,.3); }
+  .interruptor input:checked + .pista-sw { background: var(--verde); }
+  .interruptor input:checked + .pista-sw::after { left: 23px; }
 
-  footer { color: var(--suave); font-size: 13px; padding: 8px 0 32px; text-align: center; }
-  footer a { color: var(--suave); }
+  .total-tarjeta { background: linear-gradient(180deg, var(--total-1), var(--total-2)); border: 2px solid var(--verde); }
+  .total-titulo { color: var(--verde); font-weight: 800; font-size: 12px; letter-spacing: .12em; }
+  .total-monto { font-size: 40px; font-weight: 800; line-height: 1.1; margin-top: 2px; font-variant-numeric: tabular-nums; letter-spacing: -0.02em; }
+  .resultado-kwh { margin-top: 12px; font-size: 15px; }
+  .resultado-kwh b { color: var(--verde); }
 
-  @media (max-width: 420px) {
-    .num, .cab span { width: 64px; }
-    .tabla-us .num, .tabla-us .cab span { width: 56px; font-size: 13px; }
-    .dos { grid-template-columns: 1fr; }
-  }
+  .resumen { white-space: pre-line; font-size: 14px; color: var(--texto-suave); }
+  .historial { white-space: pre-line; font-size: 14px; color: var(--texto-2); }
+
+  svg.grafica { width: 100%; height: auto; display: block; margin-top: 8px; }
+  .leyenda { display: flex; gap: 14px; flex-wrap: wrap; font-size: 12px; color: var(--texto-2); margin-top: 6px; }
+  .leyenda i { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 5px; vertical-align: -1px; }
+
+  .app { display: flex; gap: 16px; align-items: center; flex-wrap: wrap; }
+  .app img { width: 64px; height: 64px; }
+  .app p { flex: 1; min-width: 220px; margin: 0; }
+  .insignia { display: inline-block; padding: 11px 16px; border-radius: 12px; background: var(--boton-oscuro); border: 1px solid var(--borde); color: var(--texto-3); font-weight: 700; font-size: 14px; }
+
+  .texto h3 { margin: 16px 0 4px; font-size: 16px; }
+  .texto p { margin: 0 0 8px; color: var(--texto-2); font-size: 15px; }
+
+  footer { text-align: center; color: var(--texto-3); font-size: 13px; padding: 24px 0 8px; }
+  footer a { color: var(--texto-2); }
+
+  /* Ventanita del correo */
+  dialog { border: 1px solid var(--borde); border-radius: 18px; background: var(--tarjeta); color: var(--texto); padding: 22px; width: min(420px, 92vw); }
+  dialog::backdrop { background: rgba(0,0,0,.45); }
+  dialog img { width: 52px; height: 52px; display: block; margin: 0 auto; }
+  dialog h3 { text-align: center; margin: 12px 0 2px; font-size: 19px; }
+  dialog .nota { text-align: center; }
+  dialog .error { color: var(--rojo); font-size: 12px; margin-top: 6px; display: none; }
+  dialog .botones { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+  .botones-2 { display: grid; grid-template-columns: 2fr 1fr; gap: 12px; }
+  .botones-2 .boton { margin-top: 12px; }
+  .lecturas { margin-top: 14px; }
+  .lecturas h3 { margin: 0 0 8px; font-size: 13px; letter-spacing: .08em; color: var(--texto-2); }
+  .ultima { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; padding: 10px 12px; border-radius: 12px; background: var(--campo); border: 1px solid var(--borde); font-size: 14px; }
+  .ultima b { font-size: 18px; font-variant-numeric: tabular-nums; }
+  .lec { display: grid; grid-template-columns: auto 1fr auto; gap: 2px 12px; align-items: center; padding: 10px 2px; border-bottom: 1px solid var(--borde); }
+  .lec:last-child { border-bottom: 0; }
+  .lec .ico { grid-row: span 2; width: 34px; height: 34px; border-radius: 50%; display: grid; place-items: center; font-size: 17px; }
+  .lec .ico.dia { background: color-mix(in srgb, var(--sol) 22%, transparent); }
+  .lec .ico.noche { background: color-mix(in srgb, var(--luna) 22%, transparent); }
+  .lec .ico.largo { background: color-mix(in srgb, var(--barra-mes) 30%, transparent); }
+  .lec .cuando { font-weight: 700; font-size: 14px; }
+  .lec .horas { font-size: 13px; color: var(--texto-2); }
+  .lec .kwh { grid-row: span 2; text-align: right; font-weight: 800; font-size: 16px; font-variant-numeric: tabular-nums; }
+  .lec .kwh small { display: block; font-weight: 500; font-size: 11px; color: var(--texto-3); }
+  .estimado { white-space: pre-line; font-size: 15px; margin-top: 14px; }
+  .estimado b { color: var(--verde); }
+  .enlace { background: none; border: 0; color: var(--verde); font: inherit; font-weight: 700; font-size: 14px; padding: 8px 0; cursor: pointer; }
+  .enlace.rojo { color: var(--rojo); display: block; margin: 10px auto 0; }
+  .caja-ios { margin-top: 12px; padding: 12px; border-radius: 12px; background: var(--aviso-fondo); border: 1px solid var(--aviso-borde); color: var(--aviso-texto); font-size: 14px; }
+  .estado-avisos { font-size: 14px; margin-top: 10px; white-space: pre-line; }
+
+  .oculto { display: none !important; }
 </style>
-<meta name="google-adsense-account" content="ca-pub-3979135814994883">
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3979135814994883" crossorigin="anonymous"></script>
 </head>
 <body>
+<div class="envoltura">
 
-<header class="envoltura">
-  <div class="barra">
-    <a class="marca" href="/">
-      <div class="logo" aria-hidden="true">$</div>
-      <div><b>Divisas</b><span>Dólar, bolsa, cripto y combustibles</span></div>
-    </a>
-    <nav aria-label="Secciones">
-      <a href="#bancos">Bancos</a>
-      <a href="#convertidor">Convertidor</a>
-      <a href="#combustibles">Combustibles</a>
-      <a href="#mercados">Cripto y bolsa</a>
-    </nav>
-  </div>
-  <h1>Tasa del dólar hoy en República Dominicana</h1>
-  <p class="sub" id="fecha-hoy">Compra y venta en bancos, remesadoras y casas de cambio.</p>
-</header>
+  <header>
+    <button class="tema" id="tema" type="button" aria-label="Cambiar modo claro u oscuro">🌓</button>
+    <img class="logo" src="/logo.svg" alt="Logo de KiloClaro" width="92" height="92">
+    <h1>KiloClaro</h1>
+    <div class="lema">TU CONSUMO, EN TUS MANOS</div>
+    <p class="intro">Pon los kWh que marca tu contador y te decimos cuánto te llegará la factura de luz, con el desglose por tramos. Edesur, Edenorte, Edeeste y CEPM.</p>
+  </header>
 
-<main class="envoltura">
-
-  <!-- Tasa de mercado -->
-  <section class="tarjeta destacada" aria-labelledby="t-mercado">
-    <h2 id="t-mercado">Tasa de mercado hoy</h2>
-    <div class="grande">
-      <div><small>Dólar estadounidense</small><strong id="usd-dop">—</strong></div>
-      <div><small>Euro</small><strong id="eur-dop">—</strong></div>
-    </div>
-    <p class="nota" id="mejor-hoy" style="margin-top:8px"></p>
-    <div class="avisos">
-      <p>🔔 <b>Avisos de cambios de precio</b>
-        <small id="estado-avisos">Toca un banco, combustible o moneda y elige "Avisarme". Te avisamos mientras tengas esta página abierta.</small></p>
-      <button type="button" id="activar-avisos">Activar avisos</button>
-    </div>
-  </section>
-
-  <!-- Bancos -->
-  <section class="tarjeta" id="bancos" aria-labelledby="t-bancos">
-    <h2 id="t-bancos">Dólar en bancos y remesas</h2>
-    <p class="nota">Compra = lo que te dan por cada dólar. Toca una entidad para ver su nombre completo y activar avisos 🔔.</p>
-    <div class="cab"><span>Entidad</span><span>Compra</span><span>Venta</span></div>
-    <div id="lista-bancos"><div class="cargando">Cargando tasas…</div></div>
-    <p class="nota" id="act-bancos" style="margin-top:8px"></p>
-  </section>
-
-  <!-- Convertidor -->
-  <section class="tarjeta" id="convertidor" aria-labelledby="t-conv">
-    <h2 id="t-conv">Convertidor</h2>
-    <div class="controles">
-      <div>
-        <label for="fuente">Tasa a usar</label>
-        <select id="fuente"><option value="mercado">Mercado internacional (todas las monedas)</option></select>
+  <div class="rejilla">
+    <!-- En computadora: dos columnas que no dejan huecos. En el teléfono: una sola, en orden. -->
+    <div class="columna">
+    <!-- MI CONSUMO -->
+    <section style="--orden:2" class="tarjeta" aria-labelledby="t-consumo">
+      <h2 id="t-consumo">🏠 Mi consumo</h2>
+      <p class="nota">Pon lo que marca tu contador y te decimos cuánto te llegará la factura.</p>
+      <label for="servicio">Tipo de servicio</label>
+      <select id="servicio"><option>Residencial</option><option>Comercial</option><option>Empresa</option></select>
+      <label for="distribuidora">Distribuidora eléctrica</label>
+      <select id="distribuidora"></select>
+      <label for="consumo">Consumo (kWh)</label>
+      <input id="consumo" inputmode="decimal" placeholder="Ej. 250">
+      <div class="dos">
+        <div><label for="dias">Días medidos</label><input id="dias" inputmode="numeric" value="30"></div>
+        <div><label for="proyeccion">Proyectar a (días)</label><input id="proyeccion" inputmode="numeric" value="30"></div>
       </div>
+      <button class="boton" id="calcular" type="button">CALCULAR MI FACTURA</button>
+    </section>
+    <!-- TOTAL -->
+    <section style="--orden:3" class="tarjeta total-tarjeta oculto" id="tarjeta-total" aria-live="polite">
+      <div class="total-titulo" id="total-titulo">TOTAL ESTIMADO DEL MES</div>
+      <div class="total-monto" id="total-monto">RD$ 0.00</div>
+      <p class="nota" id="total-detalle"></p>
+      <div class="filas" id="desglose"></div>
+      <button class="boton oscuro" id="enviar" type="button">📧 ENVIAR A MI CORREO</button>
+    </section>
+    <!-- RESUMEN -->
+    <section style="--orden:5" class="tarjeta" aria-labelledby="t-resumen">
+      <h2 id="t-resumen">📋 Resumen</h2>
+      <p class="resumen" id="resumen">Pon tu consumo y pulsa Calcular para ver tu factura estimada.</p>
+    </section>
+    <!-- GRÁFICA -->
+    <section style="--orden:6" class="tarjeta" aria-labelledby="t-grafica">
+      <h2 id="t-grafica">📊 Consumo en kWh</h2>
+      <svg class="grafica" id="grafica" viewBox="0 0 600 300" role="img" aria-label="Gráfica de consumo por mes"></svg>
+      <div class="leyenda" id="leyenda"></div>
+    </section>
+    <!-- AVISOS -->
+    <section style="--orden:8" class="tarjeta" aria-labelledby="t-avisos">
+      <h2 id="t-avisos">🔔 Avisos en este teléfono o computadora</h2>
+      <p class="nota">Te avisamos aunque tengas la página cerrada. Funciona en Chrome, Edge, Firefox y Samsung Internet. En iPhone, primero añade KiloClaro a la pantalla de inicio.</p>
+      <div class="caja-ios oculto" id="caja-ios">📱 <b>En iPhone:</b> toca el botón <b>Compartir</b> (el cuadrito con la flecha) → <b>Añadir a pantalla de inicio</b>. Abre KiloClaro desde ese icono y vuelve aquí para activar los avisos.</div>
+      <div class="caja-ios oculto" id="caja-nosoporta">Este navegador no permite avisos. Prueba con Chrome, o baja la app de KiloClaro para Android.</div>
+      <div id="panel-avisos">
+        <label class="interruptor"><span>📟 Anotar la lectura (7:00 a. m. y 10:00 p. m.) y resumen cada lunes</span><input type="checkbox" id="av-lecturas"><span class="pista-sw"></span></label>
+        <label class="interruptor"><span>⚡ Recordatorio de pago de la luz</span><input type="checkbox" id="av-pago"><span class="pista-sw"></span></label>
+        <div id="panel-pago" class="oculto">
+          <p class="nota">Te avisamos antes de que venza (9:00 a. m.) y el mismo día del pago (8:00 a. m.).</p>
+          <div class="dos">
+            <div><label for="dia-pago">Día de pago (1–31)</label><input id="dia-pago" inputmode="numeric" placeholder="Ej. 10" maxlength="2"></div>
+            <div><label for="dias-antes">Avisar (días antes)</label><input id="dias-antes" inputmode="numeric" value="3" maxlength="2"></div>
+          </div>
+        </div>
+        <button class="boton" id="guardar-avisos" type="button">GUARDAR AVISOS</button>
+        <p class="estado-avisos" id="estado-avisos"></p>
+        <button class="enlace oculto" id="probar-aviso" type="button">Probar el aviso ahora</button>
+      </div>
+    </section>
+    <!-- HISTORIAL -->
+    <section style="--orden:9" class="tarjeta" aria-labelledby="t-historial">
+      <h2 id="t-historial">🕘 Mi historial</h2>
+      <p class="nota">Se guarda solo en este navegador hasta que lo borres (hasta 24 meses).</p>
+      <p class="historial" id="historial">Todavía no hay cálculos guardados.</p>
+      <button class="boton" id="agregar-mes" type="button">🧾 AGREGAR MES DE MI FACTURA</button>
+      <button class="boton oscuro" id="borrar" type="button">🗑 BORRAR HISTORIAL</button>
+    </section>
+    </div>
+    <div class="columna">
+    <!-- PRECIO DEL kWh HOY -->
+    <section style="--orden:1" class="tarjeta" aria-labelledby="t-precio">
+      <h2 id="t-precio">⚡ Precio del kWh hoy</h2>
+      <p class="nota" id="estado-tarifa">Cargando tarifas…</p>
+      <span class="aviso oculto" id="aviso-tarifa">Tarifa de referencia · confirma con tu factura</span>
+      <div class="filas" id="tabla-tramos"></div>
+      <p class="nota-3" id="detalle-tarifa"></p>
 
-      <div id="modo-mercado">
+      <label class="interruptor"><span>✏️ Usar mi propio precio del kWh</span><input type="checkbox" id="manual"><span class="pista-sw"></span></label>
+      <div id="panel-manual" class="oculto">
+        <p class="nota">Pon el precio que sale en tu factura. Se usa para todo el consumo, sin tramos.</p>
         <div class="dos">
-          <div><label for="desde">De</label><select id="desde"></select></div>
-          <div><label for="hacia">A</label><select id="hacia"></select></div>
+          <div><label for="precio-manual">Precio RD$/kWh</label><input id="precio-manual" inputmode="decimal" placeholder="Ej. 10.50"></div>
+          <div><label for="cargo-manual">Cargo fijo RD$</label><input id="cargo-manual" inputmode="decimal" placeholder="Opcional"></div>
         </div>
       </div>
-
-      <div id="modo-banco" hidden>
-        <div class="pastillas">
-          <button type="button" id="vendo" class="activo">Vendo dólares</button>
-          <button type="button" id="compro">Compro dólares</button>
-        </div>
+      <button class="boton oscuro" id="actualizar" type="button">🔄 ACTUALIZAR TARIFAS</button>
+    </section>
+    <!-- DE PESOS A kWh -->
+    <section style="--orden:4" class="tarjeta" aria-labelledby="t-monto">
+      <h2 id="t-monto">💵 ¿Cuántos kWh gasté?</h2>
+      <p class="nota">Pon lo que te cobraron en la factura y te decimos cuántos kWh consumiste. Usa el servicio y la distribuidora de arriba.</p>
+      <label for="monto">Monto de la factura (RD$)</label>
+      <input id="monto" inputmode="decimal" placeholder="Ej. 1976">
+      <button class="boton oscuro" id="calcular-kwh" type="button">CALCULAR MIS kWh</button>
+      <p class="resultado-kwh oculto" id="resultado-kwh"></p>
+    </section>
+    <!-- LECTURAS DEL CONTADOR -->
+    <section style="--orden:7" class="tarjeta" aria-labelledby="t-lecturas">
+      <h2 id="t-lecturas">📟 Lecturas del contador</h2>
+      <p class="nota">Anota el número del contador en la mañana y en la noche. Separamos lunes a viernes del fin de semana: mientras más días anotes, más exacto el estimado.</p>
+      <label for="lectura">Número del contador (kWh)</label>
+      <input id="lectura" inputmode="decimal" placeholder="Ej. 10520" maxlength="9">
+      <div class="botones-2">
+        <button class="boton" id="anotar" type="button">ANOTAR LECTURA</button>
+        <button class="boton oscuro" id="borrar-lectura" type="button">BORRAR</button>
       </div>
-
-      <div>
-        <label for="cantidad" id="etq-cantidad">Cantidad</label>
-        <input id="cantidad" type="number" inputmode="decimal" min="0" step="any" value="100">
-      </div>
+      <p class="estimado" id="estimado">Anota tu primera lectura para empezar.</p>
+      <svg class="grafica oculto" id="grafica-dias" viewBox="0 0 400 270" role="img" aria-label="Consumo de día y de noche"></svg>
+      <div class="leyenda oculto" id="leyenda-dias"></div>
+      <button class="boton oscuro oculto" id="usar-estimado" type="button">📈 VER ESTIMADO EN MI FACTURA</button>
+      <div class="lecturas oculto" id="ultimas"></div>
+    </section>
     </div>
-    <p class="resultado" id="resultado">—</p>
-    <p class="detalle" id="detalle"></p>
-  </section>
 
-  <!-- App -->
-  <section class="tarjeta app" aria-labelledby="t-app">
-    <div class="logo" aria-hidden="true">$</div>
-    <p><b id="t-app">Divisas RD para Android</b><br><span class="nota">Avisos cuando cambia la tasa de tu banco o el precio de la gasolina, y el dólar del día en tu pantalla de bloqueo.</span></p>
-    <!-- Cuando la app esté publicada, cambia este botón por el enlace de Google Play -->
-    <span class="botones-app">
-      <span class="boton apagado">Próximamente en Google Play</span>
-      <a class="boton ig" href="https://www.instagram.com/divisas_rd/" target="_blank" rel="noopener">📸 @divisas_rd</a>
-    </span>
-  </section>
-
-  <!-- Combustibles -->
-  <div class="rejilla" id="combustibles">
-    <section class="tarjeta" aria-labelledby="t-comb-rd">
-      <h2 id="t-comb-rd">Combustibles en RD</h2>
-      <p class="nota" id="semana-rd">Precios oficiales del MICM.</p>
-      <div id="lista-comb-rd"><div class="cargando">Cargando…</div></div>
-      <p class="nota" id="act-comb-rd" style="margin-top:8px"></p>
+    <!-- APP -->
+    <section class="tarjeta ancho app">
+      <img src="/logo.svg" alt="" width="64" height="64">
+      <p><b>KiloClaro para Android</b><br><span class="nota">Lo mismo en tu teléfono, con avisos de lectura y de pago, el resumen del lunes con tu consumo calculado y envío por correo con la gráfica.</span></p>
+      <span class="insignia">Próximamente en Google Play</span>
     </section>
 
-    <section class="tarjeta tabla-us" aria-labelledby="t-comb-us">
-      <h2 id="t-comb-us">Gasolina en EE. UU.</h2>
-      <p class="nota" id="semana-us">US$ por galón (EIA).</p>
-      <div class="cab"><span>Estado</span><span>Regular</span><span>Premium</span><span>Diésel</span></div>
-      <div id="lista-comb-us"><div class="cargando">Cargando…</div></div>
-      <p class="nota">* Diésel: promedio de la región.</p>
-      <p class="nota" id="act-comb-us"></p>
+    <!-- TEXTO PARA BUSCADORES -->
+    <section class="tarjeta ancho texto">
+      <h2>¿Cómo se calcula la factura de luz en RD?</h2>
+      <h3>Se cobra por tramos</h3>
+      <p>La tarifa residencial (BTS-1) cobra los primeros 200 kWh a un precio, del 201 al 300 a otro más alto, del 301 al 700 más alto todavía y desde 701 kWh el más caro. Por eso, cuanto más consumes, más caro sale cada kWh.</p>
+      <h3>El cargo fijo</h3>
+      <p>Además de la energía, se cobra un cargo fijo mensual: uno más bajo si consumes hasta 100 kWh y otro si consumes más.</p>
+      <h3>¿Cada distribuidora cobra lo mismo?</h3>
+      <p>No exactamente. Edesur, Edenorte y Edeeste tienen precios parecidos pero no iguales, que fija la Superintendencia de Electricidad (SIE) cada trimestre. El CEPM (Punta Cana y Bávaro) tiene su propia tarifa.</p>
+      <p class="nota-3">KiloClaro da una estimación orientativa. La factura de tu distribuidora es la que vale.</p>
     </section>
   </div>
 
-  <!-- Mercados -->
-  <div class="rejilla" id="mercados" style="margin-top:16px">
-    <section class="tarjeta"><h2>Monedas del mundo</h2><p class="nota">Cuántos pesos dominicanos vale cada moneda.</p><div id="g-monedas"><div class="cargando">Cargando…</div></div><p class="nota" id="act-monedas" style="margin-top:8px"></p></section>
-    <section class="tarjeta"><h2>Criptomonedas</h2><div id="g-cripto"><div class="cargando">Cargando…</div></div><p class="nota act-mercados" style="margin-top:8px"></p></section>
-    <section class="tarjeta"><h2>Bolsa de EE. UU.</h2><div id="g-indices"><div class="cargando">Cargando…</div></div><p class="nota act-mercados" style="margin-top:8px"></p></section>
-    <section class="tarjeta"><h2>Grandes empresas</h2><div id="g-grandes"><div class="cargando">Cargando…</div></div><p class="nota act-mercados" style="margin-top:8px"></p></section>
-    <section class="tarjeta"><h2>Videojuegos</h2><div id="g-empresas"><div class="cargando">Cargando…</div></div><p class="nota act-mercados" style="margin-top:8px"></p></section>
-    <section class="tarjeta"><h2>Oro, plata y materias primas</h2><div id="g-materias"><div class="cargando">Cargando…</div></div><p class="nota act-mercados" style="margin-top:8px"></p></section>
-  </div>
+  <footer>
+    <p>KiloClaro · Estimación orientativa. La factura de tu distribuidora es la que vale.</p>
+    <p><a href="/privacidad/">Política de privacidad</a> · <a href="mailto:kiloclarordapp@gmail.com">Contacto</a></p>
+    <p>© 2026 KiloClaro</p>
+  </footer>
+</div>
 
-  <!-- Texto para buscadores y lectores -->
-  <section class="tarjeta texto" style="margin-top:16px">
-    <h2>Preguntas frecuentes sobre la tasa del dólar en RD</h2>
-    <h3>¿Qué es la tasa de compra y la de venta?</h3>
-    <p>La <b>compra</b> es lo que el banco o la casa de cambio te paga en pesos por cada dólar que les vendes. La <b>venta</b> es lo que te cobran si tú les compras dólares. Si recibes remesas en dólares, te conviene la entidad con la compra más alta.</p>
-    <h3>¿Por qué la tasa de mercado es distinta a la de los bancos?</h3>
-    <p>La tasa de mercado es un promedio internacional. Cada banco y remesadora fija su propia compra y venta, y la diferencia es su margen.</p>
-    <h3>¿Cada cuánto se actualizan los precios?</h3>
-    <p>Las tasas de bancos, bolsa y cripto se revisan cada 30 minutos. Los combustibles de RD cambian cada semana (los fija el MICM los viernes) y los de EE. UU. también cada semana (los publica la EIA).</p>
-    <p class="nota">Precios informativos. Confirma siempre la tasa con la entidad antes de hacer una operación.</p>
-  </section>
+<!-- Ventanita del correo -->
+<dialog id="dialogo-correo">
+  <form method="dialog" id="form-correo">
+    <img src="/logo.svg" alt="">
+    <h3>Enviar a mi correo</h3>
+    <p class="nota">Te mandamos el resumen de tu factura con el desglose.</p>
+    <label for="correo">Tu correo</label>
+    <input id="correo" type="email" autocomplete="email" placeholder="tucorreo@gmail.com">
+    <div class="error" id="correo-error">Ese correo no parece válido.</div>
+    <div class="botones">
+      <button class="boton oscuro" value="cancelar" type="button" id="correo-cancelar">CANCELAR</button>
+      <button class="boton" value="enviar" type="submit">ENVIAR</button>
+    </div>
+  </form>
+</dialog>
 
-  <!-- Espacio reservado para un anuncio (AdSense), cuando se active -->
-
-</main>
-
-<footer class="envoltura">
-  <p id="actualizado">&nbsp;</p>
-  <p>Fuentes: sitios de cada entidad, InfoDolar, MICM, EIA, ExchangeRate-API, Yahoo Finance, Kraken y CoinGecko.</p>
-  <p>📸 Síguenos en Instagram: <a href="https://www.instagram.com/divisas_rd/" target="_blank" rel="noopener"><b>@divisas_rd</b></a> · la tasa del dólar cada mañana</p>
-  <p><a href="/privacidad/">Política de privacidad</a> · <a href="mailto:divisasrdapp@gmail.com">divisasrdapp@gmail.com</a></p>
-  <p>© 2026 Divisas RD</p>
-</footer>
+<!-- Ventanita para copiar un mes de la factura -->
+<dialog id="dialogo-mes">
+  <form method="dialog" id="form-mes">
+    <h3>🧾 Agregar mes de mi factura</h3>
+    <p class="nota">Copia los datos de tu factura. También puedes pasar los meses del «Histórico de consumos» que sale abajo en la factura.</p>
+    <div class="dos">
+      <div><label for="mes-f">Mes</label><select id="mes-f"></select></div>
+      <div><label for="anio-f">Año</label><input id="anio-f" inputmode="numeric" maxlength="4"></div>
+    </div>
+    <label for="kwh-f">Consumo (kWh)</label>
+    <input id="kwh-f" inputmode="decimal" placeholder="Ej. 313">
+    <label for="total-f">Total facturado RD$ (opcional)</label>
+    <input id="total-f" inputmode="decimal" placeholder="Ej. 2351.60">
+    <label for="subsidio-f">Importe subsidiado RD$ (opcional)</label>
+    <input id="subsidio-f" inputmode="decimal" placeholder="Ej. 2873.33">
+    <div class="error" id="mes-error"></div>
+    <div class="botones">
+      <button class="boton oscuro" type="button" id="mes-cancelar">CANCELAR</button>
+      <button class="boton" type="submit">GUARDAR</button>
+    </div>
+    <button class="enlace rojo oculto" type="button" id="mes-borrar">Borrar este mes</button>
+  </form>
+</dialog>
 
 <script>
 (() => {
-  // Tu servidor de Cloudflare
-  const SERVIDOR = "https://divisas-rd.juanbatista88.workers.dev";
-  const MONEDAS = ["USD", "DOP", "EUR", "GBP", "CAD", "MXN", "COP", "BRL", "PEN"];
-  // Monedas del mundo: [código, moneda, país, símbolo, color]
-  const MUNDO = [
-    ["EUR", "Euro", "Europa", "€", "#1E5BC6"],
-    ["GBP", "Libra", "Reino Unido", "£", "#C8102E"],
-    ["CAD", "Dólar", "Canadá", "C$", "#D52B1E"],
-    ["MXN", "Peso", "México", "MX$", "#006847"],
-    ["COP", "Peso", "Colombia", "CO$", "#C99A00"],
-    ["BRL", "Real", "Brasil", "R$", "#009C3B"],
-    ["PEN", "Sol", "Perú", "S/", "#D91023"]
-  ];
+  // Las mismas tarifas que usa la app (tu servidor de Cloudflare)
+  const URL_TARIFAS = "https://divisas-rd.juanbatista88.workers.dev/luz";
 
-  const $ = (id) => document.getElementById(id);
-  const fmt = (n, d = 2) => n == null || isNaN(n) ? "—" :
-    Number(n).toLocaleString("es-DO", { minimumFractionDigits: d, maximumFractionDigits: d });
-  const precio = (n) => n == null ? "—" : fmt(n, n < 10 ? 4 : 2);
-  const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[c]));
-
-  // Horas fijas: lo dominicano en hora de RD y lo de EE. UU. en hora del Este,
-  // sin importar dónde esté quien mira la página
-  const ZONA_RD = "America/Santo_Domingo";
-  const ZONA_ESTE = "America/New_York";
-  function horaEn(fecha, zona) {
-    try {
-      return new Date(fecha).toLocaleString("es-DO", {
-        timeZone: zona, day: "numeric", month: "short", hour: "numeric", minute: "2-digit"
-      });
-    } catch (_) { return "—"; }
-  }
-  const horaRD = (f) => horaEn(f, ZONA_RD) + " (hora de RD)";
-  const horaEste = (f) => horaEn(f, ZONA_ESTE) + " (hora del Este de EE. UU.)";
-
-  // Fecha de hoy (en RD)
-  try {
-    $("fecha-hoy").textContent = "Compra y venta en bancos, remesadoras y casas de cambio · " +
-      new Date().toLocaleDateString("es-DO", { timeZone: ZONA_RD, weekday: "long", day: "numeric", month: "long", year: "numeric" });
-  } catch (_) {}
-
-  // ---------- Colores (iguales que en la app) ----------
-  const PALETA = ["#26C6DA","#AB47BC","#66BB6A","#FF7043","#5C6BC0","#EC407A","#8D6E63","#29B6F6","#9CCC65","#FFA726"];
-  function hash(s) { let h = 0; for (const ch of s) h = (h * 31 + ch.charCodeAt(0)) | 0; return Math.abs(h); }
-  function colorEntidad(nombre) {
-    const n = nombre.toLowerCase();
-    const mapa = [["banreservas","#1E88E5"],["bhd","#00A651"],["popular","#0D47A1"],["caribe express","#FFC20E"],
-      ["scotiabank","#EC111A"],["banesco","#00965E"],["lafise","#43A047"],["vimenca","#FFD600"],["bonanza","#E53935"],
-      ["caribe","#F57C00"],["cibao","#00897B"],["nacional","#3949AB"],["romana","#8E24AA"],["peravia","#6D4C41"]];
-    for (const [k, c] of mapa) if (n.includes(k)) return c;
-    return PALETA[hash(nombre) % PALETA.length];
-  }
-  function iniciales(nombre) {
-    const p = nombre.replace("Banco ", "").replace("Asociación ", "").split(" ")
-      .filter((w) => w && w[0] === w[0].toUpperCase() && /[A-ZÁÉÍÓÚÑ]/.test(w[0]));
-    return (p.slice(0, 2).map((w) => w[0]).join("") || nombre.slice(0, 2)).toUpperCase();
-  }
-  const TIPOS = { banco: "Banco", remesadora: "Remesadora", asociacion: "Asociación de ahorros" };
-  const ACTIVOS = {
-    BTC:["₿","#F7931A"], ETH:["Ξ","#627EEA"], USDT:["₮","#26A17B"], SOL:["◎","#9945FF"], XRP:["X","#8A9BB0"],
-    SPX:["S&P","#1E88E5"], DJI:["DJ","#7E57C2"], IXIC:["NQ","#00ACC1"], ORO:["Au","#FFB300"], WTI:["Oil","#78909C"],
-    PLATA:["Ag","#90A4AE"], PLATINO:["Pt","#78909C"], COBRE:["Cu","#B87333"], GASNAT:["GN","#039BE5"],
-    CAFE:["Cf","#6D4C41"], CACAO:["Cc","#8D6E63"],
-    MSFT:["MS","#107C10"], SONY:["PS","#2F6FDE"], NTDOY:["N","#E60012"],
-    AAPL:["A","#8E8E93"], NVDA:["NV","#76B900"], GOOGL:["G","#4285F4"], AMZN:["a","#FF9900"],
-    META:["M","#0866FF"], TSLA:["T","#CC0000"]
+  // Tarifa incluida por si el servidor no responde (igual que en la app)
+  const bts1 = (ede, t1, t2, t3, t4, fb, fa) => ({
+    servicio: "Residencial", codigo: "BTS-1", distribuidoras: [ede],
+    tramos: [{ hasta: 200, precio: t1 }, { hasta: 300, precio: t2 }, { hasta: 700, precio: t3 }, { hasta: null, precio: t4 }],
+    cargoFijo: [{ hasta: 100, monto: fb }, { hasta: null, monto: fa }], itbis: { porcentaje: 18, desdeKwh: 701 },
+  });
+  const INCLUIDA = {
+    vigencia: "octubre-diciembre 2026", vigenciaDesde: "2026-10-01", vigenciaHasta: "2026-12-31", actualizado: "2026-10-22",
+    fuente: "SIE-121-2026-TF · tarifa incluida en la web", verificada: true,
+    tarifas: [
+      bts1("EDESUR", 6.05, 8.59, 12.89, 13.09, 42.10, 128.59),
+      bts1("EDENORTE", 5.97, 8.51, 13.83, 14.04, 40.33, 126.81),
+      bts1("EDEESTE", 6.17, 8.71, 13.04, 13.26, 41.34, 127.83),
+      { servicio: "Residencial", codigo: "RBT-1", distribuidoras: ["CEPM"], tramos: [{ hasta: null, precio: 22.90 }], cargoFijo: [], itbis: { porcentaje: 18, desdeKwh: null } },
+    ],
   };
-  const COMB = { premium:["P","#E53935"], regular:["R","#43A047"], gasoilOptimo:["GO","#90A4AE"],
-                 gasoilRegular:["G","#78909C"], glp:["GLP","#FB8C00"], gasNatural:["GN","#039BE5"],
-                 avtur:["AV","#0288D1"], kerosene:["K","#7CB342"], fuelOil6:["F6","#5D4037"], fuelOil1:["F1","#795548"] };
-  const ESTADOS = { "Nueva York":"#1E88E5", "Ohio":"#E53935", "Florida":"#FB8C00", "Texas":"#8E24AA", "California":"#FDD835" };
 
-  // Al tocar una fila se abre con el nombre completo
-  document.addEventListener("click", (e) => {
-    const b = e.target.closest(".campana");
-    if (b) { e.stopPropagation(); alternarVigilado(b.dataset.clave, b); return; }
-    const f = e.target.closest(".fila");
-    if (!f) return;
-    const abierta = f.classList.contains("abierta");
-    f.parentElement.querySelectorAll(".fila.abierta").forEach((x) => x.classList.remove("abierta"));
-    if (!abierta) f.classList.add("abierta");
-  });
-
-  function fila(color, icono, completo, detalle, contenido, clave) {
-    const on = clave && vigilados.has(clave);
-    const campana = clave
-      ? `<button type="button" class="campana${on ? " on" : ""}" data-clave="${esc(clave)}">${on ? "🔔 Avisando" : "🔕 Avisarme"}</button>`
-      : "";
-    return `<div class="fila" style="--c:${color}" tabindex="0" role="button">
-      <div class="completo">${esc(completo)}${detalle ? `<small>${esc(detalle)}</small>` : ""}${campana}</div>
-      ${icono ? `<div class="insignia">${esc(icono)}</div>` : ""}
-      ${contenido}
-      ${on ? '<span class="vigilado" title="Avisando">🔔</span>' : ""}
-    </div>`;
-  }
-
-  // ---------- Datos ----------
-  let tasas = null;      // mercado: 1 USD = X moneda
-  let entidades = [];
-  let ultimosServidor = null;
-  let ultimosComb = null;
-
-  async function json(url) {
-    const r = await fetch(url, { cache: "no-store" });
-    if (!r.ok) throw new Error("HTTP " + r.status);
-    return r.json();
-  }
-
-  async function cargarMercado() {
-    try {
-      const j = await json("https://open.er-api.com/v6/latest/USD");
-      tasas = {};
-      MONEDAS.forEach((m) => { tasas[m] = j.rates[m]; });
-      $("usd-dop").textContent = "RD$ " + fmt(tasas.DOP);
-      $("eur-dop").textContent = "RD$ " + fmt(tasas.DOP / tasas.EUR);
-      if (j.time_last_update_unix) $("act-monedas").textContent = "Tasa internacional del " + horaRD(j.time_last_update_unix * 1000);
-      pintarMonedas();
-    } catch (_) {
-      $("usd-dop").textContent = "No disponible";
-      $("g-monedas").innerHTML = '<p class="aviso">Sin datos por ahora.</p>';
-    }
-    convertir();
-  }
-
-  async function cargarServidor() {
-    try {
-      const d = await json(SERVIDOR + "/tasas");
-      ultimosServidor = d;
-      entidades = (d.entidades || []).filter((e) => e.compra != null || e.venta != null);
-      pintarBancos();
-      pintarSelector();
-      pintarMercados(d.mercados || []);
-      if (d.actualizado) {
-        $("act-bancos").textContent = "Actualizado: " + horaRD(d.actualizado);
-        document.querySelectorAll(".act-mercados").forEach((el) => el.textContent = "Actualizado: " + horaEste(d.actualizado));
-        $("actualizado").textContent = "Última actualización: " + horaRD(d.actualizado);
-      }
-    } catch (_) {
-      $("lista-bancos").innerHTML = '<p class="aviso">No se pudieron cargar las tasas ahora mismo. Intenta de nuevo en un momento.</p>';
-      ["g-cripto","g-indices","g-grandes","g-empresas","g-materias"].forEach((id) => $(id).innerHTML = '<p class="aviso">Sin datos por ahora.</p>');
-    }
-    convertir();
-  }
-
-  async function cargarCombustibles() {
-    try {
-      const d = await json(SERVIDOR + "/combustibles");
-      ultimosComb = d;
-      pintarCombRD(d.rd);
-      pintarCombUS(d.eeuu);
-      if (d.actualizado) {
-        $("act-comb-rd").textContent = "Revisado: " + horaRD(d.actualizado);
-        $("act-comb-us").textContent = "Revisado: " + horaEste(d.actualizado);
-      }
-    } catch (_) {
-      $("lista-comb-rd").innerHTML = '<p class="aviso">Sin datos por ahora.</p>';
-      $("lista-comb-us").innerHTML = '<p class="aviso">Sin datos por ahora.</p>';
-    }
-  }
-
-  // ---------- Pintar ----------
-  function pintarBancos() {
-    if (!entidades.length) { $("lista-bancos").innerHTML = '<p class="aviso">Sin datos por ahora.</p>'; return; }
-    const mejor = Math.max(...entidades.map((e) => e.compra || 0));
-    const top = entidades.find((e) => e.compra === mejor);
-    if (top) $("mejor-hoy").innerHTML = `★ Mejor compra hoy: <b>${esc(top.nombre)}</b> a RD$ ${fmt(top.compra)} por dólar`;
-
-    $("lista-bancos").innerHTML = entidades.map((e) => {
-      const esMejor = e.compra != null && e.compra === mejor;
-      const tipo = TIPOS[e.tipo] || "Casa de cambio";
-      return fila(colorEntidad(e.nombre), iniciales(e.nombre), e.nombre, tipo + (esMejor ? " · ★ Mejor compra hoy" : ""),
-        `<div class="nombre"><b>${esc(e.nombre)}</b><small class="${esMejor ? "mejor" : ""}">${esMejor ? "★ Mejor compra" : tipo}</small></div>
-         <div class="num">${fmt(e.compra)}</div><div class="num">${fmt(e.venta)}</div>`, "banco:" + e.nombre);
-    }).join("");
-  }
-
-  function pintarMercados(lista) {
-    const grupos = { cripto: "g-cripto", indices: "g-indices", grandes: "g-grandes", empresas: "g-empresas", materias: "g-materias" };
-    for (const [g, id] of Object.entries(grupos)) {
-      const items = lista.filter((a) => a.grupo === g);
-      $(id).innerHTML = items.length ? items.map((a) => {
-        const [ic, col] = ACTIVOS[a.simbolo] || [a.simbolo.slice(0, 2), "#607D8B"];
-        const c = a.cambio;
-        const clase = c == null ? "" : c > 0 ? "sube" : c < 0 ? "baja" : "";
-        const flecha = c == null ? "" : (c > 0 ? "▲ +" : c < 0 ? "▼ " : "") + fmt(c) + "%";
-        const enPesos = g === "cripto" && tasas && a.precio != null ? `<small>RD$ ${precio(a.precio * tasas.DOP)}</small>` : "";
-        return fila(col, ic, a.nombre, "Símbolo: " + a.simbolo,
-          `<div class="nombre"><b>${esc(a.nombre)}</b><small>${esc(a.simbolo)}</small></div>
-           <div class="valor"><b>US$ ${precio(a.precio)}</b>${enPesos}<small class="${clase}">${flecha}</small></div>`, "activo:" + a.simbolo);
-      }).join("") : '<p class="nota">Sin datos por ahora.</p>';
-    }
-  }
-
-  function pintarMonedas() {
-    if (!tasas || !tasas.DOP) return;
-    $("g-monedas").innerHTML = MUNDO.filter(([c]) => tasas[c]).map(([c, moneda, pais, sim, col]) => {
-      const enPesos = tasas.DOP / tasas[c];       // 1 unidad = X pesos
-      const porPeso = tasas[c] / tasas.DOP;       // 1 peso = X unidades
-      return fila(col, sim, `${moneda} · ${pais}`, "Código: " + c,
-        `<div class="nombre"><b>${esc(moneda)}</b><small>${esc(pais)} · ${esc(c)}</small></div>
-         <div class="valor"><b>RD$ ${precio(enPesos)}</b><small>RD$ 1 = ${precio(porPeso)} ${esc(c)}</small></div>`, "moneda:" + c);
-    }).join("");
-  }
-
-  function pintarCombRD(rd) {
-    if (!rd || !rd.precios) { $("lista-comb-rd").innerHTML = '<p class="nota">Sin datos por ahora.</p>'; return; }
-    $("semana-rd").textContent = (rd.enVivo ? "Semana del " : "Última semana registrada: ") + (rd.semana || "—") + " · Precios oficiales del MICM.";
-    $("lista-comb-rd").innerHTML = rd.precios.filter((p) => p.precio != null).map((p) => {
-      const [ic, col] = COMB[p.clave] || ["?", "#607D8B"];
-      return fila(col, ic, p.nombre, "Precio oficial por " + p.unidad,
-        `<div class="nombre"><b>${esc(p.nombre)}</b><small>por ${esc(p.unidad)}</small></div>
-         <div class="valor"><b style="color:var(--dorado)">RD$ ${fmt(p.precio)}</b></div>`, "rd:" + p.clave);
-    }).join("");
-  }
-
-  function pintarCombUS(us) {
-    if (!us || !us.estados) { $("lista-comb-us").innerHTML = '<p class="nota">Sin datos por ahora.</p>'; return; }
-    $("semana-us").textContent = "US$ por galón · semana del " + (us.semana || "—") + " (EIA).";
-    const g = (n) => n == null ? "—" : "$" + Number(n).toFixed(2);
-    $("lista-comb-us").innerHTML = us.estados.map((e) =>
-      fila(ESTADOS[e.nombre] || "#FFC107", "", e.nombre, e.dieselRegional ? "Diésel: promedio de su región" : "",
-        `<div class="nombre"><b>${esc(e.nombre)}</b></div>
-         <div class="num sube">${g(e.regular)}</div>
-         <div class="num" style="color:var(--dorado)">${g(e.premium)}</div>
-         <div class="num">${g(e.diesel)}${e.dieselRegional && e.diesel != null ? "*" : ""}</div>`, "us:" + e.nombre)
-    ).join("");
-  }
-
-  // ---------- Convertidor ----------
-  let vendo = true;
-  MONEDAS.forEach((m) => {
-    $("desde").add(new Option(m, m, m === "USD", m === "USD"));
-    $("hacia").add(new Option(m, m, m === "DOP", m === "DOP"));
-  });
-
-  function pintarSelector() {
-    const sel = $("fuente");
-    const actual = sel.value;
-    sel.length = 1;
-    entidades.forEach((e) => sel.add(new Option(`${e.nombre} · compra ${fmt(e.compra)} / venta ${fmt(e.venta)}`, e.nombre)));
-    sel.value = [...sel.options].some((o) => o.value === actual) ? actual : "mercado";
-  }
-
-  function convertir() {
-    const monto = parseFloat(String($("cantidad").value).replace(",", ".")) || 0;
-    const fuente = $("fuente").value;
-    const enBanco = fuente !== "mercado";
-    $("modo-mercado").hidden = enBanco;
-    $("modo-banco").hidden = !enBanco;
-
-    if (!enBanco) {
-      $("etq-cantidad").textContent = "Cantidad";
-      if (!tasas) { $("resultado").textContent = "—"; $("detalle").textContent = "Cargando tasa de mercado…"; return; }
-      const de = $("desde").value, a = $("hacia").value;
-      const r = monto / tasas[de] * tasas[a];
-      $("resultado").textContent = `${fmt(monto)} ${de} = ${fmt(r)} ${a}`;
-      $("detalle").textContent = "Tasa de mercado internacional.";
-      return;
-    }
-
-    const e = entidades.find((x) => x.nombre === fuente);
-    const tasa = e && (vendo ? e.compra : e.venta);
-    $("etq-cantidad").textContent = "Cantidad en dólares (US$)";
-    if (tasa == null) {
-      $("resultado").textContent = "—";
-      $("detalle").textContent = `${fuente} no publica precio de ${vendo ? "compra" : "venta"}. Prueba con otra entidad.`;
-      return;
-    }
-    $("resultado").textContent = (vendo ? "Te dan " : "Pagas ") + "RD$ " + fmt(monto * tasa);
-    $("detalle").textContent = `${e.nombre} · ${vendo ? "compra" : "venta"} a RD$ ${fmt(tasa)} por dólar`;
-  }
-
-  ["cantidad", "desde", "hacia", "fuente"].forEach((id) => $(id).addEventListener("input", convertir));
-  $("fuente").addEventListener("change", convertir);
-  $("vendo").addEventListener("click", () => { vendo = true; $("vendo").classList.add("activo"); $("compro").classList.remove("activo"); convertir(); });
-  $("compro").addEventListener("click", () => { vendo = false; $("compro").classList.add("activo"); $("vendo").classList.remove("activo"); convertir(); });
-
-  // =====================================================================
-  //  AVISOS DE CAMBIO DE PRECIO (notificaciones del navegador)
-  //  Funcionan mientras la página esté abierta, aunque sea en otra pestaña.
-  // =====================================================================
+  // ---------- utilidades ----------
+  const $ = (id) => document.getElementById(id);
+  const fmt = (n) => Number(n).toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  const kwh = (n) => Number(n).toLocaleString("en-US", { maximumFractionDigits: 1 });
+  const num = (t) => { const v = parseFloat(String(t).trim().replace(/\s/g, "").replace(",", ".")); return isFinite(v) ? v : null; };
+  const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
   const guardar = (k, v) => { try { localStorage.setItem(k, JSON.stringify(v)); } catch (_) {} };
-  const leer = (k, def) => { try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : def; } catch (_) { return def; } };
+  const leer = (k, d) => { try { const v = localStorage.getItem(k); return v == null ? d : JSON.parse(v); } catch (_) { return d; } };
+  const ZONA = "America/Santo_Domingo";
+  const hoyISO = () => new Date().toLocaleDateString("en-CA", { timeZone: ZONA });
+  const mesActual = () => hoyISO().slice(0, 7);
+  const MESES = ["ene", "feb", "mar", "abr", "may", "jun", "jul", "ago", "sep", "oct", "nov", "dic"];
+  const nombreMes = (m, anio) => MESES[+m.slice(5, 7) - 1] + (anio ? " " + m.slice(0, 4) : "");
+  const fechaCorta = (iso) => { const [a, m, d] = iso.split("-"); return `${+d} ${MESES[+m - 1]} ${a}`; };
+  const mostrarMensaje = (t) => alertaSuave(t);
 
-  let vigilados = new Set(leer("divisas_vigilados", []));
-  let registroSW = null;
-  const soporta = "Notification" in window;
-
-  async function prepararSW() {
-    if (!("serviceWorker" in navigator)) return null;
-    try { registroSW = await navigator.serviceWorker.register("/sw.js"); } catch (_) { registroSW = null; }
-    return registroSW;
-  }
-
-  function pintarEstadoAvisos() {
-    const btn = $("activar-avisos"), est = $("estado-avisos");
-    if (!soporta) {
-      btn.disabled = true; btn.textContent = "No disponible";
-      est.textContent = "Este navegador no permite notificaciones. En iPhone, primero añade la web a la pantalla de inicio (Compartir > Añadir a inicio).";
-      return;
+  // Mensajito flotante (en vez de alert)
+  let tAviso;
+  function alertaSuave(texto) {
+    let el = $("mensajito");
+    if (!el) {
+      el = document.createElement("div"); el.id = "mensajito";
+      el.style.cssText = "position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:var(--texto);color:var(--fondo);padding:10px 16px;border-radius:12px;font-size:14px;z-index:9;max-width:90vw;text-align:center;box-shadow:0 6px 20px rgba(0,0,0,.25)";
+      document.body.appendChild(el);
     }
-    if (Notification.permission === "granted") {
-      btn.disabled = true; btn.textContent = "✓ Activados";
-      est.textContent = vigilados.size
-        ? `Vigilando ${vigilados.size} precio${vigilados.size === 1 ? "" : "s"}. Te avisamos mientras esta página esté abierta.`
-        : 'Ahora toca un banco, combustible o moneda y elige "Avisarme".';
-    } else if (Notification.permission === "denied") {
-      btn.disabled = true; btn.textContent = "Bloqueados";
-      est.textContent = "Bloqueaste las notificaciones de esta web. Actívalas en el candado 🔒 junto a la dirección.";
-    }
+    el.textContent = texto; el.style.display = "block";
+    clearTimeout(tAviso); tAviso = setTimeout(() => (el.style.display = "none"), 3500);
   }
 
-  async function pedirPermiso() {
-    if (!soporta) return false;
-    await prepararSW();
-    if (Notification.permission === "default") await Notification.requestPermission();
-    pintarEstadoAvisos();
-    return Notification.permission === "granted";
-  }
-  $("activar-avisos").addEventListener("click", pedirPermiso);
-
-  async function alternarVigilado(clave, boton) {
-    if (vigilados.has(clave)) {
-      vigilados.delete(clave);
-    } else {
-      if (!(await pedirPermiso())) return;
-      vigilados.add(clave);
-    }
-    guardar("divisas_vigilados", [...vigilados]);
-    const on = vigilados.has(clave);
-    boton.classList.toggle("on", on);
-    boton.textContent = on ? "🔔 Avisando" : "🔕 Avisarme";
-    pintarEstadoAvisos();
-    programar();
-  }
-
-  // Precios que se pueden vigilar (umbral 0 = cualquier cambio; 2 = moverse un 2 % o más)
-  function lecturas() {
-    const m = {};
-    const d = ultimosServidor, c = ultimosComb;
-    (d?.entidades || []).forEach((e) => {
-      const v = {}; if (e.compra != null) v.compra = e.compra; if (e.venta != null) v.venta = e.venta;
-      if (Object.keys(v).length) m["banco:" + e.nombre] = { nombre: e.nombre, v, umbral: 0, mon: "RD$" };
-    });
-    (d?.mercados || []).forEach((a) => {
-      if (a.precio != null) m["activo:" + a.simbolo] = { nombre: a.nombre, v: { precio: a.precio }, umbral: 2, mon: "US$" };
-    });
-    if (tasas && tasas.DOP) MUNDO.forEach(([cod, moneda, pais]) => {
-      if (tasas[cod]) m["moneda:" + cod] = { nombre: `${moneda} (${pais})`, v: { "en pesos": tasas.DOP / tasas[cod] }, umbral: 1, mon: "RD$" };
-    });
-    (c?.rd?.precios || []).forEach((p) => {
-      if (p.precio != null) m["rd:" + p.clave] = { nombre: p.nombre, v: { precio: p.precio }, umbral: 0, mon: "RD$" };
-    });
-    (c?.eeuu?.estados || []).forEach((e) => {
-      const v = {}; if (e.regular != null) v.regular = e.regular; if (e.premium != null) v.premium = e.premium; if (e.diesel != null) v["diésel"] = e.diesel;
-      if (Object.keys(v).length) m["us:" + e.nombre] = { nombre: "Gasolina " + e.nombre, v, umbral: 0, mon: "US$" };
-    });
-    return m;
-  }
-
-  async function avisar(titulo, cuerpo, etiqueta) {
-    if (!soporta || Notification.permission !== "granted") return;
-    const opciones = { body: cuerpo, tag: etiqueta, icon: "/icono-192.png", badge: "/icono-192.png" };
-    try {
-      const reg = registroSW || (await prepararSW());
-      if (reg) { await reg.showNotification(titulo, opciones); return; } // necesario en Android
-      new Notification(titulo, opciones);
-    } catch (_) {}
-  }
-
-  function revisarCambios() {
-    if (!vigilados.size) return;
-    const actual = lecturas();
-    const guardados = leer("divisas_ultimos", {});
-    for (const clave of vigilados) {
-      const l = actual[clave];
-      if (!l) continue;
-      const antes = guardados[clave];
-      const nuevo = { ...(antes || {}) };
-      const cambios = [];
-      for (const [k, valor] of Object.entries(l.v)) {
-        if (!antes || antes[k] == null) { nuevo[k] = valor; continue; } // primera vez: solo se guarda
-        const viejo = antes[k], dif = valor - viejo;
-        const pct = viejo ? Math.abs(dif) / viejo * 100 : 0;
-        const hay = l.umbral > 0 ? pct >= l.umbral : Math.abs(dif) >= 0.005;
-        if (hay) {
-          cambios.push(`${k} ${dif > 0 ? "▲ subió" : "▼ bajó"} de ${l.mon} ${precio(viejo)} a ${precio(valor)}`);
-          nuevo[k] = valor;
-        } else if (l.umbral === 0) {
-          nuevo[k] = valor;
-        }
-      }
-      guardados[clave] = nuevo;
-      if (cambios.length) avisar(l.nombre, cambios.join("\n"), clave);
-    }
-    guardar("divisas_ultimos", guardados);
-  }
-
-  // ---------- Arranque y actualización ----------
-  // Cada 10 minutos si vigilas algo; si no, cada 30.
-  let temporizador = null;
-  async function cargarTodo() {
-    await Promise.allSettled([cargarMercado(), cargarServidor(), cargarCombustibles()]);
-    revisarCambios();
-  }
-  function programar() {
-    clearInterval(temporizador);
-    temporizador = setInterval(cargarTodo, (vigilados.size ? 10 : 30) * 60 * 1000);
-  }
-  // Al volver a la pestaña después de un rato, se actualiza enseguida
-  let ultimaCarga = Date.now();
-  document.addEventListener("visibilitychange", () => {
-    if (!document.hidden && Date.now() - ultimaCarga > 5 * 60 * 1000) { ultimaCarga = Date.now(); cargarTodo(); }
+  // ---------- modo claro / oscuro (sigue al teléfono; el botón lo fuerza) ----------
+  const temaGuardado = leer("kc_tema", null);
+  if (temaGuardado) document.documentElement.dataset.tema = temaGuardado;
+  $("tema").addEventListener("click", () => {
+    const oscuroAhora = getComputedStyle(document.documentElement).colorScheme.includes("dark");
+    const nuevo = oscuroAhora ? "claro" : "oscuro";
+    document.documentElement.dataset.tema = nuevo; guardar("kc_tema", nuevo); pintarGrafica(); pintarLecturas();
   });
 
-  pintarEstadoAvisos();
-  if (soporta && Notification.permission === "granted") prepararSW();
-  cargarTodo();
-  programar();
+  // ---------- cálculo (el mismo de la app) ----------
+  function calcular(consumoKwh, t) {
+    const consumo = Math.max(0, consumoKwh);
+    const lineas = []; let desde = 0;
+    for (const tr of t.tramos) {
+      const tope = tr.hasta ?? Infinity;
+      const enEste = Math.max(0, Math.min(consumo, tope) - desde);
+      if (enEste > 0) lineas.push({ kwh: enEste, precio: tr.precio, importe: enEste * tr.precio });
+      if (consumo <= tope) break;
+      desde = tope;
+    }
+    const energia = lineas.reduce((s, l) => s + l.importe, 0);
+    const c = (t.cargoFijo || []).find((x) => x.hasta == null || consumo <= x.hasta);
+    const cargo = c ? c.monto : 0;
+    const it = t.itbis || {};
+    const itbis = it.desdeKwh != null && consumo >= it.desdeKwh ? (energia + cargo) * (it.porcentaje || 0) / 100 : 0;
+    return { kwh: consumo, lineas, energia, cargo, itbis, total: energia + cargo + itbis };
+  }
+
+  function kwhDesdeMonto(monto, t) {
+    if (monto < calcular(0, t).total) return null;
+    let bajo = 0, alto = 100;
+    while (calcular(alto, t).total <= monto && alto < 1e6) alto *= 2;
+    for (let i = 0; i < 60; i++) { const m = (bajo + alto) / 2; if (calcular(m, t).total <= monto) bajo = m; else alto = m; }
+    return Math.round(bajo * 10) / 10;
+  }
+
+  // ---------- tarifas ----------
+  let tabla = leer("kc_tarifas", null) || INCLUIDA;
+  let fechaDescarga = leer("kc_tarifas_fecha", 0);
+
+  const servicio = () => $("servicio").value;
+  const distribuidora = () => $("distribuidora").value;
+  const buscar = (s, d) =>
+    tabla.tarifas.find((t) => t.servicio.toLowerCase() === s.toLowerCase() && (t.distribuidoras || []).map((x) => x.toUpperCase()).includes(d.toUpperCase())) ||
+    tabla.tarifas.find((t) => t.servicio.toLowerCase() === s.toLowerCase() && !(t.distribuidoras || []).length) || null;
+
+  function usandoManual() { return $("manual").checked && (num($("precio-manual").value) || 0) > 0; }
+  function tarifaEnUso() {
+    const oficial = buscar(servicio(), distribuidora());
+    if (!usandoManual()) return oficial;
+    const cargo = num($("cargo-manual").value);
+    return {
+      servicio: servicio(), codigo: "Precio manual", distribuidoras: [distribuidora()],
+      tramos: [{ hasta: null, precio: num($("precio-manual").value) }],
+      cargoFijo: cargo != null ? [{ hasta: null, monto: cargo }] : (oficial?.cargoFijo || []),
+      itbis: oficial?.itbis || { porcentaje: 18, desdeKwh: null },
+    };
+  }
+
+  function llenarDistribuidoras() {
+    const sel = $("distribuidora"), antes = sel.value || leer("kc_distribuidora", "EDESUR");
+    const lista = [...new Set(["EDESUR", "EDENORTE", "EDEESTE", ...tabla.tarifas.flatMap((t) => t.distribuidoras || []).map((x) => x.toUpperCase())])];
+    sel.innerHTML = lista.map((d) => `<option>${esc(d)}</option>`).join("");
+    if (lista.includes(antes)) sel.value = antes;
+  }
+
+  function mostrarTarifa() {
+    const t = buscar(servicio(), distribuidora());
+    const filas = $("tabla-tramos"); filas.innerHTML = "";
+    if (!t) {
+      $("estado-tarifa").textContent = `${servicio()} · ${distribuidora()}`;
+      $("aviso-tarifa").classList.add("oculto");
+      $("detalle-tarifa").textContent = `Todavía no tenemos la tarifa de ${servicio().toLowerCase()} para ${distribuidora()}. Activa "Usar mi propio precio" con el de tu factura.`;
+      return;
+    }
+    const vig = tabla.vigenciaDesde && tabla.vigenciaHasta ? `${fechaCorta(tabla.vigenciaDesde)} al ${fechaCorta(tabla.vigenciaHasta)}` : tabla.vigencia;
+    $("estado-tarifa").innerHTML = `${esc(t.codigo)} · ${esc(servicio())} · ${esc(distribuidora())}<br>Vigencia: ${esc(vig)}` +
+      (tabla.actualizado ? `<br>Última actualización: ${esc(fechaCorta(tabla.actualizado))}` : "") +
+      (fechaDescarga ? `<br>Revisada en este navegador: ${new Date(fechaDescarga).toLocaleDateString("es-DO")}` : "");
+    const aviso = $("aviso-tarifa");
+    if (tabla.vigenciaHasta && hoyISO() > tabla.vigenciaHasta) { aviso.textContent = `⚠ Esta tarifa venció el ${fechaCorta(tabla.vigenciaHasta)}. Pulsa Actualizar.`; aviso.classList.remove("oculto"); }
+    else if (!tabla.verificada) { aviso.textContent = "Tarifa de referencia · confirma con tu factura"; aviso.classList.remove("oculto"); }
+    else aviso.classList.add("oculto");
+
+    let desde = 0;
+    filas.innerHTML = t.tramos.map((tr) => {
+      const rango = tr.hasta == null ? `${kwh(desde + 1)} kWh o más` : `${kwh(desde === 0 ? 0 : desde + 1)} – ${kwh(tr.hasta)} kWh`;
+      desde = tr.hasta ?? desde;
+      return `<div class="fila"><span>${rango}</span><b class="verde">RD$ ${fmt(tr.precio)}/kWh</b></div>`;
+    }).join("");
+
+    const partes = [];
+    if ((t.cargoFijo || []).length) {
+      let antes = 0;
+      partes.push("Cargo fijo mensual: " + t.cargoFijo.map((c) => {
+        const x = c.hasta == null ? `más de ${kwh(antes)} kWh RD$ ${fmt(c.monto)}` : `hasta ${kwh(c.hasta)} kWh RD$ ${fmt(c.monto)}`;
+        antes = c.hasta ?? antes; return x;
+      }).join(" · "));
+    }
+    if (t.itbis && t.itbis.desdeKwh != null) partes.push(`ITBIS ${kwh(t.itbis.porcentaje)}% si consumes ${kwh(t.itbis.desdeKwh)} kWh o más.`);
+    if (tabla.fuente) partes.push("Fuente: " + tabla.fuente);
+    $("detalle-tarifa").innerHTML = partes.map(esc).join("<br>");
+  }
+
+  async function actualizarTarifas(avisar) {
+    const b = $("actualizar"); b.disabled = true; b.textContent = "Actualizando…";
+    try {
+      const r = await fetch(URL_TARIFAS, { cache: "no-store" });
+      if (!r.ok) throw new Error("HTTP " + r.status);
+      const j = await r.json();
+      if (!Array.isArray(j.tarifas) || !j.tarifas.length) throw new Error("vacía");
+      tabla = j; fechaDescarga = Date.now();
+      guardar("kc_tarifas", tabla); guardar("kc_tarifas_fecha", fechaDescarga);
+      llenarDistribuidoras(); mostrarTarifa(); pintarLecturas();
+      if (!$("tarjeta-total").classList.contains("oculto")) calcularYMostrar(true);
+      if (avisar) mostrarMensaje("Tarifas al día ✅");
+    } catch (_) {
+      if (avisar) mostrarMensaje("Sin conexión. Se usa la última tarifa guardada.");
+    } finally { b.disabled = false; b.textContent = "🔄 ACTUALIZAR TARIFAS"; }
+  }
+
+  // ---------- historial (en este navegador) ----------
+  const leerMeses = () => leer("kc_meses", []).filter((m) => /^\d{4}-\d{2}$/.test(m.mes)).sort((a, b) => a.mes.localeCompare(b.mes));
+  // Un cálculo de la página no pisa un mes copiado de la factura real
+  function guardarMes(m) {
+    const previo = leerMeses().find((x) => x.mes === m.mes);
+    if (previo && previo.deFactura && !m.deFactura) return;
+    const lista = [...leerMeses().filter((x) => x.mes !== m.mes), m].sort((a, b) => a.mes.localeCompare(b.mes)).slice(-24);
+    guardar("kc_meses", lista);
+  }
+  const MESES_GRAFICA = 13; // como la factura: el mismo mes del año pasado y hasta hoy
+  function guardarCalculo(texto) { guardar("kc_calculos", [texto, ...leer("kc_calculos", [])].slice(0, 30)); }
+
+  function pintarHistorial() {
+    const meses = leerMeses().slice().reverse(), calc = leer("kc_calculos", []);
+    if (!meses.length && !calc.length) { $("historial").textContent = "Todavía no hay cálculos guardados."; return; }
+    let t = "";
+    if (meses.length) {
+      t += "CONSUMO POR MES\n" + meses.map((m) => `• ${nombreMes(m.mes, true)}: ${kwh(m.kwh)} kWh` + (m.total != null ? ` · RD$ ${fmt(m.total)}` : "") +
+        (m.deFactura ? " 🧾" : "") + (m.subsidio != null ? `\n\u00a0\u00a0\u00a0Subsidio: RD$ ${fmt(m.subsidio)}` : "")).join("\n") + "\n";
+      if (meses.some((m) => m.deFactura)) t += "🧾 = copiado de tu factura\n";
+      t += "\n";
+    }
+    if (calc.length) t += "ÚLTIMOS CÁLCULOS\n" + calc.join("\n\n");
+    $("historial").textContent = t.trim();
+  }
+
+  // ---------- gráfica ----------
+  let ultimo = null; // { consumo, dias, proyectado, diasProy }
+  function pintarGrafica() {
+    const svg = $("grafica"), css = getComputedStyle(document.documentElement);
+    const v = (n) => css.getPropertyValue(n).trim();
+    const meses = ultimo ? leerMeses().filter((m) => m.mes < mesActual()).slice(-(MESES_GRAFICA - 1)) : leerMeses().slice(-MESES_GRAFICA);
+    const barras = meses.map((m) => ({ e: nombreMes(m.mes), d: m.mes.slice(0, 4), k: m.kwh, c: v("--barra-mes") }));
+    if (ultimo) {
+      barras.push({ e: "Hoy", d: ultimo.dias + " d", k: ultimo.consumo, c: v("--barra-real") });
+      barras.push({ e: "Proy.", d: ultimo.diasProy + " d", k: ultimo.proyectado, c: v("--barra-proy") });
+    }
+    const W = 600, H = 300, izq = 46, der = 14, arriba = 26, base = H - 46, area = base - arriba;
+    if (!barras.length) {
+      svg.innerHTML = `<text x="${W / 2}" y="${H / 2}" text-anchor="middle" fill="${v("--texto-2")}" font-size="15">Calcula tu consumo para ver la gráfica.</text>`;
+      $("leyenda").innerHTML = ""; return;
+    }
+    const pasos = [100, 150, 200, 300, 400, 500, 600, 800, 1000, 1500, 2000, 3000, 4000, 5000, 8000, 10000];
+    const mx = pasos.find((p) => p >= Math.max(1, ...barras.map((b) => b.k))) || Math.ceil(Math.max(...barras.map((b) => b.k)) / 5000) * 5000;
+    let s = "";
+    for (let i = 0; i <= 3; i++) {
+      const y = base - area * i / 3;
+      s += `<line x1="${izq}" y1="${y}" x2="${W - der}" y2="${y}" stroke="${v("--linea")}" stroke-width="1"/>`;
+      s += `<text x="${izq - 8}" y="${y + 4}" text-anchor="end" font-size="11" fill="${v("--texto-2")}">${Math.round(mx * i / 3).toLocaleString("en-US")}</text>`;
+    }
+    const n = barras.length, esp = (W - izq - der) / n, ab = Math.min(44, esp * .62);
+    const apretado = n > 9, t1 = apretado ? 10 : 12, t2 = apretado ? 9 : 10;
+    barras.forEach((b, i) => {
+      const cx = izq + esp * (i + .5), h = area * b.k / mx, y = base - h, r = Math.min(7, h, ab / 2);
+      s += `<path d="M${cx - ab / 2},${base} V${y + r} Q${cx - ab / 2},${y} ${cx - ab / 2 + r},${y} H${cx + ab / 2 - r} Q${cx + ab / 2},${y} ${cx + ab / 2},${y + r} V${base} Z" fill="${b.c}"/>`;
+      const valor = apretado && b.k >= 1000 ? (b.k / 1000).toFixed(1) + "k" : kwh(Math.round(b.k));
+      s += `<text x="${cx}" y="${Math.max(arriba - 6, y - 6)}" text-anchor="middle" font-size="${t1}" font-weight="700" fill="${v("--texto")}">${valor}</text>`;
+      s += `<text x="${cx}" y="${base + 17}" text-anchor="middle" font-size="${t1}" font-weight="700" fill="${v("--texto")}">${esc(b.e)}</text>`;
+      // el año solo en la primera barra y cuando cambia, para que no se amontone
+      if (!apretado || i === 0 || b.d !== barras[i - 1].d || b.c !== barras[i - 1].c)
+        s += `<text x="${cx}" y="${base + 32}" text-anchor="middle" font-size="${t2}" fill="${v("--texto-2")}">${esc(b.d)}</text>`;
+    });
+    svg.innerHTML = s;
+    $("leyenda").innerHTML = (meses.length ? `<span><i style="background:${v("--barra-mes")}"></i>Meses</span>` : "") +
+      (ultimo ? `<span><i style="background:${v("--barra-real")}"></i>Hoy</span><span><i style="background:${v("--barra-proy")}"></i>Proyección</span>` : "");
+  }
+
+  // ---------- calcular ----------
+  let ultimoResumen = null;
+  function calcularYMostrar(silencioso) {
+    const consumo = num($("consumo").value), dias = parseInt($("dias").value, 10), diasProy = parseInt($("proyeccion").value, 10);
+    if (!(consumo > 0)) { if (!silencioso) mostrarMensaje("Pon un consumo en kWh mayor que cero."); return; }
+    if (!(dias >= 1 && dias <= 366)) { if (!silencioso) mostrarMensaje("Los días medidos deben estar entre 1 y 366."); return; }
+    if (!(diasProy >= 1 && diasProy <= 366)) { if (!silencioso) mostrarMensaje("Los días de proyección deben estar entre 1 y 366."); return; }
+    if ($("manual").checked && !usandoManual()) { if (!silencioso) mostrarMensaje('Pon tu precio del kWh o apaga "Usar mi propio precio".'); return; }
+    guardarManual();
+
+    const promedio = consumo / dias, proyectado = promedio * diasProy;
+    const fecha = new Date().toLocaleString("es-DO", { timeZone: ZONA, dateStyle: "short", timeStyle: "short" });
+    ultimo = { consumo, dias, proyectado, diasProy };
+    const t = tarifaEnUso();
+    let totalTexto = "";
+
+    if (t) {
+      const f = calcular(proyectado, t);
+      $("tarjeta-total").classList.remove("oculto");
+      $("total-titulo").textContent = diasProy === 30 ? "TOTAL ESTIMADO DEL MES" : `TOTAL ESTIMADO · ${diasProy} DÍAS`;
+      $("total-monto").textContent = "RD$ " + fmt(f.total);
+      $("total-detalle").innerHTML = `${kwh(f.kwh)} kWh · ${esc(t.codigo)} · ${esc(distribuidora())}` +
+        (usandoManual() ? `<br>Calculado con tu precio: RD$ ${fmt(t.tramos[0].precio)}/kWh` : tabla.verificada ? "" : "<br>Tarifa de referencia: confirma con tu factura");
+      const nombres = (i) => f.lineas.length === 1 ? `${kwh(f.lineas[i].kwh)} kWh` : i === 0 ? `Primeros ${kwh(f.lineas[i].kwh)} kWh` : `Siguientes ${kwh(f.lineas[i].kwh)} kWh`;
+      let d = f.lineas.map((l, i) => `<div class="fila"><span>${nombres(i)} × RD$ ${fmt(l.precio)}</span><b>RD$ ${fmt(l.importe)}</b></div>`).join("");
+      d += `<div class="fila"><span>Cargo fijo</span><b>RD$ ${fmt(f.cargo)}</b></div>`;
+      if (f.itbis > 0) d += `<div class="fila"><span>ITBIS ${kwh(t.itbis.porcentaje)}%</span><b>RD$ ${fmt(f.itbis)}</b></div>`;
+      else if (t.itbis && t.itbis.desdeKwh != null) d += `<div class="fila"><span class="tenue">ITBIS (no aplica por debajo de ${kwh(t.itbis.desdeKwh)} kWh)</span><b class="tenue">RD$ 0.00</b></div>`;
+      d += `<div class="fila total"><span>TOTAL</span><b>RD$ ${fmt(f.total)}</b></div>`;
+      $("desglose").innerHTML = d;
+      totalTexto = ` · RD$ ${fmt(f.total)}`;
+
+      ultimoResumen = [
+        "KiloClaro · Resumen de tu factura de luz", `Fecha: ${fecha}`, `Servicio: ${servicio()} · ${distribuidora()} · ${t.codigo}`,
+        `Consumo registrado: ${fmt(consumo)} kWh en ${dias} días`, `Consumo estimado a ${diasProy} días: ${fmt(f.kwh)} kWh`, "", "DESGLOSE",
+        ...f.lineas.map((l, i) => `  ${nombres(i)} × RD$ ${fmt(l.precio)} = RD$ ${fmt(l.importe)}`),
+        `  Cargo fijo: RD$ ${fmt(f.cargo)}`, ...(f.itbis > 0 ? [`  ITBIS ${kwh(t.itbis.porcentaje)}%: RD$ ${fmt(f.itbis)}`] : []),
+        "", `TOTAL ESTIMADO: RD$ ${fmt(f.total)}`, "",
+        usandoManual() ? "Calculado con tu propio precio del kWh." : `Tarifa: ${tabla.fuente}. Vigencia: ${tabla.vigencia}.`,
+        "Estimación orientativa. La factura de tu distribuidora es la que vale.", "", "Calculado en https://kiloclarord.com",
+      ].join("\n");
+    } else {
+      $("tarjeta-total").classList.add("oculto");
+    }
+
+    let r = `Fecha: ${fecha}\nServicio: ${servicio()} · ${distribuidora()}\nConsumo registrado: ${fmt(consumo)} kWh en ${dias} días\n` +
+            `Promedio diario: ${fmt(promedio)} kWh/día\nProyección a ${diasProy} días: ${fmt(proyectado)} kWh`;
+    if (t && dias !== diasProy) r += `\nLo consumido hasta hoy costaría: RD$ ${fmt(calcular(consumo, t).total)}`;
+    if (!t) r += `\n\nSin precio en pesos: aún no tenemos la tarifa de ${servicio().toLowerCase()} para ${distribuidora()}.`;
+    $("resumen").textContent = r;
+
+    if (!silencioso) {
+      const k30 = promedio * 30;
+      guardarMes({ mes: mesActual(), kwh: k30, total: t ? calcular(k30, t).total : null });
+      guardarCalculo(`${fecha} · ${distribuidora()} · ${servicio()} · ${fmt(consumo)} kWh/${dias} días · proyección ${fmt(proyectado)} kWh/${diasProy} días${totalTexto}`);
+      pintarHistorial();
+    }
+    pintarGrafica();
+  }
+
+  // ---------- de pesos a kWh ----------
+  function calcularKwh() {
+    const monto = num($("monto").value), salida = $("resultado-kwh");
+    if (!(monto > 0)) { mostrarMensaje("Pon el monto de tu factura en pesos."); return; }
+    if ($("manual").checked && !usandoManual()) { mostrarMensaje('Pon tu precio del kWh o apaga "Usar mi propio precio".'); return; }
+    const t = tarifaEnUso();
+    if (!t) { mostrarMensaje(`Aún no tenemos la tarifa de ${servicio().toLowerCase()} para ${distribuidora()}. Activa "Usar mi propio precio".`); return; }
+    const k = kwhDesdeMonto(monto, t);
+    salida.classList.remove("oculto");
+    if (k == null) { salida.textContent = `Con RD$ ${fmt(monto)} no alcanza ni para el cargo fijo (RD$ ${fmt(calcular(0, t).total)}). Revisa el monto.`; return; }
+    const dias = parseInt($("dias").value, 10) >= 1 ? parseInt($("dias").value, 10) : 30;
+    salida.innerHTML = `Con RD$ ${fmt(monto)} en ${esc(distribuidora())} consumiste unos <b>${kwh(k)} kWh</b>.<br>Eso es unos ${fmt(k / dias)} kWh al día (${dias} días).`;
+    $("consumo").value = k; $("dias").value = dias; $("proyeccion").value = dias;
+    calcularYMostrar(true);
+  }
+
+  // ---------- correo ----------
+  function historialParaCorreo() {
+    const meses = leerMeses();
+    if (!meses.length) return "";
+    let t = "\n\nCONSUMO POR MES (kWh)\n";
+    for (let i = meses.length - 1; i >= 0; i--) {
+      const m = meses[i]; t += `  • ${nombreMes(m.mes, true)}: ${kwh(m.kwh)} kWh` + (m.total != null ? ` · RD$ ${fmt(m.total)}` : "");
+      if (i > 0 && meses[i - 1].kwh > 0) {
+        const c = (m.kwh - meses[i - 1].kwh) / meses[i - 1].kwh * 100;
+        t += `  (${c >= 0.5 ? "▲ subió" : c <= -0.5 ? "▼ bajó" : "= igual"} ${kwh(Math.abs(c))} % vs ${nombreMes(meses[i - 1].mes)})`;
+      }
+      t += "\n";
+    }
+    if (meses.length >= 2) t += `\n  Promedio: ${kwh(meses.reduce((s, m) => s + m.kwh, 0) / meses.length)} kWh al mes`;
+    return t;
+  }
+  const dialogo = $("dialogo-correo");
+  $("enviar").addEventListener("click", () => {
+    if (!ultimoResumen) { mostrarMensaje("Primero calcula tu factura."); return; }
+    $("correo").value = leer("kc_correo", ""); $("correo-error").style.display = "none";
+    dialogo.showModal();
+  });
+  $("correo-cancelar").addEventListener("click", () => dialogo.close());
+  $("form-correo").addEventListener("submit", (e) => {
+    e.preventDefault();
+    const correo = $("correo").value.trim();
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(correo)) { $("correo-error").style.display = "block"; return; }
+    guardar("kc_correo", correo); dialogo.close();
+    const asunto = "Mi factura de luz estimada · KiloClaro";
+    location.href = `mailto:${encodeURIComponent(correo)}?subject=${encodeURIComponent(asunto)}&body=${encodeURIComponent(ultimoResumen + historialParaCorreo())}`;
+  });
+
+  // ---------- precio manual guardado ----------
+  function guardarManual() { guardar("kc_manual", { activo: $("manual").checked, precio: $("precio-manual").value, cargo: $("cargo-manual").value }); }
+  const man = leer("kc_manual", { activo: false, precio: "", cargo: "" });
+  $("manual").checked = !!man.activo; $("precio-manual").value = man.precio || ""; $("cargo-manual").value = man.cargo || "";
+  $("panel-manual").classList.toggle("oculto", !man.activo);
+  $("manual").addEventListener("change", () => {
+    $("panel-manual").classList.toggle("oculto", !$("manual").checked); guardarManual(); mostrarTarifa(); pintarLecturas();
+    if (!$("tarjeta-total").classList.contains("oculto")) calcularYMostrar(true);
+  });
+
+  // ---------- eventos ----------
+  for (const id of ["servicio", "distribuidora"]) $(id).addEventListener("change", () => {
+    guardar("kc_distribuidora", distribuidora()); mostrarTarifa(); pintarLecturas();
+    if (!$("tarjeta-total").classList.contains("oculto")) calcularYMostrar(true);
+  });
+  $("calcular").addEventListener("click", () => calcularYMostrar(false));
+  $("calcular-kwh").addEventListener("click", calcularKwh);
+  $("actualizar").addEventListener("click", () => actualizarTarifas(true));
+  $("borrar").addEventListener("click", () => {
+    if (!confirm("¿Borrar el historial? Se borran los meses guardados y los cálculos. No se puede deshacer.")) return;
+    guardar("kc_meses", []); guardar("kc_calculos", []); pintarHistorial(); ultimo = null; pintarGrafica(); mostrarMensaje("Historial borrado");
+  });
+  for (const id of ["consumo", "dias", "proyeccion"]) $(id).addEventListener("keydown", (e) => { if (e.key === "Enter") calcularYMostrar(false); });
+  $("monto").addEventListener("keydown", (e) => { if (e.key === "Enter") calcularKwh(); });
+  matchMedia("(prefers-color-scheme: dark)").addEventListener?.("change", () => { pintarGrafica(); pintarLecturas(); });
+
+  // ---------- lecturas del contador (igual que en la app) ----------
+  const HORA = 3600000;
+  const inicioDia = (ms) => { const d = new Date(ms); d.setHours(0, 0, 0, 0); return d; };
+  const esFinde = (d) => d.getDay() === 0 || d.getDay() === 6;
+  const leerLecturas = () => leer("kc_lecturas", []).filter((l) => isFinite(l.m) && isFinite(l.v)).sort((a, b) => a.m - b.m);
+  // El contador casi siempre va sin decimales: "10,520" es diez mil quinientos veinte
+  const leerLectura = (t) => {
+    t = String(t).trim().replace(/\s/g, "");
+    const coma = (t.match(/,/g) || []).length === 1 && !t.includes(".") && t.split(",")[1].length <= 2;
+    const v = parseFloat(coma ? t.replace(",", ".") : t.replace(/,/g, ""));
+    return isFinite(v) ? v : null;
+  };
+
+  /** Reparte el consumo entre los días, en proporción al tiempo entre lecturas. */
+  function consumoPorDia(lect) {
+    const mapa = new Map();
+    for (let i = 1; i < lect.length; i++) {
+      const a = lect[i - 1], b = lect[i], dur = b.m - a.m, dif = b.v - a.v;
+      if (dur <= 0 || dif < 0) continue;
+      let t = a.m;
+      while (t < b.m) {
+        const d = inicioDia(t), clave = d.getTime(), sig = new Date(d); sig.setDate(sig.getDate() + 1);
+        const fin = Math.min(sig.getTime(), b.m), tramo = fin - t;
+        const x = mapa.get(clave) || { inicio: clave, kwh: 0, horas: 0, finde: esFinde(d) };
+        x.kwh += dif * tramo / dur; x.horas += tramo / HORA; mapa.set(clave, x);
+        t = fin;
+      }
+    }
+    return [...mapa.values()].sort((a, b) => a.inicio - b.inicio);
+  }
+
+  /** Promedio de lunes a viernes y de fin de semana, y lo que saldría la semana y los próximos 30 días. */
+  function estimarLecturas(lect, ahora) {
+    const dias = consumoPorDia(lect), suma = (arr, k) => arr.reduce((s, d) => s + d[k], 0), horas = suma(dias, "horas");
+    if (horas < 6) return null;
+    const sem = dias.filter((d) => !d.finde), fin = dias.filter((d) => d.finde);
+    const hS = suma(sem, "horas"), hF = suma(fin, "horas"), general = suma(dias, "kwh") / horas * 24;
+    const porS = hS >= 6 ? suma(sem, "kwh") / hS * 24 : general, porF = hF >= 6 ? suma(fin, "kwh") / hF * 24 : general;
+    let nS = 0, nF = 0; const c = inicioDia(ahora);
+    for (let i = 0; i < 30; i++) { if (esFinde(c)) nF++; else nS++; c.setDate(c.getDate() + 1); }
+    return { porS, porF, hayS: hS >= 6, hayF: hF >= 6, semana: porS * 5 + porF * 2, mes: porS * nS + porF * nF, nS, nF, horas, medido: lect[lect.length - 1].v - lect[0].v, dias };
+  }
+
+  let estimado = null;
+  const DIAS_SEM = ["dom", "lun", "mar", "mié", "jue", "vie", "sáb"];
+  const horaCorta = (ms) => new Date(ms).toLocaleTimeString("es-DO", { hour: "numeric", minute: "2-digit" }).replace(/\s/g, " ");
+  const diaCorto = (ms) => { const d = new Date(ms); return `${DIAS_SEM[d.getDay()]} ${d.getDate()} ${MESES[d.getMonth()]}`; };
+
+  /** Tramos entre lecturas seguidas: de día (empieza entre 5 a. m. y 6 p. m.), de noche, o largo (más de 16 horas). */
+  function tramosLecturas(lect) {
+    const t = [];
+    for (let i = 1; i < lect.length; i++) {
+      const a = lect[i - 1], b = lect[i], horas = (b.m - a.m) / HORA, h = new Date(a.m).getHours();
+      if (horas <= 0 || b.v < a.v) continue;
+      t.push({ a, b, kwh: b.v - a.v, horas, turno: horas > 16 ? "largo" : h >= 5 && h < 18 ? "dia" : "noche", dia: inicioDia(a.m).getTime() });
+    }
+    return t;
+  }
+
+  function pintarLecturas() {
+    const lect = leerLecturas(), tramos = tramosLecturas(lect);
+    pintarTablaLecturas(lect, tramos);
+    estimado = estimarLecturas(lect, Date.now());
+    const e = estimado;
+    $("usar-estimado").classList.toggle("oculto", !e);
+    pintarDiaNoche(tramos);
+    if (!e) {
+      $("estimado").textContent = lect.length ? "Anota otra lectura al menos 6 horas después (por ejemplo, en la noche) para ver tu estimado." : "Anota tu primera lectura para empezar.";
+      return;
+    }
+    const t = tarifaEnUso(), f = t ? calcular(e.mes, t) : null;
+    $("estimado").innerHTML = `<b>ESTIMADO CON TUS LECTURAS</b>\n` +
+      `Lunes a viernes: ${kwh(e.porS)} kWh por día${e.hayS ? "" : " (aún sin lecturas de semana)"}\n` +
+      `Sábado y domingo: ${kwh(e.porF)} kWh por día${e.hayF ? "" : " (aún sin lecturas de fin de semana)"}\n\n` +
+      `📅 Una semana: <b>${kwh(e.semana)} kWh</b>` + (f && e.mes > 0 ? ` ≈ RD$ ${fmt(f.total * e.semana / e.mes)}` : "") + "\n" +
+      `🗓 Próximos 30 días: <b>${kwh(e.mes)} kWh</b>\n   (${e.nS} días de semana + ${e.nF} de fin de semana)` +
+      (f ? `\n💡 Factura estimada: <b>RD$ ${fmt(f.total)}</b>` : "") +
+      `\n\n<span class="nota-3">Medido hasta ahora: ${kwh(e.medido)} kWh en ${kwh(e.horas / 24)} días${e.horas < 7 * 24 ? ". Con una semana completa sale más exacto." : ""}</span>`;
+  }
+
+  /** Lista de lecturas: la última y cada tramo con su hora, si fue de día o de noche y lo que se gastó. */
+  function pintarTablaLecturas(lect, tramos) {
+    const caja = $("ultimas");
+    caja.classList.toggle("oculto", !lect.length);
+    if (!lect.length) { caja.innerHTML = ""; return; }
+    const u = lect[lect.length - 1];
+    const icono = { dia: "☀️", noche: "🌙", largo: "🕘" }, nombre = { dia: "De día", noche: "De noche", largo: "Más de 16 horas" };
+    caja.innerHTML = `<h3>TUS LECTURAS</h3>` +
+      `<div class="ultima"><span>Última: ${esc(diaCorto(u.m))}, ${esc(horaCorta(u.m))}</span><b>${kwh(u.v)}</b></div>` +
+      tramos.slice(-6).reverse().map((x) => {
+        const mismoDia = inicioDia(x.a.m).getTime() === inicioDia(x.b.m).getTime();
+        return `<div class="lec"><div class="ico ${x.turno}">${icono[x.turno]}</div>` +
+          `<div class="cuando">${esc(diaCorto(x.a.m))} · ${nombre[x.turno]}</div>` +
+          `<div class="kwh">${kwh(x.kwh)} kWh<small>${kwh(x.a.v)} → ${kwh(x.b.v)}</small></div>` +
+          `<div class="horas">${esc(horaCorta(x.a.m))} → ${mismoDia ? "" : esc(diaCorto(x.b.m)) + ", "}${esc(horaCorta(x.b.m))}</div></div>`;
+      }).join("");
+  }
+
+  /** Gráfica de los últimos 7 días: abajo lo gastado de día (amarillo), encima lo de noche (azul). */
+  function pintarDiaNoche(tramos) {
+    const svg = $("grafica-dias"), ley = $("leyenda-dias"), css = getComputedStyle(document.documentElement), v = (n) => css.getPropertyValue(n).trim();
+    const porDia = new Map();
+    for (const x of tramos) {
+      const d = porDia.get(x.dia) || { dia: 0, noche: 0, largo: 0 };
+      d[x.turno] += x.kwh; porDia.set(x.dia, d);
+    }
+    const dias = [...porDia.entries()].sort((a, b) => a[0] - b[0]).slice(-7);
+    svg.classList.toggle("oculto", !dias.length); ley.classList.toggle("oculto", !dias.length);
+    if (!dias.length) return;
+    const W = 400, H = 270, izq = 30, der = 6, arriba = 26, base = H - 44, area = base - arriba;
+    const total = (d) => d.dia + d.noche + d.largo;
+    const mx = [3, 6, 9, 12, 15, 21, 30, 45, 60, 90, 150, 300].find((p) => p >= Math.max(1, ...dias.map(([, d]) => total(d)))) || Math.ceil(Math.max(...dias.map(([, d]) => total(d))) / 100) * 100;
+    let s = "";
+    for (let i = 0; i <= 3; i++) {
+      const y = base - area * i / 3;
+      s += `<line x1="${izq}" y1="${y}" x2="${W - der}" y2="${y}" stroke="${v("--linea")}"/><text x="${izq - 8}" y="${y + 4}" text-anchor="end" font-size="12" fill="${v("--texto-2")}">${Math.round(mx * i / 3)}</text>`;
+    }
+    const esp = (W - izq - der) / Math.max(dias.length, 4), ab = Math.min(40, esp * .64);
+    dias.forEach(([clave, d], i) => {
+      const cx = izq + esp * (i + .5) + (esp * (Math.max(dias.length, 4) - dias.length)) / 2;
+      let y = base;
+      const partes = [["largo", v("--barra-mes")], ["dia", v("--sol")], ["noche", v("--luna")]].filter(([k]) => d[k] > 0);
+      partes.forEach(([k, color], j) => {
+        const h = area * d[k] / mx, arribaDeEsta = j === partes.length - 1, r = arribaDeEsta ? Math.min(7, h, ab / 2) : 0;
+        const y2 = y - h;
+        s += `<path d="M${cx - ab / 2},${y} V${y2 + r} Q${cx - ab / 2},${y2} ${cx - ab / 2 + r},${y2} H${cx + ab / 2 - r} Q${cx + ab / 2},${y2} ${cx + ab / 2},${y2 + r} V${y} Z" fill="${color}"/>`;
+        if (h >= 18) s += `<text x="${cx}" y="${y - h / 2 + 4}" text-anchor="middle" font-size="13" font-weight="800" fill="#0b1220">${Math.round(d[k])}</text>`;
+        y = y2;
+      });
+      const dd = new Date(clave);
+      s += `<text x="${cx}" y="${Math.max(arriba - 8, y - 7)}" text-anchor="middle" font-size="15" font-weight="800" fill="${v("--texto")}">${Math.round(total(d))}</text>`;
+      s += `<text x="${cx}" y="${base + 18}" text-anchor="middle" font-size="14" font-weight="700" fill="${v("--texto")}">${DIAS_SEM[dd.getDay()]}</text>`;
+      s += `<text x="${cx}" y="${base + 33}" text-anchor="middle" font-size="12" fill="${v("--texto-2")}">${dd.getDate()}/${dd.getMonth() + 1}</text>`;
+    });
+    svg.innerHTML = s;
+    ley.innerHTML = `<span>kWh:</span><span><i style="background:${v("--sol")}"></i>De día (mañana → noche)</span><span><i style="background:${v("--luna")}"></i>De noche (noche → mañana)</span>` +
+      (dias.some(([, d]) => d.largo > 0) ? `<span><i style="background:${v("--barra-mes")}"></i>Más de 16 h</span>` : "");
+  }
+
+  function anotarLectura() {
+    const valor = leerLectura($("lectura").value);
+    if (valor == null || valor < 0) { mostrarMensaje("Pon el número que marca el contador."); return; }
+    const lect = leerLecturas(), ultima = lect[lect.length - 1], ahora = Date.now();
+    if (ultima && valor < ultima.v) { mostrarMensaje(`La lectura no puede ser menor que la anterior (${kwh(ultima.v)}). Revisa el número del contador.`); return; }
+    if (ultima) {
+      const porDia = (valor - ultima.v) / Math.max((ahora - ultima.m) / 86400000, 1 / 24);
+      if (porDia > 150 && !confirm(`¿Seguro? Desde la lectura anterior (${kwh(ultima.v)}) serían ${kwh(valor - ultima.v)} kWh, unos ${kwh(porDia)} kWh por día. Revisa el contador.`)) return;
+    }
+    guardar("kc_lecturas", [...lect, { m: ahora, v: valor }].slice(-180));
+    $("lectura").value = ""; pintarLecturas(); mostrarMensaje("Lectura anotada ✅");
+  }
+
+  function borrarUltimaLectura() {
+    const lect = leerLecturas(), u = lect[lect.length - 1];
+    if (!u) { mostrarMensaje("No hay lecturas para borrar"); return; }
+    if (!confirm(`¿Borrar la última lectura?\n${kwh(u.v)} kWh · ${new Date(u.m).toLocaleString("es-DO", { dateStyle: "medium", timeStyle: "short" })}`)) return;
+    guardar("kc_lecturas", lect.slice(0, -1)); pintarLecturas(); mostrarMensaje("Lectura borrada");
+  }
+
+  function usarEstimado() {
+    if (!estimado) return;
+    $("consumo").value = estimado.mes.toFixed(1); $("dias").value = 30; $("proyeccion").value = 30;
+    calcularYMostrar(false);
+    $("tarjeta-total").scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+
+  // ---------- meses copiados de la factura ----------
+  const MESES_LARGOS = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
+  const dMes = $("dialogo-mes");
+  $("mes-f").innerHTML = MESES_LARGOS.map((m, i) => `<option value="${i + 1}">${m}</option>`).join("");
+  const claveMesF = () => { const a = parseInt($("anio-f").value, 10); return a ? `${a}-${String($("mes-f").value).padStart(2, "0")}` : null; };
+  function cargarMesF() {
+    const m = leerMeses().find((x) => x.mes === claveMesF());
+    $("mes-borrar").classList.toggle("oculto", !m);
+    if (m) { $("kwh-f").value = Math.round(m.kwh); $("total-f").value = m.total ?? ""; $("subsidio-f").value = m.subsidio ?? ""; }
+  }
+  $("agregar-mes").addEventListener("click", () => {
+    const hoy = mesActual();
+    $("mes-f").value = String(+hoy.slice(5, 7)); $("anio-f").value = hoy.slice(0, 4);
+    for (const id of ["kwh-f", "total-f", "subsidio-f"]) $(id).value = "";
+    $("mes-error").style.display = "none"; cargarMesF(); dMes.showModal();
+  });
+  $("mes-f").addEventListener("change", cargarMesF);
+  $("anio-f").addEventListener("change", cargarMesF);
+  $("mes-cancelar").addEventListener("click", () => dMes.close());
+  $("mes-borrar").addEventListener("click", () => {
+    const c = claveMesF(); guardar("kc_meses", leerMeses().filter((x) => x.mes !== c));
+    dMes.close(); pintarHistorial(); pintarGrafica(); mostrarMensaje("Mes borrado");
+  });
+  $("form-mes").addEventListener("submit", (ev) => {
+    ev.preventDefault();
+    const error = (t) => { $("mes-error").textContent = t; $("mes-error").style.display = "block"; };
+    const anio = parseInt($("anio-f").value, 10), anioHoy = +mesActual().slice(0, 4), clave = claveMesF();
+    const k = num($("kwh-f").value), tt = $("total-f").value.trim(), ss = $("subsidio-f").value.trim();
+    const total = tt ? num(tt) : null, subsidio = ss ? num(ss) : null;
+    if (!(anio >= 2015 && anio <= anioHoy)) return error(`Pon un año entre 2015 y ${anioHoy}.`);
+    if (clave > mesActual()) return error("Ese mes todavía no ha llegado.");
+    if (!(k > 0 && k <= 100000)) return error("Pon el consumo del mes en kWh (sale en la factura).");
+    if (tt && !(total >= 0)) return error("El total no parece válido.");
+    if (ss && !(subsidio >= 0)) return error("El subsidio no parece válido.");
+    guardarMes({ mes: clave, kwh: k, total, subsidio, deFactura: true });
+    dMes.close(); pintarHistorial(); pintarGrafica(); mostrarMensaje(`${nombreMes(clave, true)} guardado ✅`);
+  });
+
+  // ---------- avisos (notificaciones del navegador) ----------
+  const URL_AVISOS = "https://divisas-rd.juanbatista88.workers.dev/avisos";
+  const soportaPush = "serviceWorker" in navigator && "PushManager" in window && "Notification" in window;
+  const esIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+  const instalada = matchMedia("(display-mode: standalone)").matches || navigator.standalone === true;
+  const deB64u = (s) => Uint8Array.from(atob(s.replace(/-/g, "+").replace(/_/g, "/") + "===".slice((s.length + 3) % 4)), (c) => c.charCodeAt(0));
+  const zonaUsuario = () => { try { return Intl.DateTimeFormat().resolvedOptions().timeZone || ZONA; } catch (_) { return ZONA; } };
+  const postAvisos = (ruta, cuerpo) => fetch(URL_AVISOS + ruta, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(cuerpo) });
+  const estadoAvisos = (t) => { $("estado-avisos").textContent = t; };
+
+  async function suscripcion(crear) {
+    const reg = await navigator.serviceWorker.register("/sw.js");
+    await navigator.serviceWorker.ready;
+    let sub = await reg.pushManager.getSubscription();
+    if (sub || !crear) return sub;
+    const { clave } = await (await fetch(URL_AVISOS + "/clave")).json();
+    sub = await reg.pushManager.subscribe({ userVisibleOnly: true, applicationServerKey: deB64u(clave) });
+    guardar("kc_av_clave", clave);
+    return sub;
+  }
+
+  function configAvisos() {
+    const pagoOn = $("av-pago").checked, dia = parseInt($("dia-pago").value, 10), antes = parseInt($("dias-antes").value, 10);
+    return { lecturas: $("av-lecturas").checked, pago: pagoOn ? { dia, antes } : null };
+  }
+
+  function describirAvisos(c) {
+    const partes = [];
+    if (c.lecturas) partes.push("📟 Lecturas: 7:00 a. m. y 10:00 p. m., y el resumen cada lunes.");
+    if (c.pago) partes.push(`⚡ Pago: día ${c.pago.dia} de cada mes. Aviso ${c.pago.antes} ${c.pago.antes === 1 ? "día" : "días"} antes (9:00 a. m.) y ese mismo día (8:00 a. m.).`);
+    return partes.length ? "✅ Avisos activados en este navegador\n" + partes.join("\n") + "\n(Hora de tu teléfono o computadora)" : "";
+  }
+
+  async function enviarConfig(c, silencioso) {
+    let sub = await suscripcion(true);
+    const cuerpo = () => ({ sub: sub.toJSON(), zona: zonaUsuario(), lecturas: c.lecturas, pago: c.pago, clave: leer("kc_av_clave", null) });
+    let r = await postAvisos("/guardar", cuerpo());
+    if (r.status === 409) {   // el servidor cambió de llave: nos suscribimos de nuevo
+      await sub.unsubscribe(); guardar("kc_av_clave", null);
+      sub = await suscripcion(true); r = await postAvisos("/guardar", cuerpo());
+    }
+    if (!r.ok) throw new Error("servidor " + r.status);
+    guardar("kc_av_sync", hoyISO());
+  }
+
+  async function guardarAvisos() {
+    const c = configAvisos(), b = $("guardar-avisos");
+    if (c.pago && !(c.pago.dia >= 1 && c.pago.dia <= 31)) { mostrarMensaje("Pon tu día de pago, del 1 al 31."); return; }
+    if (c.pago && !(c.pago.antes >= 1 && c.pago.antes <= 15)) { mostrarMensaje("Los días de aviso deben ser de 1 a 15."); return; }
+    b.disabled = true; b.textContent = "Guardando…";
+    try {
+      if (!c.lecturas && !c.pago) {
+        const sub = await suscripcion(false);
+        if (sub) { await postAvisos("/baja", { sub: sub.toJSON() }).catch(() => {}); await sub.unsubscribe(); }
+        guardar("kc_avisos", c); estadoAvisos("Avisos apagados."); $("probar-aviso").classList.add("oculto");
+        mostrarMensaje("Avisos apagados"); return;
+      }
+      if (Notification.permission === "denied") {
+        estadoAvisos("⚠ Bloqueaste los avisos de esta página. Actívalos en el candado 🔒 junto a la dirección → Notificaciones → Permitir.");
+        return;
+      }
+      if ((await Notification.requestPermission()) !== "granted") { estadoAvisos("Sin permiso no te podemos avisar. Toca Guardar otra vez y elige «Permitir»."); return; }
+      await enviarConfig(c);
+      guardar("kc_avisos", c); estadoAvisos(describirAvisos(c)); $("probar-aviso").classList.remove("oculto");
+      mostrarMensaje("Avisos guardados ✅");
+    } catch (err) {
+      estadoAvisos("No se pudieron guardar los avisos. Revisa tu conexión e inténtalo otra vez.");
+    } finally { b.disabled = false; b.textContent = "GUARDAR AVISOS"; }
+  }
+
+  async function probarAviso() {
+    try {
+      const sub = await suscripcion(false);
+      if (!sub) { mostrarMensaje("Primero guarda los avisos."); return; }
+      const r = await (await postAvisos("/probar", { sub: sub.toJSON() })).json();
+      mostrarMensaje(r.ok ? "Mira tus notificaciones 👆" : "No llegó. Guarda los avisos otra vez.");
+    } catch (_) { mostrarMensaje("Sin conexión."); }
+  }
+
+  function iniciarAvisos() {
+    const c = leer("kc_avisos", { lecturas: false, pago: null });
+    $("av-lecturas").checked = !!c.lecturas; $("av-pago").checked = !!c.pago;
+    if (c.pago) { $("dia-pago").value = c.pago.dia; $("dias-antes").value = c.pago.antes; }
+    $("panel-pago").classList.toggle("oculto", !c.pago);
+    $("av-pago").addEventListener("change", () => $("panel-pago").classList.toggle("oculto", !$("av-pago").checked));
+    $("guardar-avisos").addEventListener("click", guardarAvisos);
+    $("probar-aviso").addEventListener("click", probarAviso);
+
+    if (!soportaPush || (esIOS && !instalada)) {
+      $("panel-avisos").classList.add("oculto");
+      $(esIOS && !instalada ? "caja-ios" : "caja-nosoporta").classList.remove("oculto");
+      return;
+    }
+    if (c.lecturas || c.pago) {
+      if (Notification.permission === "granted") {
+        estadoAvisos(describirAvisos(c)); $("probar-aviso").classList.remove("oculto");
+        // una vez al día se le recuerda al servidor (por si el navegador cambió la suscripción)
+        if (leer("kc_av_sync", "") !== hoyISO()) enviarConfig(c).catch(() => {});
+      } else {
+        estadoAvisos("⚠ Los avisos están guardados, pero este navegador ya no tiene permiso. Toca Guardar para activarlos otra vez.");
+      }
+    }
+  }
+
+  // ---------- arranque ----------
+  $("anotar").addEventListener("click", anotarLectura);
+  $("lectura").addEventListener("keydown", (e) => { if (e.key === "Enter") anotarLectura(); });
+  $("borrar-lectura").addEventListener("click", borrarUltimaLectura);
+  $("usar-estimado").addEventListener("click", usarEstimado);
+
+  llenarDistribuidoras(); mostrarTarifa(); pintarHistorial(); pintarGrafica(); pintarLecturas(); iniciarAvisos();
+  actualizarTarifas(false);
+
+  // Para pruebas (no afecta a la web)
+  window.__kc = { calcular, kwhDesdeMonto, INCLUIDA, consumoPorDia, estimarLecturas, leerLectura };
 })();
 </script>
 </body>
