@@ -6,7 +6,9 @@
 <title>Tasa del dólar hoy en RD · Bancos, remesas y combustibles | Divisas RD</title>
 <meta name="description" content="Tasa del dólar y del euro hoy en República Dominicana: compra y venta en Banreservas, Popular, BHD, Caribe Express y casas de cambio. Convertidor, combustibles, cripto y bolsa, actualizado al día.">
 <link rel="canonical" href="https://divisasrd.com/">
-<meta name="theme-color" content="#061428">
+<meta name="theme-color" content="#061428" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#eef3fa" media="(prefers-color-scheme: light)">
+<script>try { const t = localStorage.getItem("dv_tema"); if (t) document.documentElement.dataset.tema = t; } catch (_) {}</script>
 <meta property="og:type" content="website">
 <meta property="og:title" content="Tasa del dólar hoy en RD | Divisas RD">
 <meta property="og:description" content="Compra y venta del dólar en bancos, remesadoras y casas de cambio de República Dominicana, actualizado al día.">
@@ -30,41 +32,78 @@
     --baja: #ff5a5f;
     --tarjeta: rgba(255,255,255,.07);
     --borde: rgba(255,193,7,.25);
+    --texto: #ffffff;            /* texto principal */
+    --acento: #ffc107;           /* títulos y números en dorado */
+    --sobre: var(--sobre);
+    --sobre2: var(--sobre2);
+    --hondo: var(--hondo);  /* fondo de las filas */
+    --campo-bg: var(--campo-bg);
+    --destacada-bg: #08203f;
+    --texto-p: var(--texto-p);
+    --fondo: linear-gradient(180deg, var(--noche) 0%, var(--bandera) 55%, var(--claro) 100%);
+    color-scheme: dark;
+  }
+  /* Modo claro: sigue al teléfono; el botón 🌓 lo cambia y se recuerda */
+  @media (prefers-color-scheme: light) {
+    :root:not([data-tema="oscuro"]) {
+      --suave: #4b5b75; --sube: #12843d; --baja: #d32f2f;
+      --tarjeta: #ffffff; --borde: rgba(0,45,98,.14);
+      --texto: #0e1a2e; --acento: #9a6700;
+      --sobre: rgba(0,45,98,.05); --sobre2: rgba(0,45,98,.09);
+      --hondo: #ffffff; --campo-bg: #ffffff; --destacada-bg: #fff8e1; --texto-p: #2b3a52;
+      --fondo: linear-gradient(180deg, #eef3fa 0%, #f6f8fc 100%);
+      color-scheme: light;
+    }
+  }
+  :root[data-tema="claro"] {
+    --suave: #4b5b75; --sube: #12843d; --baja: #d32f2f;
+    --tarjeta: #ffffff; --borde: rgba(0,45,98,.14);
+    --texto: #0e1a2e; --acento: #9a6700;
+    --sobre: rgba(0,45,98,.05); --sobre2: rgba(0,45,98,.09);
+    --hondo: #ffffff; --campo-bg: #ffffff; --destacada-bg: #fff8e1; --texto-p: #2b3a52;
+    --fondo: linear-gradient(180deg, #eef3fa 0%, #f6f8fc 100%);
+    color-scheme: light;
   }
   * { box-sizing: border-box; }
   html { scroll-behavior: smooth; }
   body {
     margin: 0;
     min-height: 100vh;
-    color: var(--blanco);
-    background: var(--noche) linear-gradient(180deg, var(--noche) 0%, var(--bandera) 55%, var(--claro) 100%);
+    color: var(--texto);
+    background: var(--fondo);
     font: 16px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
   }
-  a { color: var(--dorado); }
+  a { color: var(--acento); }
   .envoltura { max-width: 980px; margin: 0 auto; padding: 0 16px; }
 
   /* Encabezado */
-  header { padding: 20px 0 8px; }
-  .barra { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
-  .marca { display: flex; align-items: center; gap: 12px; text-decoration: none; color: inherit; }
+  /* Encabezado centrado, como KiloClaro: logo, nombre, lema y botoncitos de redes en la esquina */
+  header.envoltura { padding-top: 34px; padding-bottom: 8px; position: relative; text-align: center; }
+  .redes-arriba { position: absolute; left: 16px; top: 18px; display: flex; gap: 8px; }
+  .redes-arriba a { width: 36px; height: 36px; border-radius: 50%; display: grid; place-items: center; text-decoration: none;
+    border: 1px solid var(--borde); background: var(--sobre); color: var(--texto); font-size: 17px; font-weight: 800; }
+  .tema { position: absolute; right: 16px; top: 18px; border: 1px solid var(--borde); background: var(--sobre);
+          color: var(--texto); border-radius: 999px; padding: 6px 12px; font-size: 16px; cursor: pointer; }
+  .barra { display: flex; flex-direction: column; align-items: center; gap: 14px; }
+  .marca { display: flex; flex-direction: column; align-items: center; gap: 10px; text-decoration: none; color: inherit; }
   .logo {
-    width: 46px; height: 46px; border-radius: 50%; flex: none;
+    width: 88px; height: 88px; border-radius: 50%; flex: none;
     display: grid; place-items: center;
     background: linear-gradient(#ffd54f, var(--dorado) 50%, #e0a000);
-    border: 1.5px solid rgba(255,255,255,.7);
-    box-shadow: 0 0 14px rgba(255,193,7,.45);
-    font-weight: 900; font-size: 26px; color: #fff;
+    border: 2.5px solid rgba(255,255,255,.75);
+    box-shadow: 0 0 24px rgba(255,193,7,.45);
+    font-weight: 900; font-size: 50px; color: #fff;
   }
-  .marca b { display: block; font-size: 24px; line-height: 1.1; }
-  .marca span { color: var(--dorado); font-size: 13px; }
-  nav { display: flex; gap: 6px; flex-wrap: wrap; }
+  .marca b { display: block; font-size: 32px; line-height: 1.1; letter-spacing: -0.02em; }
+  .marca span { display: block; margin-top: 4px; color: var(--acento); font-size: 12px; font-weight: 800; letter-spacing: .12em; }
+  nav { display: flex; gap: 6px; flex-wrap: wrap; justify-content: center; }
   nav a {
     color: var(--suave); text-decoration: none; font-size: 14px;
     padding: 6px 10px; border-radius: 999px; border: 1px solid transparent;
   }
-  nav a:hover { border-color: var(--borde); color: #fff; }
+  nav a:hover { border-color: var(--borde); color: var(--texto); }
 
-  h1 { font-size: clamp(24px, 5vw, 34px); margin: 18px 0 4px; line-height: 1.2; }
+  h1 { font-size: clamp(22px, 5vw, 32px); margin: 16px 0 4px; line-height: 1.2; }
   .sub { color: var(--suave); margin: 0 0 18px; }
 
   /* Tarjetas */
@@ -75,14 +114,14 @@
     padding: 16px;
     margin-bottom: 16px;
   }
-  .tarjeta h2 { color: var(--dorado); font-size: 20px; margin: 0 0 4px; }
+  .tarjeta h2 { color: var(--acento); font-size: 20px; margin: 0 0 4px; }
   .nota { color: var(--suave); font-size: 13px; margin: 0 0 10px; }
 
   .destacada {
     border: 2px solid transparent;
     background:
       linear-gradient(180deg, rgba(255,193,7,.18), rgba(255,255,255,.05)) padding-box,
-      linear-gradient(#08203f, #08203f) padding-box,
+      linear-gradient(var(--destacada-bg), var(--destacada-bg)) padding-box,
       linear-gradient(135deg, #ffe082, var(--dorado), #e0a000) border-box;
     box-shadow: 0 6px 24px rgba(255,193,7,.18);
   }
@@ -98,14 +137,14 @@
     padding: 8px 10px; margin: 6px 0;
     border-radius: 14px;
     border: 1px solid color-mix(in srgb, var(--c) 65%, transparent);
-    background: color-mix(in srgb, var(--c) 14%, rgba(6,20,40,.55));
+    background: color-mix(in srgb, var(--c) 14%, var(--hondo));
     box-shadow: 0 2px 6px color-mix(in srgb, var(--c) 25%, transparent);
     cursor: pointer;
     transition: background .15s, box-shadow .15s;
   }
   .fila.abierta {
     border-width: 2px; border-color: var(--c);
-    background: color-mix(in srgb, var(--c) 28%, rgba(6,20,40,.55));
+    background: color-mix(in srgb, var(--c) 28%, var(--hondo));
     box-shadow: 0 4px 16px color-mix(in srgb, var(--c) 45%, transparent);
     flex-wrap: wrap;
   }
@@ -115,18 +154,18 @@
   .campana {
     position: absolute; right: 0; top: 0;
     padding: 6px 10px; border-radius: 999px; font-size: 13px; font-weight: 700;
-    border: 1px solid var(--dorado); background: rgba(255,255,255,.15); color: #fff; cursor: pointer;
+    border: 1px solid var(--dorado); background: var(--sobre2); color: var(--texto); cursor: pointer;
   }
   .campana.on { background: var(--dorado); color: var(--noche); }
   .fila .vigilado { font-size: 12px; margin-left: -4px; }
   .fila.abierta .vigilado { display: none; }
   .avisos { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-top: 12px;
-            padding: 10px 12px; border-radius: 12px; background: rgba(255,255,255,.08); }
+            padding: 10px 12px; border-radius: 12px; background: var(--sobre); }
   .avisos p { margin: 0; flex: 1; min-width: 200px; font-size: 14px; }
   .avisos small { display: block; color: var(--suave); font-size: 12px; }
   .avisos button { padding: 8px 14px; border-radius: 999px; border: 0; background: var(--dorado);
                    color: var(--noche); font-weight: 800; cursor: pointer; font-size: 14px; }
-  .avisos button:disabled { background: rgba(255,255,255,.2); color: var(--suave); cursor: default; }
+  .avisos button:disabled { background: var(--sobre2); color: var(--suave); cursor: default; }
   .fila.abierta .completo { display: block; }
   .insignia {
     width: 34px; height: 34px; border-radius: 50%; flex: none;
@@ -155,7 +194,7 @@
   label { color: var(--suave); font-size: 13px; display: block; margin-bottom: 4px; }
   input, select {
     width: 100%; padding: 10px 12px; border-radius: 12px;
-    border: 1px solid var(--suave); background: rgba(6,20,40,.6); color: #fff;
+    border: 1px solid var(--suave); background: var(--campo-bg); color: var(--texto);
     font-size: 16px;
   }
   select option { color: #000; }
@@ -163,10 +202,10 @@
   .pastillas { display: flex; gap: 8px; flex-wrap: wrap; }
   .pastillas button {
     flex: 1; min-width: 130px; padding: 10px; border-radius: 999px; font-size: 15px;
-    border: 1px solid var(--dorado); background: transparent; color: #fff; cursor: pointer;
+    border: 1px solid var(--dorado); background: transparent; color: var(--texto); cursor: pointer;
   }
   .pastillas button.activo { background: var(--dorado); color: var(--noche); font-weight: 700; }
-  .resultado { font-size: clamp(24px, 6vw, 32px); font-weight: 800; color: var(--dorado); margin: 12px 0 0; }
+  .resultado { font-size: clamp(24px, 6vw, 32px); font-weight: 800; color: var(--acento); margin: 12px 0 0; }
   .detalle { color: var(--suave); font-size: 13px; }
 
   .rejilla { display: grid; grid-template-columns: repeat(auto-fit, minmax(290px, 1fr)); gap: 16px; }
@@ -186,14 +225,20 @@
     display: inline-block; padding: 12px 18px; border-radius: 999px;
     background: var(--dorado); color: var(--noche); font-weight: 800; text-decoration: none;
   }
-  .boton.apagado { background: rgba(255,255,255,.15); color: var(--suave); }
-  .botones-app { display: flex; gap: 10px; flex-wrap: wrap; }
+  .boton.apagado { background: var(--sobre2); color: var(--suave); }
+  .botones-app { display: flex; gap: 10px; flex-wrap: wrap; width: 100%; justify-content: center; margin-top: 4px; }
+  /* Botón negro tipo tienda (igual que en KiloClaro) */
+  .insignia-play { display: inline-flex; align-items: center; gap: 10px; min-height: 50px; padding: 7px 18px 7px 14px; border-radius: 12px;
+    background: #0b0f17; color: #fff; border: 1px solid #3a4152; line-height: 1.1; cursor: default; }
+  .insignia-play svg { width: 26px; height: 26px; flex: none; }
+  .insignia-play small { display: block; font-size: 10px; letter-spacing: .06em; text-transform: uppercase; opacity: .85; }
+  .insignia-play b { display: block; font-size: 18px; font-weight: 700; }
   .boton.ig { background: linear-gradient(45deg, #f09433, #dc2743 50%, #bc1888); color: #fff; }
   .boton.x { background: #000; color: #fff; }
 
-  .texto h2 { color: var(--dorado); font-size: 18px; margin: 0 0 6px; }
+  .texto h2 { color: var(--acento); font-size: 18px; margin: 0 0 6px; }
   .texto h3 { font-size: 16px; margin: 14px 0 4px; }
-  .texto p { color: #dce5f3; margin: 0 0 8px; }
+  .texto p { color: var(--texto-p); margin: 0 0 8px; }
 
   footer { color: var(--suave); font-size: 13px; padding: 8px 0 32px; text-align: center; }
   footer a { color: var(--suave); }
@@ -210,10 +255,15 @@
 <body>
 
 <header class="envoltura">
+  <button class="tema" id="tema" type="button" aria-label="Cambiar modo claro u oscuro">🌓</button>
+  <span class="redes-arriba">
+    <a href="https://www.instagram.com/divisas_rd/" target="_blank" rel="noopener" aria-label="Divisas RD en Instagram">📸</a>
+    <a href="https://x.com/DivisasRD" target="_blank" rel="noopener" aria-label="Divisas RD en X">𝕏</a>
+  </span>
   <div class="barra">
     <a class="marca" href="/">
       <div class="logo" aria-hidden="true">$</div>
-      <div><b>Divisas</b><span>Dólar, bolsa, cripto y combustibles</span></div>
+      <div><b>Divisas RD</b><span>DÓLAR, BOLSA, CRIPTO Y COMBUSTIBLES</span></div>
     </a>
     <nav aria-label="Secciones">
       <a href="#bancos">Bancos</a>
@@ -290,9 +340,7 @@
     <p><b id="t-app">Divisas RD para Android</b><br><span class="nota">Avisos cuando cambia la tasa de tu banco o el precio de la gasolina, y el dólar del día en tu pantalla de bloqueo.</span></p>
     <!-- Cuando la app esté publicada, cambia este botón por el enlace de Google Play -->
     <span class="botones-app">
-      <span class="boton apagado">Próximamente en Google Play</span>
-      <a class="boton ig" href="https://www.instagram.com/divisas_rd/" target="_blank" rel="noopener">📸 @divisas_rd</a>
-      <a class="boton x" href="https://x.com/DivisasRD" target="_blank" rel="noopener">𝕏 @DivisasRD</a>
+      <span class="insignia-play" title="La app todavía no está publicada"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#fff" d="M7 4.5v15c0 .8.9 1.3 1.6.9l12-7.5c.6-.4.6-1.4 0-1.8l-12-7.5C7.9 3.2 7 3.7 7 4.5z"/></svg><span><small>Próximamente en</small><b>Google Play</b></span></span>
     </span>
   </section>
 
@@ -561,7 +609,7 @@
       const [ic, col] = COMB[p.clave] || ["?", "#607D8B"];
       return fila(col, ic, p.nombre, "Precio oficial por " + p.unidad,
         `<div class="nombre"><b>${esc(p.nombre)}</b><small>por ${esc(p.unidad)}</small></div>
-         <div class="valor"><b style="color:var(--dorado)">RD$ ${fmt(p.precio)}</b></div>`, "rd:" + p.clave);
+         <div class="valor"><b style="color:var(--acento)">RD$ ${fmt(p.precio)}</b></div>`, "rd:" + p.clave);
     }).join("");
   }
 
@@ -573,7 +621,7 @@
       fila(ESTADOS[e.nombre] || "#FFC107", "", e.nombre, e.dieselRegional ? "Diésel: promedio de su región" : "",
         `<div class="nombre"><b>${esc(e.nombre)}</b></div>
          <div class="num sube">${g(e.regular)}</div>
-         <div class="num" style="color:var(--dorado)">${g(e.premium)}</div>
+         <div class="num" style="color:var(--acento)">${g(e.premium)}</div>
          <div class="num">${g(e.diesel)}${e.dieselRegional && e.diesel != null ? "*" : ""}</div>`, "us:" + e.nombre)
     ).join("");
   }
@@ -770,6 +818,15 @@
   cargarTodo();
   programar();
 })();
+</script>
+<script>
+  // Modo claro / oscuro: sigue al teléfono y el botón 🌓 lo cambia (se recuerda en este navegador)
+  document.getElementById("tema").addEventListener("click", () => {
+    const oscuroAhora = getComputedStyle(document.documentElement).colorScheme.includes("dark");
+    const nuevo = oscuroAhora ? "claro" : "oscuro";
+    document.documentElement.dataset.tema = nuevo;
+    try { localStorage.setItem("dv_tema", nuevo); } catch (_) {}
+  });
 </script>
 </body>
 </html>
