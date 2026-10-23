@@ -1,5 +1,6 @@
 import { readFile } from "node:fs/promises";
 import { TwitterApi } from "twitter-api-v2";
+import { parseTweet } from "twitter-text";
 
 const [imagePath, textPath] = process.argv.slice(2);
 const env = process.env;
@@ -13,10 +14,21 @@ if (!imagePath || !textPath) {
 
 const original = (await readFile(textPath, "utf8")).trim();
 const suffix = "\n\nhttps://divisasrd.com";
-const maxCaptionCodePoints = 250;
-let caption = Array.from(original).slice(0, maxCaptionCodePoints).join("").trimEnd();
-if (caption.length < original.length) caption = caption.replace(/[\\s,;:]+$/, "") + "…";
-caption += suffix;
+let body = original;
+let text = body + suffix;
+
+// X uses weighted character counting (URLs have a fixed weight). Shorten safely
+// until the post fits; don't split surrogate pairs or leave trailing punctuation.
+while (!parseTweet(text).valid && Array.from(body).length > 0) {
+  const chars = Array.from(body);
+  chars.pop();
+  body = chars.join("").replace(/[\\s,;:]+$/, "").trimEnd();
+  text = body + "…"+ suffix;
+}
+const parsed = parseTweet(text);
+if (!parsed.valid || parsed.weightedLength > 280) {
+  throw new Error("The generated caption could not be shortened to X's post limit.");
+}
 
 const client = new TwitterApi({
   appKey: env.X_API_KEY,
@@ -25,8 +37,9 @@ const client = new TwitterApi({
   accessSecret: env.X_ACCESS_TOKEN_SECRET,
 });
 
+console.log(`Caption length for X: ${parsed.weightedLength}/280`);
 console.log("Uploading image to X…");
 const mediaId = await client.v1.uploadMedia(imagePath);
 console.log("Publishing post to X…");
-const post = await client.v2.tweet({ text: caption, media: { media_ids: [mediaId] } });
+const post = await client.v2.tweet({ text, media: { media_ids: [mediaId] } });
 console.log(`X post published: ${post.data.id}`);
