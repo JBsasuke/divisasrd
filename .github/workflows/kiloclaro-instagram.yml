@@ -8,6 +8,8 @@
 #   Si cambian las tarifas de la luz en el servidor, ese día sale la tabla del precio del kWh.
 #  GitHub a veces atrasa o se salta los horarios: cada publicación tiene un segundo intento
 #  que solo publica si la primera no salió (ig/kc/publicado-*.txt guarda el último día).
+#  Además, el worker de Cloudflare (divisas-rd) arranca este trabajo a las mismas horas
+#  con publicar=auto: si GitHub se salta el horario, igual sale; si no, no se repite.
 #  Las imágenes se suben a divisasrd.com/ig/kc/ (el mismo sitio que ya usa Divisas RD).
 #  RD está siempre en UTC-4, por eso la hora en UTC es fija.
 # =====================================================================
@@ -27,10 +29,7 @@ on:
         options: [auto, clima, precio, consejo, truco, frase, recordatorio, ejemplo]
         default: auto
       publicar:
-        description: "¿Publicar en Instagram? (no = solo crear la imagen)"
-        type: choice
-        options: ["no", "si"]
-        default: "no"
+        if: (github.event_name == 'schedule' || inputs.publicar == 'auto') && steps.plan.outputs.modo == 'tasa' && steps.plan.outputs.publicar == 'si'
 
 permissions:
   contents: write
@@ -50,14 +49,22 @@ jobs:
       - name: Decidir qué se publica
         id: plan
         run: |
-          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ] && [ "${{ inputs.publicar }}" != "auto" ]; then
             echo "tipo=${{ inputs.tipo }}" >> "$GITHUB_OUTPUT"
             echo "publicar=${{ inputs.publicar }}" >> "$GITHUB_OUTPUT"
           else
-            case "${{ github.event.schedule }}" in
-              "7 13 * * *"|"37 14 * * *") TIPO=clima; MARCA=ig/kc/publicado-clima.txt ;;
-              *) TIPO=auto; MARCA=ig/kc/publicado-dia.txt ;;
-            esac
+            # Horario de GitHub, o "auto" = lo manda el worker de Cloudflare a la misma hora
+            if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+              case "${{ inputs.tipo }}" in
+                clima) TIPO=clima; MARCA=ig/kc/publicado-clima.txt ;;
+                *) TIPO=auto; MARCA=ig/kc/publicado-dia.txt ;;
+              esac
+            else
+              case "${{ github.event.schedule }}" in
+                "7 13 * * *"|"37 14 * * *") TIPO=clima; MARCA=ig/kc/publicado-clima.txt ;;
+                *) TIPO=auto; MARCA=ig/kc/publicado-dia.txt ;;
+              esac
+            fi
             echo "tipo=$TIPO" >> "$GITHUB_OUTPUT"
             echo "marca=$MARCA" >> "$GITHUB_OUTPUT"
             HOY=$(TZ=America/Santo_Domingo date +%F)
@@ -150,7 +157,7 @@ jobs:
 
       # El token de Instagram dura 60 días: cada lunes se renueva solo (necesita el secret GH_PAT)
       - name: Renovar el token de Instagram (lunes)
-        if: github.event_name == 'schedule' && steps.plan.outputs.tipo == 'auto' && steps.plan.outputs.publicar == 'si'
+        if: (github.event_name == 'schedule' || inputs.publicar == 'auto') && steps.plan.outputs.tipo == 'auto' && steps.plan.outputs.publicar == 'si'
         env:
           IG_TOKEN: ${{ secrets.KC_IG_TOKEN }}
           GH_TOKEN: ${{ secrets.GH_PAT }}

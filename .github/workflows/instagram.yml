@@ -6,6 +6,8 @@
 #  GitHub a veces atrasa o se salta los horarios (sobre todo a la hora en punto):
 #  por eso se usan minutos "raros" y un segundo intento que solo publica si el
 #  primero no salió (ig/publicado-tasa.txt guarda el último día publicado).
+#  Además, el worker de Cloudflare (divisas-rd) arranca este trabajo a las mismas horas
+#  con publicar=auto: si GitHub se salta el horario, igual sale; si no, no se repite.
 # =====================================================================
 name: Instagram
 
@@ -23,9 +25,9 @@ on:
         options: [tasa, combustibles]
         default: tasa
       publicar:
-        description: "¿Publicar en Instagram? (no = solo crear la imagen)"
+        description: "¿Publicar en Instagram? (no = solo crear la imagen · auto = como el horario: no repite si ya salió hoy)"
         type: choice
-        options: ["no", "si"]
+        options: ["no", "si", "auto"]
         default: "no"
 
 permissions:
@@ -45,7 +47,16 @@ jobs:
       - name: Decidir qué se publica
         id: plan
         run: |
-          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+          # "auto" = lo manda el worker de Cloudflare a la hora del horario (por si GitHub se lo salta)
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ] && [ "${{ inputs.publicar }}" = "auto" ]; then
+            echo "modo=${{ inputs.modo }}" >> "$GITHUB_OUTPUT"
+            HOY=$(TZ=America/Santo_Domingo date +%F)
+            if [ "${{ inputs.modo }}" = "tasa" ] && [ "$(cat ig/publicado-tasa.txt 2>/dev/null)" = "$HOY" ]; then
+              echo "La tasa de hoy ya se publicó"; echo "publicar=ya" >> "$GITHUB_OUTPUT"
+            else
+              echo "publicar=si" >> "$GITHUB_OUTPUT"
+            fi
+          elif [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
             echo "modo=${{ inputs.modo }}" >> "$GITHUB_OUTPUT"
             echo "publicar=${{ inputs.publicar }}" >> "$GITHUB_OUTPUT"
           elif [ "${{ github.event.schedule }}" = "13 12 * * *" ] || [ "${{ github.event.schedule }}" = "43 13 * * *" ]; then
@@ -150,7 +161,7 @@ jobs:
       # El token de Instagram dura 60 días. Cada lunes se renueva y se guarda solo,
       # si existe el secret GH_PAT (token de GitHub con permiso para editar secrets).
       - name: Renovar el token de Instagram (lunes)
-        if: github.event_name == 'schedule' && steps.plan.outputs.modo == 'tasa' && steps.plan.outputs.publicar == 'si'
+        if: (github.event_name == 'schedule' || inputs.publicar == 'auto') && steps.plan.outputs.modo == 'tasa' && steps.plan.outputs.publicar == 'si'
         env:
           IG_TOKEN: ${{ secrets.IG_TOKEN }}
           GH_TOKEN: ${{ secrets.GH_PAT }}
