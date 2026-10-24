@@ -3,6 +3,7 @@
   "dolar": 61.415769,
   "dolarAnterior": 61.41887,
   "usadas": [
+    "gasolina_igual:4",
     "finde:1",
     "mejor_compra:0",
     "mejor_compra:1",
@@ -12,5 +13,21 @@
     "mejor_compra:5",
     "mejor_compra:6",
     "btc_baja:3"
-  ]
+  ],
+  "gasolina": {
+    "semana": "24 al 30 de octubre del 2026",
+    "precios": {
+      "premium": 358.1,
+      "regular": 317.5,
+      "gasoilOptimo": 318.1,
+      "gasoilRegular": 270.8,
+      "glp": 135.2,
+      "gasNatural": 43.97,
+      "avtur": null,
+      "kerosene": null,
+      "fuelOil6": null,
+      "fuelOil1": null
+    },
+    "anteriores": null
+  }
 }
