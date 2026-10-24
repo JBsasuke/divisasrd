@@ -236,6 +236,27 @@
   .boton.ig { background: linear-gradient(45deg, #f09433, #dc2743 50%, #bc1888); color: #fff; }
   .boton.x { background: #000; color: #fff; }
 
+  /* Tarjeta de Western Union: abre su calculadora oficial */
+  a.wu {
+    display: flex; align-items: center; gap: 14px; text-decoration: none; color: var(--texto);
+    border: 1.5px solid color-mix(in srgb, var(--dorado) 80%, transparent);
+    background: linear-gradient(90deg, rgba(255,193,7,.20), rgba(255,193,7,.06)), var(--tarjeta);
+    box-shadow: 0 4px 18px rgba(255,193,7,.16);
+    transition: box-shadow .15s, transform .15s;
+  }
+  a.wu:hover, a.wu:focus-visible { box-shadow: 0 6px 24px rgba(255,193,7,.32); transform: translateY(-1px); }
+  .wu-logo { width: 46px; height: 46px; flex: none; border-radius: 50%; display: grid; place-items: center;
+    background: #002d62; color: #fff; font-weight: 800; border: 1px solid rgba(255,255,255,.35); }
+  .wu-txt { flex: 1; min-width: 0; }
+  .wu-txt b { display: block; font-size: 18px; }
+  .wu-txt small { display: block; color: var(--acento); font-weight: 700; font-size: 12px; }
+  .wu-txt span { display: block; color: var(--suave); font-size: 13px; margin-top: 4px; line-height: 1.35; }
+  .wu-ir { flex: none; padding: 9px 14px; border-radius: 999px; background: var(--dorado); color: var(--noche); font-weight: 800; font-size: 14px; white-space: nowrap; }
+  @media (max-width: 420px) {
+    a.wu { flex-wrap: wrap; }
+    .wu-ir { width: 100%; text-align: center; }
+  }
+
   .texto h2 { color: var(--acento); font-size: 18px; margin: 0 0 6px; }
   .texto h3 { font-size: 16px; margin: 14px 0 4px; }
   .texto p { color: var(--texto-p); margin: 0 0 8px; }
@@ -301,6 +322,17 @@
     <div id="lista-bancos"><div class="cargando">Cargando tasas…</div></div>
     <p class="nota" id="act-bancos" style="margin-top:8px"></p>
   </section>
+
+  <!-- Western Union: su tasa cambia según el monto, así que se abre su calculadora oficial -->
+  <a class="tarjeta wu" href="https://www.westernunion.com/us/en/send-money-to-dominican-republic.html" target="_blank" rel="noopener">
+    <span class="wu-logo" aria-hidden="true">WU</span>
+    <span class="wu-txt">
+      <b>Western Union</b>
+      <small>Remesas de EE. UU. a RD</small>
+      <span>Su tasa cambia según el monto y cómo lo envías. Toca para verla en su calculadora oficial.</span>
+    </span>
+    <span class="wu-ir">Ver tasa ↗</span>
+  </a>
 
   <!-- Convertidor -->
   <section class="tarjeta" id="convertidor" aria-labelledby="t-conv">
