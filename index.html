@@ -236,26 +236,31 @@
   .boton.ig { background: linear-gradient(45deg, #f09433, #dc2743 50%, #bc1888); color: #fff; }
   .boton.x { background: #000; color: #fff; }
 
-  /* Tarjeta de Western Union: abre su calculadora oficial */
-  a.wu {
-    display: flex; align-items: center; gap: 14px; text-decoration: none; color: var(--texto);
+  /* Tarjeta de Western Union */
+  .wu {
     border: 1.5px solid color-mix(in srgb, var(--dorado) 80%, transparent);
     background: linear-gradient(90deg, rgba(255,193,7,.20), rgba(255,193,7,.06)), var(--tarjeta);
     box-shadow: 0 4px 18px rgba(255,193,7,.16);
-    transition: box-shadow .15s, transform .15s;
   }
-  a.wu:hover, a.wu:focus-visible { box-shadow: 0 6px 24px rgba(255,193,7,.32); transform: translateY(-1px); }
+  .wu-cab { display: flex; align-items: center; gap: 12px; }
+  .wu-cab b { display: block; font-size: 18px; }
+  .wu-cab small { display: block; color: var(--acento); font-weight: 700; font-size: 12px; }
   .wu-logo { width: 46px; height: 46px; flex: none; border-radius: 50%; display: grid; place-items: center;
     background: #002d62; color: #fff; font-weight: 800; border: 1px solid rgba(255,255,255,.35); }
-  .wu-txt { flex: 1; min-width: 0; }
-  .wu-txt b { display: block; font-size: 18px; }
-  .wu-txt small { display: block; color: var(--acento); font-weight: 700; font-size: 12px; }
-  .wu-txt span { display: block; color: var(--suave); font-size: 13px; margin-top: 4px; line-height: 1.35; }
-  .wu-ir { flex: none; padding: 9px 14px; border-radius: 999px; background: var(--dorado); color: var(--noche); font-weight: 800; font-size: 14px; white-space: nowrap; }
-  @media (max-width: 420px) {
-    a.wu { flex-wrap: wrap; }
-    .wu-ir { width: 100%; text-align: center; }
-  }
+  .wu-pregunta { color: var(--suave); font-size: 13px; margin: 12px 0 6px; }
+  .wu-paises { display: flex; gap: 6px; overflow-x: auto; padding-bottom: 4px; scrollbar-width: thin; }
+  .wu-paises button { flex: none; padding: 7px 12px; border-radius: 999px; font-size: 14px; cursor: pointer;
+    border: 1px solid var(--borde); background: var(--sobre); color: var(--texto); }
+  .wu-paises button.activo { background: var(--dorado); border-color: var(--dorado); color: var(--noche); font-weight: 700; }
+  .wu-cajas { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .wu-caja { border: 1px solid var(--borde); background: var(--sobre); border-radius: 12px; padding: 8px 10px; }
+  .wu-caja small { display: block; color: var(--suave); font-size: 12px; }
+  .wu-caja strong { display: block; color: var(--acento); font-size: 20px; font-weight: 800; }
+  .wu-nota { color: var(--suave); font-size: 13px; margin: 8px 0 0; line-height: 1.4; }
+  .wu-nota b { color: var(--texto); }
+  .wu-ir { display: block; margin-top: 12px; padding: 10px 14px; border-radius: 999px; text-align: center;
+    background: var(--dorado); color: var(--noche); font-weight: 800; text-decoration: none; }
+  .wu-ir:hover, .wu-ir:focus-visible { box-shadow: 0 4px 16px rgba(255,193,7,.4); }
 
   .texto h2 { color: var(--acento); font-size: 18px; margin: 0 0 6px; }
   .texto h3 { font-size: 16px; margin: 14px 0 4px; }
@@ -323,34 +328,44 @@
     <p class="nota" id="act-bancos" style="margin-top:8px"></p>
   </section>
 
-  <!-- Western Union: su tasa cambia según el monto, así que se abre su calculadora oficial -->
-  <a class="tarjeta wu" id="wu" href="https://www.westernunion.com/us/en/send-money-to-dominican-republic.html" target="_blank" rel="noopener">
-    <span class="wu-logo" aria-hidden="true">WU</span>
-    <span class="wu-txt">
-      <b>Western Union</b>
-      <small id="wu-pais">Remesas desde Estados Unidos a RD</small>
-      <span>Se manda en <b id="wu-moneda" style="display:inline;font-size:inherit">dólares (USD)</b>. En RD lo recibes en pesos o en dólares. La tasa cambia según el monto y cómo lo envías: toca para verla en su calculadora oficial.</span>
-    </span>
-    <span class="wu-ir">Ver tasa ↗</span>
-  </a>
+  <!-- Western Union: el servidor intenta leer su tasa; si no puede, queda solo el botón de su calculadora -->
+  <section class="tarjeta wu" id="wu" aria-labelledby="t-wu">
+    <div class="wu-cab">
+      <span class="wu-logo" aria-hidden="true">WU</span>
+      <div><b id="t-wu">Western Union</b><small id="wu-pais">Remesas desde EE. UU. a RD</small></div>
+    </div>
+    <p class="wu-pregunta">¿Desde dónde te mandan?</p>
+    <div class="wu-paises" id="wu-paises" role="group" aria-label="País desde donde mandan"></div>
+    <div id="wu-tasa" hidden>
+      <p class="wu-pregunta" id="wu-por-cada"></p>
+      <div class="wu-cajas">
+        <div class="wu-caja"><small>En pesos</small><strong id="wu-pesos">—</strong></div>
+        <div class="wu-caja"><small>En dólares</small><strong id="wu-dolares">—</strong></div>
+      </div>
+      <p class="wu-nota" id="wu-ejemplo"></p>
+      <p class="nota" id="wu-hora" style="margin:6px 0 0"></p>
+    </div>
+    <p class="wu-nota" id="wu-sin-tasa">Se manda en <b id="wu-moneda">dólares (USD)</b>. En RD lo recibes en pesos o en dólares. La tasa cambia según el monto y cómo lo envías: tócala para verla en su calculadora oficial.</p>
+    <a class="wu-ir" id="wu-ir" href="https://www.westernunion.com/us/en/send-money-to-dominican-republic.html" target="_blank" rel="noopener">Abrir su calculadora ↗</a>
+  </section>
   <script>
-  // Western Union: abre la calculadora del país desde donde se manda.
-  // El país sale de la zona horaria del navegador (y si no, del idioma). Si no está en la lista: EE. UU.
+  // Western Union: botoncitos de país (el del navegador ya marcado) y la tasa que logre leer el servidor.
   (function () {
     var u = function (p, i, pag) { return "https://www.westernunion.com/" + p + "/" + (i || "en") + "/" + (pag || "send-money-to-dominican-republic") + ".html"; };
-    var P = {
-      us: ["Estados Unidos", "dólares (USD)", u("us")],
-      pr: ["Puerto Rico", "dólares (USD)", u("us")],
-      ca: ["Canadá", "dólares canadienses (CAD)", u("ca", "en", "send-money-to-the-dominican-republic")],
-      es: ["España", "euros (EUR)", u("es", "es")],
-      it: ["Italia", "euros (EUR)", u("it")],
-      de: ["Alemania", "euros (EUR)", u("de")],
-      fr: ["Francia", "euros (EUR)", u("fr")],
-      be: ["Bélgica", "euros (EUR)", u("be")],
-      at: ["Austria", "euros (EUR)", u("at")],
-      ch: ["Suiza", "francos suizos (CHF)", u("ch")],
-      gb: ["Reino Unido", "libras (GBP)", u("gb")]
-    };
+    // código: [nombre, bandera, moneda, símbolo, calculadora]
+    var P = [
+      ["us", "EE. UU.", "🇺🇸", "dólares (USD)", "US$", u("us")],
+      ["es", "España", "🇪🇸", "euros (EUR)", "€", u("es", "es")],
+      ["it", "Italia", "🇮🇹", "euros (EUR)", "€", u("it")],
+      ["pr", "Puerto Rico", "🇵🇷", "dólares (USD)", "US$", u("us")],
+      ["ca", "Canadá", "🇨🇦", "dólares canadienses (CAD)", "C$", u("ca", "en", "send-money-to-the-dominican-republic")],
+      ["de", "Alemania", "🇩🇪", "euros (EUR)", "€", u("de")],
+      ["fr", "Francia", "🇫🇷", "euros (EUR)", "€", u("fr")],
+      ["be", "Bélgica", "🇧🇪", "euros (EUR)", "€", u("be")],
+      ["at", "Austria", "🇦🇹", "euros (EUR)", "€", u("at")],
+      ["ch", "Suiza", "🇨🇭", "francos suizos (CHF)", "CHF", u("ch")],
+      ["gb", "Reino Unido", "🇬🇧", "libras (GBP)", "£", u("gb")]
+    ];
     var Z = {
       "Europe/Madrid": "es", "Atlantic/Canary": "es", "Africa/Ceuta": "es",
       "Europe/Rome": "it", "Europe/Berlin": "de", "Europe/Paris": "fr", "Europe/Brussels": "be",
@@ -358,19 +373,50 @@
       "America/Toronto": "ca", "America/Montreal": "ca", "America/Vancouver": "ca", "America/Edmonton": "ca",
       "America/Winnipeg": "ca", "America/Halifax": "ca", "America/Regina": "ca", "America/St_Johns": "ca", "America/Moncton": "ca"
     };
+    var buscar = function (c) { for (var i = 0; i < P.length; i++) if (P[i][0] === c) return P[i]; return null; };
     var cod = null;
     try { cod = Z[Intl.DateTimeFormat().resolvedOptions().timeZone] || null; } catch (e) {}
     if (!cod) {
       var langs = navigator.languages || [navigator.language || ""];
       for (var k = 0; k < langs.length && !cod; k++) {
         var r = (langs[k].split("-")[1] || "").toLowerCase();
-        if (P[r]) cod = r;
+        if (buscar(r)) cod = r;
       }
     }
-    var d = P[cod] || P.us;
-    document.getElementById("wu").href = d[2];
-    document.getElementById("wu-pais").textContent = "Remesas desde " + d[0] + " a RD";
-    document.getElementById("wu-moneda").textContent = d[1];
+    var actual = buscar(cod) || P[0];
+    var datos = null;
+    var $ = function (id) { return document.getElementById(id); };
+    var f2 = function (n) { return n.toLocaleString("es-DO", { minimumFractionDigits: 2, maximumFractionDigits: 2 }); };
+
+    var caja = $("wu-paises");
+    P.forEach(function (p) {
+      var b = document.createElement("button");
+      b.type = "button"; b.textContent = p[2] + " " + p[1]; b.dataset.c = p[0];
+      b.onclick = function () { actual = p; pintar(); };
+      caja.appendChild(b);
+    });
+
+    function pintar() {
+      [].forEach.call(caja.children, function (b) { var on = b.dataset.c === actual[0]; b.classList.toggle("activo", on); b.setAttribute("aria-pressed", on); });
+      $("wu-pais").textContent = "Remesas desde " + actual[1] + " a RD";
+      $("wu-moneda").textContent = actual[3];
+      $("wu-ir").href = actual[5];
+      var t = datos && datos.paises && datos.paises[actual[0] === "pr" ? "us" : actual[0]];
+      var hay = !!(t && t.aPesos);
+      $("wu-tasa").hidden = !hay;
+      $("wu-sin-tasa").hidden = hay;
+      if (!hay) return;
+      $("wu-por-cada").textContent = "Por cada " + actual[4] + " 1 que mandan, en RD te llegan:";
+      $("wu-pesos").textContent = "RD$ " + f2(t.aPesos);
+      $("wu-dolares").textContent = actual[4] === "US$" ? "US$ 1.00" : (t.aDolares ? "US$ " + f2(t.aDolares) : "En su calculadora");
+      var ej = "Ejemplo: si mandan " + actual[4] + " 100, llegan unos RD$ " + Math.round(100 * t.aPesos).toLocaleString("es-DO") + ".";
+      if (t.aPesosMinima && t.aPesosMinima < t.aPesos) ej += " Según la forma de envío puede bajar hasta RD$ " + f2(t.aPesosMinima) + ".";
+      $("wu-ejemplo").textContent = ej + " Sin contar la comisión.";
+      $("wu-hora").textContent = datos.actualizado ? "Tasa de Western Union revisada: " + new Date(datos.actualizado).toLocaleString("es-DO", { timeZone: "America/Santo_Domingo", hour: "numeric", minute: "2-digit", day: "numeric", month: "short" }) + " (hora de RD)" : "";
+    }
+    pintar();
+    fetch("https://divisas-rd.juanbatista88.workers.dev/westernunion").then(function (r) { return r.ok ? r.json() : null; })
+      .then(function (d) { datos = d; pintar(); }).catch(function () {});
   })();
   </script>
 
