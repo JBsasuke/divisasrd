@@ -2,6 +2,9 @@
   "usadas": {
     "clima-tormenta": [
       "to2"
+    ],
+    "clima-lluvia": [
+      "ll2"
     ]
   }
 }
