@@ -324,15 +324,55 @@
   </section>
 
   <!-- Western Union: su tasa cambia según el monto, así que se abre su calculadora oficial -->
-  <a class="tarjeta wu" href="https://www.westernunion.com/us/en/send-money-to-dominican-republic.html" target="_blank" rel="noopener">
+  <a class="tarjeta wu" id="wu" href="https://www.westernunion.com/us/en/send-money-to-dominican-republic.html" target="_blank" rel="noopener">
     <span class="wu-logo" aria-hidden="true">WU</span>
     <span class="wu-txt">
       <b>Western Union</b>
-      <small>Remesas de EE. UU. a RD</small>
-      <span>Su tasa cambia según el monto y cómo lo envías. Toca para verla en su calculadora oficial.</span>
+      <small id="wu-pais">Remesas desde Estados Unidos a RD</small>
+      <span>Se manda en <b id="wu-moneda" style="display:inline;font-size:inherit">dólares (USD)</b>. En RD lo recibes en pesos o en dólares. La tasa cambia según el monto y cómo lo envías: toca para verla en su calculadora oficial.</span>
     </span>
     <span class="wu-ir">Ver tasa ↗</span>
   </a>
+  <script>
+  // Western Union: abre la calculadora del país desde donde se manda.
+  // El país sale de la zona horaria del navegador (y si no, del idioma). Si no está en la lista: EE. UU.
+  (function () {
+    var u = function (p, i, pag) { return "https://www.westernunion.com/" + p + "/" + (i || "en") + "/" + (pag || "send-money-to-dominican-republic") + ".html"; };
+    var P = {
+      us: ["Estados Unidos", "dólares (USD)", u("us")],
+      pr: ["Puerto Rico", "dólares (USD)", u("us")],
+      ca: ["Canadá", "dólares canadienses (CAD)", u("ca", "en", "send-money-to-the-dominican-republic")],
+      es: ["España", "euros (EUR)", u("es", "es")],
+      it: ["Italia", "euros (EUR)", u("it")],
+      de: ["Alemania", "euros (EUR)", u("de")],
+      fr: ["Francia", "euros (EUR)", u("fr")],
+      be: ["Bélgica", "euros (EUR)", u("be")],
+      at: ["Austria", "euros (EUR)", u("at")],
+      ch: ["Suiza", "francos suizos (CHF)", u("ch")],
+      gb: ["Reino Unido", "libras (GBP)", u("gb")]
+    };
+    var Z = {
+      "Europe/Madrid": "es", "Atlantic/Canary": "es", "Africa/Ceuta": "es",
+      "Europe/Rome": "it", "Europe/Berlin": "de", "Europe/Paris": "fr", "Europe/Brussels": "be",
+      "Europe/Vienna": "at", "Europe/Zurich": "ch", "Europe/London": "gb", "America/Puerto_Rico": "pr",
+      "America/Toronto": "ca", "America/Montreal": "ca", "America/Vancouver": "ca", "America/Edmonton": "ca",
+      "America/Winnipeg": "ca", "America/Halifax": "ca", "America/Regina": "ca", "America/St_Johns": "ca", "America/Moncton": "ca"
+    };
+    var cod = null;
+    try { cod = Z[Intl.DateTimeFormat().resolvedOptions().timeZone] || null; } catch (e) {}
+    if (!cod) {
+      var langs = navigator.languages || [navigator.language || ""];
+      for (var k = 0; k < langs.length && !cod; k++) {
+        var r = (langs[k].split("-")[1] || "").toLowerCase();
+        if (P[r]) cod = r;
+      }
+    }
+    var d = P[cod] || P.us;
+    document.getElementById("wu").href = d[2];
+    document.getElementById("wu-pais").textContent = "Remesas desde " + d[0] + " a RD";
+    document.getElementById("wu-moneda").textContent = d[1];
+  })();
+  </script>
 
   <!-- Convertidor -->
   <section class="tarjeta" id="convertidor" aria-labelledby="t-conv">
