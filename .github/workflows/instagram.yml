@@ -1,6 +1,8 @@
 # =====================================================================
 #  Divisas RD - Publica en Instagram (@divisas_rd) automáticamente
 #   - Todos los días ~8:13 a. m. (hora de RD): tasa del dólar. Respaldo a las 9:43 a. m.
+#   - Todos los días ~3:07 p. m.: consejo de la tarde (cambio, remesas, ahorro, dólares o frase).
+#     Respaldo a las 4:37 p. m.
 #   - Viernes ~7:07 p. m. y, si el MICM se atrasó, sábado 8:11 a. m.: combustibles
 #  RD está siempre en UTC-4 (no cambia la hora), por eso los horarios en UTC son fijos.
 #  GitHub a veces atrasa o se salta los horarios (sobre todo a la hora en punto):
@@ -15,6 +17,8 @@ on:
   schedule:
     - cron: "13 12 * * *"   # 8:13 a. m. RD, todos los días   -> tasa
     - cron: "43 13 * * *"   # 9:43 a. m. RD (respaldo)        -> tasa, solo si no salió a las 8
+    - cron: "7 19 * * *"    # 3:07 p. m. RD, todos los días   -> consejo de la tarde
+    - cron: "37 20 * * *"   # 4:37 p. m. RD (respaldo)        -> consejo, solo si no salió a las 3
     - cron: "7 23 * * 5"    # 7:07 p. m. RD, viernes           -> combustibles
     - cron: "11 12 * * 6"   # 8:11 a. m. RD, sábado (respaldo) -> combustibles, solo si no salió el viernes
   workflow_dispatch:
@@ -22,7 +26,7 @@ on:
       modo:
         description: "¿Qué imagen?"
         type: choice
-        options: [tasa, combustibles]
+        options: [tasa, consejo, combustibles]
         default: tasa
       publicar:
         description: "¿Publicar en Instagram? (no = solo crear la imagen · auto = como el horario: no repite si ya salió hoy)"
@@ -51,8 +55,9 @@ jobs:
           if [ "${{ github.event_name }}" = "workflow_dispatch" ] && [ "${{ inputs.publicar }}" = "auto" ]; then
             echo "modo=${{ inputs.modo }}" >> "$GITHUB_OUTPUT"
             HOY=$(TZ=America/Santo_Domingo date +%F)
-            if [ "${{ inputs.modo }}" = "tasa" ] && [ "$(cat ig/publicado-tasa.txt 2>/dev/null)" = "$HOY" ]; then
-              echo "La tasa de hoy ya se publicó"; echo "publicar=ya" >> "$GITHUB_OUTPUT"
+            MARCA="ig/publicado-${{ inputs.modo }}.txt"   # tasa o consejo (combustibles se revisa por semana)
+            if [ "${{ inputs.modo }}" != "combustibles" ] && [ "$(cat $MARCA 2>/dev/null)" = "$HOY" ]; then
+              echo "Hoy ya se publicó ($MARCA)"; echo "publicar=ya" >> "$GITHUB_OUTPUT"
             else
               echo "publicar=si" >> "$GITHUB_OUTPUT"
             fi
@@ -65,6 +70,14 @@ jobs:
             HOY=$(TZ=America/Santo_Domingo date +%F)
             if [ "$(cat ig/publicado-tasa.txt 2>/dev/null)" = "$HOY" ]; then
               echo "La tasa de hoy ya se publicó"; echo "publicar=ya" >> "$GITHUB_OUTPUT"
+            else
+              echo "publicar=si" >> "$GITHUB_OUTPUT"
+            fi
+          elif [ "${{ github.event.schedule }}" = "7 19 * * *" ] || [ "${{ github.event.schedule }}" = "37 20 * * *" ]; then
+            echo "modo=consejo" >> "$GITHUB_OUTPUT"
+            HOY=$(TZ=America/Santo_Domingo date +%F)
+            if [ "$(cat ig/publicado-consejo.txt 2>/dev/null)" = "$HOY" ]; then
+              echo "El consejo de hoy ya se publicó"; echo "publicar=ya" >> "$GITHUB_OUTPUT"
             else
               echo "publicar=si" >> "$GITHUB_OUTPUT"
             fi
@@ -90,14 +103,19 @@ jobs:
       - name: Crear la imagen
         id: imagen
         if: steps.plan.outputs.publicar != 'ya'
-        run: node instagram/generar.mjs ${{ steps.plan.outputs.modo }}
+        run: |
+          if [ "${{ steps.plan.outputs.modo }}" = "consejo" ]; then
+            node instagram/consejo-generar.mjs
+          else
+            node instagram/generar.mjs ${{ steps.plan.outputs.modo }}
+          fi
 
       - name: Subir la imagen a divisasrd.com
         if: steps.plan.outputs.publicar != 'ya' && steps.imagen.outputs.saltar != 'true'
         run: |
           # Deja solo las imágenes de los últimos 7 días (la fecha va en el nombre del archivo)
           LIMITE=$(date -u -d '7 days ago' +%F)
-          for f in ig/*-20[0-9][0-9]-[0-9][0-9]-[0-9][0-9].*; do
+          for f in ig/*-20[0-9][0-9]-[0-9][0-9]-[0-9][0-9]*; do
             [ -e "$f" ] || continue
             FECHA=$(echo "$f" | grep -oE '20[0-9]{2}-[0-9]{2}-[0-9]{2}')
             if [[ "$FECHA" < "$LIMITE" ]]; then rm -f "$f"; fi
@@ -146,6 +164,15 @@ jobs:
           TZ=America/Santo_Domingo date +%F > ig/publicado-tasa.txt
           git add ig/publicado-tasa.txt
           git commit -m "Instagram: tasa publicada" || true
+          git pull --rebase
+          git push
+
+      - name: Marcar el consejo de hoy como publicado
+        if: steps.imagen.outputs.saltar != 'true' && steps.plan.outputs.publicar == 'si' && steps.plan.outputs.modo == 'consejo'
+        run: |
+          TZ=America/Santo_Domingo date +%F > ig/publicado-consejo.txt
+          git add ig/publicado-consejo.txt
+          git commit -m "Instagram: consejo publicado" || true
           git pull --rebase
           git push
 
