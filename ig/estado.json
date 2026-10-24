@@ -1,8 +1,9 @@
 {
-  "fecha": "2026-10-23",
-  "dolar": 61.41887,
-  "dolarAnterior": 61.409228,
+  "fecha": "2026-10-24",
+  "dolar": 61.415769,
+  "dolarAnterior": 61.41887,
   "usadas": [
+    "finde:1",
     "mejor_compra:0",
     "mejor_compra:1",
     "mejor_compra:2",
