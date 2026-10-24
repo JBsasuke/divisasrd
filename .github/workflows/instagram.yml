@@ -146,7 +146,7 @@ jobs:
           IG_USER_ID: ${{ secrets.IG_USER_ID }}
         run: |
           ARCHIVO="${{ steps.imagen.outputs.archivo }}"
-          node instagram/publicar.mjs "https://divisasrd.com/ig/$ARCHIVO?v=${{ github.run_id }}" "ig/${ARCHIVO%.jpg}.txt"
+          node instagram/publicar.mjs "https://divisasrd.com/ig/$ARCHIVO" "ig/${ARCHIVO%.jpg}.txt"
 
       # Si la historia falla, no se marca error: la publicación del perfil ya salió
       - name: Publicar también en la historia
