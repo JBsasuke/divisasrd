@@ -2,6 +2,9 @@
   "usadas": {
     "remesas": [
       "rm11"
+    ],
+    "frase": [
+      "fr13"
     ]
   }
 }
