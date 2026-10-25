@@ -1,14 +1,14 @@
 {
-  "fecha": "2026-10-24",
-  "dolar": 61.415769,
-  "dolarAnterior": 61.41887,
+  "fecha": "2026-10-25",
+  "dolar": 61.415139,
+  "dolarAnterior": 61.415769,
   "usadas": [
+    "mejor_compra:2",
     "gasolina_igual:3",
     "gasolina_igual:4",
     "finde:1",
     "mejor_compra:0",
     "mejor_compra:1",
-    "mejor_compra:2",
     "mejor_compra:3",
     "mejor_compra:4",
     "mejor_compra:5",
