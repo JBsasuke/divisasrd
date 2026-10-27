@@ -1,6 +1,7 @@
 {
   "usadas": {
     "remesas": [
+      "rm10",
       "rm11"
     ],
     "frase": [
