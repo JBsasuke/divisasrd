@@ -346,19 +346,20 @@
       <p class="nota" id="wu-hora" style="margin:6px 0 0"></p>
     </div>
     <p class="wu-nota" id="wu-sin-tasa">Se manda en <b id="wu-moneda">dólares (USD)</b>. En RD lo recibes en pesos o en dólares. La tasa cambia según el monto y cómo lo envías: tócala para verla en su calculadora oficial.</p>
-    <a class="wu-ir" id="wu-ir" href="https://www.westernunion.com/us/en/send-money-to-dominican-republic.html" target="_blank" rel="noopener">Abrir su calculadora ↗</a>
+    <a class="wu-ir" id="wu-ir" href="https://www.westernunion.com/us/en/home.html" target="_blank" rel="noopener">Abrir su calculadora ↗</a>
   </section>
   <script>
   // Western Union: botoncitos de país (el del navegador ya marcado) y la tasa que logre leer el servidor.
   (function () {
-    var u = function (p, i, pag) { return "https://www.westernunion.com/" + p + "/" + (i || "en") + "/" + (pag || "send-money-to-dominican-republic") + ".html"; };
+    // La portada de cada país trae la calculadora de envíos arriba
+    var u = function (p, i) { return "https://www.westernunion.com/" + p + "/" + (i || "en") + "/home.html"; };
     // código: [nombre, bandera, moneda, símbolo, calculadora]
     var P = [
       ["us", "EE. UU.", "🇺🇸", "dólares (USD)", "US$", u("us")],
       ["es", "España", "🇪🇸", "euros (EUR)", "€", u("es", "es")],
       ["it", "Italia", "🇮🇹", "euros (EUR)", "€", u("it")],
       ["pr", "Puerto Rico", "🇵🇷", "dólares (USD)", "US$", u("us")],
-      ["ca", "Canadá", "🇨🇦", "dólares canadienses (CAD)", "C$", u("ca", "en", "send-money-to-the-dominican-republic")],
+      ["ca", "Canadá", "🇨🇦", "dólares canadienses (CAD)", "C$", u("ca")],
       ["de", "Alemania", "🇩🇪", "euros (EUR)", "€", u("de")],
       ["fr", "Francia", "🇫🇷", "euros (EUR)", "€", u("fr")],
       ["be", "Bélgica", "🇧🇪", "euros (EUR)", "€", u("be")],
