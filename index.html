@@ -616,6 +616,9 @@
   // ---------- Datos ----------
   let tasas = null;      // mercado: 1 USD = X moneda
   let entidades = [];
+  // Western Union entra al convertidor como una opción más (lo que paga por cada dólar que mandan desde EE. UU.)
+  let wuEntidad = null;
+  const paraConvertir = () => (wuEntidad ? entidades.concat([wuEntidad]) : entidades);
   let ultimosServidor = null;
   let ultimosComb = null;
 
@@ -648,6 +651,11 @@
       entidades = (d.entidades || []).filter((e) => e.compra != null || e.venta != null);
       pintarBancos();
       pintarSelector();
+      // La tasa de Western Union (si el servidor la consiguió)
+      json(SERVIDOR + "/westernunion").then((w) => {
+        const us = w && w.paises && w.paises.us;
+        if (us && us.aPesos) { wuEntidad = { nombre: "Western Union (desde EE. UU.)", tipo: "remesadora", compra: us.aPesos, venta: null }; pintarSelector(); convertir(); }
+      }).catch(() => {});
       pintarMercados(d.mercados || []);
       if (d.actualizado) {
         $("act-bancos").textContent = "Actualizado: " + horaRD(d.actualizado);
@@ -756,7 +764,7 @@
     const sel = $("fuente");
     const actual = sel.value;
     sel.length = 1;
-    entidades.forEach((e) => sel.add(new Option(`${e.nombre} · compra ${fmt(e.compra)} / venta ${fmt(e.venta)}`, e.nombre)));
+    paraConvertir().forEach((e) => sel.add(new Option(`${e.nombre} · compra ${fmt(e.compra)} / venta ${fmt(e.venta)}`, e.nombre)));
     sel.value = [...sel.options].some((o) => o.value === actual) ? actual : "mercado";
   }
 
@@ -777,7 +785,7 @@
       return;
     }
 
-    const e = entidades.find((x) => x.nombre === fuente);
+    const e = paraConvertir().find((x) => x.nombre === fuente);
     const tasa = e && (vendo ? e.compra : e.venta);
     $("etq-cantidad").textContent = "Cantidad en dólares (US$)";
     if (tasa == null) {
