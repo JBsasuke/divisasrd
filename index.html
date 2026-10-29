@@ -96,12 +96,15 @@
   }
   .marca b { display: block; font-size: 32px; line-height: 1.1; letter-spacing: -0.02em; }
   .marca span { display: block; margin-top: 4px; color: var(--acento); font-size: 12px; font-weight: 800; letter-spacing: .12em; }
-  nav { display: flex; gap: 6px; flex-wrap: wrap; justify-content: center; }
+  /* Menú de secciones: botones bien visibles; al tocar uno, la página baja hasta esa parte */
+  nav { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; max-width: 720px; margin: 0 auto; }
   nav a {
-    color: var(--suave); text-decoration: none; font-size: 14px;
-    padding: 6px 10px; border-radius: 999px; border: 1px solid transparent;
+    color: var(--texto); text-decoration: none; font-size: 14px; font-weight: 700;
+    padding: 8px 14px; border-radius: 999px; border: 1px solid var(--borde); background: var(--tarjeta);
+    transition: border-color .15s, background .15s, color .15s;
   }
-  nav a:hover { border-color: var(--borde); color: var(--texto); }
+  nav a:hover, nav a:focus-visible { border-color: var(--dorado); background: var(--dorado); color: var(--noche); }
+  main .tarjeta, main .rejilla { scroll-margin-top: 16px; }
 
   h1 { font-size: clamp(22px, 5vw, 32px); margin: 16px 0 4px; line-height: 1.2; }
   .sub { color: var(--suave); margin: 0 0 18px; }
@@ -293,10 +296,14 @@
       <div><b>Divisas RD</b><span>DÓLAR, BOLSA, CRIPTO Y COMBUSTIBLES</span></div>
     </a>
     <nav aria-label="Secciones">
-      <a href="#bancos">Bancos</a>
-      <a href="#convertidor">Convertidor</a>
-      <a href="#combustibles">Combustibles</a>
-      <a href="#mercados">Cripto y bolsa</a>
+      <a href="#bancos">🏦 Bancos</a>
+      <a href="#wu">💸 Western Union</a>
+      <a href="#convertidor">🔄 Convertidor</a>
+      <a href="#combustibles">⛽ Combustibles</a>
+      <a href="#monedas">💱 Monedas</a>
+      <a href="#cripto">₿ Cripto</a>
+      <a href="#bolsa">📈 Bolsa</a>
+      <a href="#materias">🥇 Oro y más</a>
     </nav>
   </div>
   <h1>Tasa del dólar hoy en República Dominicana</h1>
@@ -489,12 +496,12 @@
 
   <!-- Mercados -->
   <div class="rejilla" id="mercados" style="margin-top:16px">
-    <section class="tarjeta"><h2>Monedas del mundo</h2><p class="nota">Cuántos pesos dominicanos vale cada moneda.</p><div id="g-monedas"><div class="cargando">Cargando…</div></div><p class="nota" id="act-monedas" style="margin-top:8px"></p></section>
-    <section class="tarjeta"><h2>Criptomonedas</h2><div id="g-cripto"><div class="cargando">Cargando…</div></div><p class="nota act-mercados" style="margin-top:8px"></p></section>
-    <section class="tarjeta"><h2>Bolsa de EE. UU.</h2><div id="g-indices"><div class="cargando">Cargando…</div></div><p class="nota act-mercados" style="margin-top:8px"></p></section>
+    <section class="tarjeta" id="monedas"><h2>Monedas del mundo</h2><p class="nota">Cuántos pesos dominicanos vale cada moneda.</p><div id="g-monedas"><div class="cargando">Cargando…</div></div><p class="nota" id="act-monedas" style="margin-top:8px"></p></section>
+    <section class="tarjeta" id="cripto"><h2>Criptomonedas</h2><div id="g-cripto"><div class="cargando">Cargando…</div></div><p class="nota act-mercados" style="margin-top:8px"></p></section>
+    <section class="tarjeta" id="bolsa"><h2>Bolsa de EE. UU.</h2><div id="g-indices"><div class="cargando">Cargando…</div></div><p class="nota act-mercados" style="margin-top:8px"></p></section>
     <section class="tarjeta"><h2>Grandes empresas</h2><div id="g-grandes"><div class="cargando">Cargando…</div></div><p class="nota act-mercados" style="margin-top:8px"></p></section>
     <section class="tarjeta"><h2>Videojuegos</h2><div id="g-empresas"><div class="cargando">Cargando…</div></div><p class="nota act-mercados" style="margin-top:8px"></p></section>
-    <section class="tarjeta"><h2>Oro, plata y materias primas</h2><div id="g-materias"><div class="cargando">Cargando…</div></div><p class="nota act-mercados" style="margin-top:8px"></p></section>
+    <section class="tarjeta" id="materias"><h2>Oro, plata y materias primas</h2><div id="g-materias"><div class="cargando">Cargando…</div></div><p class="nota act-mercados" style="margin-top:8px"></p></section>
   </div>
 
   <!-- Texto para buscadores y lectores -->
