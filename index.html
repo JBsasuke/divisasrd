@@ -97,12 +97,16 @@
   .marca b { display: block; font-size: 32px; line-height: 1.1; letter-spacing: -0.02em; }
   .marca span { display: block; margin-top: 4px; color: var(--acento); font-size: 12px; font-weight: 800; letter-spacing: .12em; }
   /* Menú de secciones: botones bien visibles; al tocar uno, la página baja hasta esa parte */
-  nav { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; max-width: 720px; margin: 0 auto; }
+  /* Dos filas de 4 en el teléfono; en computadora, una sola fila */
+  nav { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; width: 100%; max-width: 520px; margin: 0 auto; }
   nav a {
-    color: var(--texto); text-decoration: none; font-size: 14px; font-weight: 700;
-    padding: 8px 14px; border-radius: 999px; border: 1px solid var(--borde); background: var(--tarjeta);
+    color: var(--texto); text-decoration: none; font-size: 12px; font-weight: 700; text-align: center;
+    padding: 7px 3px; border-radius: 12px; border: 1px solid var(--borde); background: var(--tarjeta);
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
     transition: border-color .15s, background .15s, color .15s;
   }
+  @media (max-width: 380px) { nav { gap: 5px; } nav a { font-size: 11px; padding: 7px 2px; letter-spacing: -0.01em; } }
+  @media (min-width: 860px) { nav { grid-template-columns: repeat(8, auto); max-width: none; justify-content: center; } nav a { padding: 7px 12px; font-size: 13.5px; } }
   nav a:hover, nav a:focus-visible { border-color: var(--dorado); background: var(--dorado); color: var(--noche); }
   main .tarjeta, main .rejilla { scroll-margin-top: 16px; }
 
@@ -297,13 +301,13 @@
     </a>
     <nav aria-label="Secciones">
       <a href="#bancos">🏦 Bancos</a>
-      <a href="#wu">💸 Western Union</a>
-      <a href="#convertidor">🔄 Convertidor</a>
-      <a href="#combustibles">⛽ Combustibles</a>
+      <a href="#wu">💸 W. Union</a>
+      <a href="#convertidor">🔄 Convertir</a>
+      <a href="#combustibles">⛽ Gasolina</a>
       <a href="#monedas">💱 Monedas</a>
       <a href="#cripto">₿ Cripto</a>
       <a href="#bolsa">📈 Bolsa</a>
-      <a href="#materias">🥇 Oro y más</a>
+      <a href="#materias">🥇 Oro</a>
     </nav>
   </div>
   <h1>Tasa del dólar hoy en República Dominicana</h1>
