@@ -57,7 +57,11 @@ const firmaTarifa = createHash("sha256").update(JSON.stringify([luz.vigenciaDesd
 
 function calcular(consumo, t) {
   const lineas = []; let desde = 0;
-  for (const tr of t.tramos) {
+  // SIE Art. 4 (d): con 701 kWh o más, TODO el consumo va al precio del último tramo
+  if (t.todoAlUltimoDesde != null && consumo >= t.todoAlUltimoDesde) {
+    const p = t.tramos[t.tramos.length - 1].precio;
+    lineas.push({ kwh: consumo, precio: p, importe: consumo * p });
+  } else for (const tr of t.tramos) {
     const tope = tr.hasta ?? Infinity, enEste = Math.max(0, Math.min(consumo, tope) - desde);
     if (enEste > 0) lineas.push({ kwh: enEste, precio: tr.precio, importe: enEste * tr.precio });
     if (consumo <= tope) break;
@@ -186,7 +190,7 @@ if (tipo === "clima") {
     tabla.map((x) => `🔌 ${x.distribuidora}\n` + x.tramos.map((p, i) => `   ${rangos[i]} kWh: RD$ ${fmt(p)}`).join("\n") +
       (x.cargoAlto != null ? `\n   Cargo fijo: RD$ ${fmt(x.cargoBajo)} (hasta 100 kWh) o RD$ ${fmt(x.cargoAlto)}` : "")).join("\n\n") +
     (cepm != null ? `\n\n🏝️ CEPM (Punta Cana y Bávaro): RD$ ${fmt(cepm)} por kWh` : "") +
-    `\n\nTarifa residencial BTS-1. ITBIS 18 % desde 701 kWh. Fuente: SIE.\n${ENLACE}\n\n${HASHTAGS} #TarifaElectrica #SIE`;
+    `\n\nTarifa residencial BTS-1. Con 701 kWh o más, TODO el consumo se cobra al último precio y lleva ITBIS 18 %. Fuente: SIE.\n${ENLACE}\n\n${HASHTAGS} #TarifaElectrica #SIE`;
   piezas.push({ nombre: `kc-precio-${hoy}`, tipo, datos: { fecha, tabla, cepm, vigencia: luz.vigencia }, texto });
   await salidaGH("firma", firmaTarifa);
 }
