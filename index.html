@@ -986,5 +986,26 @@
     try { localStorage.setItem("dv_tema", nuevo); } catch (_) {}
   });
 </script>
+<!-- Flechita para volver arriba: sale cuando bajas un poco -->
+<style>
+  #arriba { position: fixed; right: 16px; bottom: 20px; z-index: 50; width: 48px; height: 48px; border-radius: 50%;
+    border: 0; background: var(--dorado); color: var(--noche); cursor: pointer; box-shadow: 0 4px 14px rgba(0,0,0,.3);
+    display: grid; place-items: center; opacity: 0; transform: translateY(12px); pointer-events: none; transition: opacity .2s, transform .2s; }
+  #arriba.ver { opacity: 1; transform: none; pointer-events: auto; }
+  #arriba svg { width: 22px; height: 22px; }
+  @media (prefers-reduced-motion: reduce) { #arriba { transition: none; } }
+</style>
+<button id="arriba" type="button" aria-label="Volver arriba" title="Volver arriba">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+</button>
+<script>
+  (function () {
+    const a = document.getElementById("arriba");
+    const suave = matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth";
+    a.addEventListener("click", () => window.scrollTo({ top: 0, behavior: suave }));
+    const mirar = () => a.classList.toggle("ver", window.scrollY > 500);
+    window.addEventListener("scroll", mirar, { passive: true }); mirar();
+  })();
+</script>
 </body>
 </html>
