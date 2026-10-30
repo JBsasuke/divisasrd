@@ -50,6 +50,8 @@ export const TRUCOS = [
   { id: "t13", titulo: "Verifica tu tarifa", texto: "Busca en tu factura la tarifa (por ejemplo BTS-1) y los precios por tramo. En KiloClaro puedes comparar con los oficiales." },
   { id: "t14", titulo: "La cuenta del abanico", texto: "Un abanico de 60 W prendido 10 horas gasta 0.6 kWh al día. Un aire de 1,200 W, 12 kWh. Veinte veces más." },
   { id: "t15", titulo: "Pon metas por semana", texto: "Si tu meta es no pasar de 300 kWh al mes, son unos 70 kWh por semana. Con tus lecturas sabes si vas bien." },
+  { id: "t16", titulo: "Empieza a medir el día del corte", texto: "Anota tu primera lectura el día que la distribuidora corta tu factura. Así tu cálculo del mes cuadra con el de ellos." },
+  { id: "t17", titulo: "El consumo viejo no se cuenta", texto: "El contador nunca vuelve a cero. KiloClaro toma tu primera lectura como punto de partida y solo suma lo que gastas desde ahí." },
 ];
 
 export const FRASES = [
@@ -87,6 +89,7 @@ export const RECORDATORIOS = [
   { id: "r04", titulo: "¿Ya anotaste tu contador?", texto: "Toma 30 segundos. Mira el número, escríbelo en KiloClaro y listo. El domingo ya tienes tu estimado del mes." },
   { id: "r05", titulo: "Nueva semana, nueva meta", texto: "Ponte una meta de kWh y mídela con tus lecturas. Lo que se mide, se puede bajar." },
   { id: "r06", titulo: "Activa los avisos", texto: "En la app o en kiloclarord.com te avisamos a las 7 de la mañana y a las 10 de la noche para que no se te olvide anotar." },
+  { id: "r07", titulo: "Si hoy cortó tu factura, anota el contador", texto: "Ese número es tu punto de partida. Lo de antes ya lo pagaste: desde hoy KiloClaro cuenta solo lo nuevo." },
 ];
 
 // ---------- Ejemplo de factura: una imagen por distribuidora ----------
