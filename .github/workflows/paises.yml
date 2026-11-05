@@ -1,0 +1,29 @@
+# Divisas RD - datos de cada país (economía y combustibles de México) una vez al día
+name: Paises
+on:
+  schedule:
+    - cron: "23 11 * * *"   # 7:23 a. m. hora de RD
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: instagram          # el mismo grupo que Instagram, para que no choquen al guardar
+  cancel-in-progress: false
+jobs:
+  paises:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Buscar los datos de cada país
+        run: python paises.py
+      - name: Guardar paises.json
+        run: |
+          git config user.name "divisasrd-bot"
+          git config user.email "bot@divisasrd.com"
+          git add paises.json
+          git commit -m "Datos de países $(date -u +%F)" || echo "sin cambios"
+          git pull --rebase || true
+          git push
