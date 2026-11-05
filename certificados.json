@@ -1,0 +1,105 @@
+{
+ "revisado": "2026-11-05",
+ "plazo": "360 días (1 año)",
+ "impuesto": 10,
+ "fuente": "Comparador Rexi (rexi.do) y la página de cada banco",
+ "como_actualizar": "Cambia la tasa (por ciento al año) o el mínimo (en pesos), y pon la fecha de hoy en 'revisado'.",
+ "certificados": [
+  {
+   "entidad": "Banco Promerica",
+   "tasa": 10.25,
+   "minimo": 10000
+  },
+  {
+   "entidad": "Banco Atlántico",
+   "tasa": 10.0,
+   "minimo": 10000
+  },
+  {
+   "entidad": "Banco Adopem",
+   "tasa": 8.7,
+   "minimo": 2500
+  },
+  {
+   "entidad": "Banco Ademi",
+   "tasa": 8.5,
+   "minimo": 5000
+  },
+  {
+   "entidad": "Asociación Popular",
+   "tasa": 8.45,
+   "minimo": 10000
+  },
+  {
+   "entidad": "Banco Popular",
+   "tasa": 8.35,
+   "minimo": 5000
+  },
+  {
+   "entidad": "Banco Lafise",
+   "tasa": 8.0,
+   "minimo": 10000
+  },
+  {
+   "entidad": "Banco BDI",
+   "tasa": 7.8,
+   "minimo": 10000
+  },
+  {
+   "entidad": "Banco Confisa",
+   "tasa": 7.5,
+   "minimo": 10000
+  },
+  {
+   "entidad": "Banco Unión",
+   "tasa": 7.5,
+   "minimo": 5000
+  },
+  {
+   "entidad": "Banco Fihogar",
+   "tasa": 7.45,
+   "minimo": 10000
+  },
+  {
+   "entidad": "Motor Crédito",
+   "tasa": 7.3,
+   "minimo": 10000
+  },
+  {
+   "entidad": "Banco López de Haro",
+   "tasa": 7.0,
+   "minimo": 10000
+  },
+  {
+   "entidad": "Asociación Duarte",
+   "tasa": 7.0,
+   "minimo": 10000
+  },
+  {
+   "entidad": "Banco Vimenca",
+   "tasa": 6.25,
+   "minimo": 10000
+  },
+  {
+   "entidad": "Banco Santa Cruz",
+   "tasa": 6.2,
+   "minimo": 10000
+  },
+  {
+   "entidad": "Scotiabank",
+   "tasa": 4.55,
+   "minimo": 100000,
+   "nota": "Tasa publicada por el banco el 16 de marzo de 2026, desde RD$100,000"
+  },
+  {
+   "entidad": "Banco BHD",
+   "tasa": 4.0,
+   "minimo": 10000
+  },
+  {
+   "entidad": "Banreservas",
+   "tasa": 2.32,
+   "minimo": 10000
+  }
+ ]
+}
