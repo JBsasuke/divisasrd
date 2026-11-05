@@ -99,6 +99,114 @@
     "valor": 5.31,
     "anio": "2025"
    }
+  },
+  "ht": {
+   "inflacion": {
+    "valor": 28.64,
+    "anio": "2025"
+   },
+   "crecimiento": {
+    "valor": -2.71,
+    "anio": "2025"
+   },
+   "remesas": {
+    "valor": 16.95,
+    "anio": "2024"
+   },
+   "desempleo": {
+    "valor": 14.94,
+    "anio": "2025"
+   }
+  },
+  "gt": {
+   "inflacion": {
+    "valor": 1.49,
+    "anio": "2025"
+   },
+   "crecimiento": {
+    "valor": 4.28,
+    "anio": "2025"
+   },
+   "remesas": {
+    "valor": 20.82,
+    "anio": "2025"
+   },
+   "desempleo": {
+    "valor": 2.6,
+    "anio": "2025"
+   }
+  },
+  "hn": {
+   "inflacion": {
+    "valor": 4.6,
+    "anio": "2025"
+   },
+   "crecimiento": {
+    "valor": 3.75,
+    "anio": "2025"
+   },
+   "remesas": {
+    "valor": 30.12,
+    "anio": "2025"
+   },
+   "desempleo": {
+    "valor": 4.92,
+    "anio": "2025"
+   }
+  },
+  "pe": {
+   "inflacion": {
+    "valor": 1.53,
+    "anio": "2025"
+   },
+   "crecimiento": {
+    "valor": 3.43,
+    "anio": "2025"
+   },
+   "remesas": {
+    "valor": 1.58,
+    "anio": "2025"
+   },
+   "desempleo": {
+    "valor": 5.12,
+    "anio": "2025"
+   }
+  },
+  "cl": {
+   "inflacion": {
+    "valor": 4.21,
+    "anio": "2025"
+   },
+   "crecimiento": {
+    "valor": 2.46,
+    "anio": "2025"
+   },
+   "remesas": {
+    "valor": 0.03,
+    "anio": "2025"
+   },
+   "desempleo": {
+    "valor": 8.97,
+    "anio": "2025"
+   }
+  },
+  "ar": {
+   "inflacion": {
+    "valor": 219.88,
+    "anio": "2024"
+   },
+   "crecimiento": {
+    "valor": 4.37,
+    "anio": "2025"
+   },
+   "remesas": {
+    "valor": 0.14,
+    "anio": "2025"
+   },
+   "desempleo": {
+    "valor": 7.14,
+    "anio": "2025"
+   }
   }
  },
  "combustibles": {
@@ -113,5 +221,5 @@
   }
  },
  "fuente_economia": "Banco Mundial (último año con datos de cada país)",
- "actualizado": "2026-11-05T05:03:31+00:00"
+ "actualizado": "2026-11-05T18:51:15+00:00"
 }
