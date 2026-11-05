@@ -1,12 +1,14 @@
 """Divisas RD · datos de cada país (corre una vez al día con GitHub Actions y deja paises.json en la raíz).
- - Economía (Banco Mundial): inflación, crecimiento, remesas y desempleo de RD, EE. UU., Puerto Rico, Colombia, México y Venezuela.
+ - Economía (Banco Mundial): inflación, crecimiento, remesas y desempleo de RD, EE. UU., Puerto Rico, Colombia, México, Venezuela,
+   Haití, Guatemala, Honduras, Perú, Chile y Argentina.
  - Combustibles de México (datos abiertos de la Comisión Reguladora de Energía): promedio nacional por litro.
    (Los de EE. UU. ya los da el worker; Colombia, Venezuela y Puerto Rico no publican datos que se lean solos.)
 Si una fuente falla, se deja lo que ya había en paises.json, así la página nunca se queda vacía."""
 import json, statistics, datetime, urllib.request, xml.etree.ElementTree as ET
 
 ARCHIVO = "paises.json"
-PAISES = {"do": "DOM", "us": "USA", "pr": "PRI", "co": "COL", "mx": "MEX", "ve": "VEN"}
+PAISES = {"do": "DOM", "us": "USA", "pr": "PRI", "co": "COL", "mx": "MEX", "ve": "VEN",
+          "ht": "HTI", "gt": "GTM", "hn": "HND", "pe": "PER", "cl": "CHL", "ar": "ARG"}
 INDICADORES = {
     "inflacion": "FP.CPI.TOTL.ZG",          # inflación anual (%)
     "crecimiento": "NY.GDP.MKTP.KD.ZG",     # crecimiento del PIB (%)
