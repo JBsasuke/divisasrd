@@ -29,7 +29,10 @@ on:
         options: [auto, clima, precio, consejo, truco, frase, recordatorio, ejemplo]
         default: auto
       publicar:
-        if: (github.event_name == 'schedule' || inputs.publicar == 'auto') && steps.plan.outputs.modo == 'tasa' && steps.plan.outputs.publicar == 'si'
+        description: "¿Publicar en Instagram? (no = solo crear la imagen · auto = como el horario: no repite si ya salió hoy)"
+        type: choice
+        options: ["no", "si", "auto"]
+        default: "no"
 
 permissions:
   contents: write
@@ -106,8 +109,12 @@ jobs:
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add -A ig/kc
           git commit -m "Instagram KiloClaro: ${{ steps.imagen.outputs.lista }}" || echo "Sin cambios"
-          git pull --rebase
-          git push
+          # GitHub a veces rechaza la subida por un fallo suyo: se intenta hasta 3 veces
+          for i in 1 2 3; do
+            git pull --rebase && git push && break
+            if [ "$i" = "3" ]; then echo "::error::GitHub no aceptó la subida después de 3 intentos"; exit 1; fi
+            echo "GitHub rechazó la subida, se intenta otra vez en 15 segundos ($i)"; sleep 15
+          done
 
       # Puede haber varias publicaciones (el miércoles salen 4, una por distribuidora)
       - name: Publicar en Instagram (perfil e historia)
@@ -142,8 +149,12 @@ jobs:
           TZ=America/Santo_Domingo date +%F > "${{ steps.plan.outputs.marca }}"
           git add "${{ steps.plan.outputs.marca }}"
           git commit -m "Instagram KiloClaro: publicado ($(basename ${{ steps.plan.outputs.marca }} .txt))" || true
-          git pull --rebase
-          git push
+          # GitHub a veces rechaza la subida por un fallo suyo: se intenta hasta 3 veces
+          for i in 1 2 3; do
+            git pull --rebase && git push && break
+            if [ "$i" = "3" ]; then echo "::error::GitHub no aceptó la subida después de 3 intentos"; exit 1; fi
+            echo "GitHub rechazó la subida, se intenta otra vez en 15 segundos ($i)"; sleep 15
+          done
 
       # La tabla de precios se marca como publicada solo si Instagram la aceptó
       - name: Marcar la tarifa como publicada
@@ -152,8 +163,12 @@ jobs:
           echo "${{ steps.imagen.outputs.firma }}" > ig/kc/tarifa-publicada.txt
           git add ig/kc/tarifa-publicada.txt
           git commit -m "Instagram KiloClaro: tarifa publicada" || true
-          git pull --rebase
-          git push
+          # GitHub a veces rechaza la subida por un fallo suyo: se intenta hasta 3 veces
+          for i in 1 2 3; do
+            git pull --rebase && git push && break
+            if [ "$i" = "3" ]; then echo "::error::GitHub no aceptó la subida después de 3 intentos"; exit 1; fi
+            echo "GitHub rechazó la subida, se intenta otra vez en 15 segundos ($i)"; sleep 15
+          done
 
       # El token de Instagram dura 60 días: cada lunes se renueva solo (necesita el secret GH_PAT)
       - name: Renovar el token de Instagram (lunes)
