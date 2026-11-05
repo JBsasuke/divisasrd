@@ -98,7 +98,7 @@
   .marca span { display: block; margin-top: 4px; color: var(--acento); font-size: 12px; font-weight: 800; letter-spacing: .12em; }
   /* Menú de secciones: botones bien visibles; al tocar uno, la página baja hasta esa parte */
   /* Dos filas de 4 en el teléfono; en computadora, una sola fila */
-  nav { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; width: 100%; max-width: 520px; margin: 0 auto; }
+  nav { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; width: 100%; max-width: 520px; margin: 0 auto; }
   nav a {
     color: var(--texto); text-decoration: none; font-size: 12px; font-weight: 700; text-align: center;
     padding: 7px 3px; border-radius: 12px; border: 1px solid var(--borde); background: var(--tarjeta);
@@ -106,7 +106,7 @@
     transition: border-color .15s, background .15s, color .15s;
   }
   @media (max-width: 380px) { nav { gap: 5px; } nav a { font-size: 11px; padding: 7px 2px; letter-spacing: -0.01em; } }
-  @media (min-width: 860px) { nav { grid-template-columns: repeat(8, auto); max-width: none; justify-content: center; } nav a { padding: 7px 12px; font-size: 13.5px; } }
+  @media (min-width: 860px) { nav { grid-template-columns: repeat(9, auto); max-width: none; justify-content: center; } nav a { padding: 7px 12px; font-size: 13.5px; } }
   nav a:hover, nav a:focus-visible { border-color: var(--dorado); background: var(--dorado); color: var(--noche); }
   main .tarjeta, main .rejilla { scroll-margin-top: 16px; }
 
@@ -308,6 +308,7 @@
       <a href="#cripto">₿ Cripto</a>
       <a href="#bolsa">📈 Bolsa</a>
       <a href="#materias">🥇 Oro</a>
+      <a href="#economia">📊 Economía</a>
     </nav>
   </div>
   <h1>Tasa del dólar hoy en República Dominicana</h1>
@@ -316,19 +317,21 @@
 
 <main class="envoltura">
 
-  <!-- Tu país: si la persona entra desde Colombia, México, Venezuela, EE. UU. o Puerto Rico, aquí sale lo de su país (aparte de lo de RD) -->
+  <!-- Tu país: si la persona entra desde un país con otra moneda, aquí sale el dólar en su moneda (aparte de lo de RD) -->
   <section class="tarjeta pais-tarjeta" id="pais" aria-labelledby="t-pais" hidden>
     <div class="pais-elegir" role="group" aria-label="Escoge tu país">
       <span id="pais-pregunta">📍 Ver como:</span>
-      <button type="button" data-p="DO">🇩🇴 RD</button><button type="button" data-p="US">🇺🇸 EE. UU.</button><button type="button" data-p="PR">🇵🇷 Puerto Rico</button>
-      <button type="button" data-p="CO">🇨🇴 Colombia</button><button type="button" data-p="MX">🇲🇽 México</button><button type="button" data-p="VE">🇻🇪 Venezuela</button>
+      <button type="button" data-p="DO">🇩🇴 RD</button><button type="button" data-p="CO">🇨🇴 Colombia</button><button type="button" data-p="MX">🇲🇽 México</button>
+      <button type="button" data-p="VE">🇻🇪 Venezuela</button><button type="button" data-p="HT">🇭🇹 Haití</button><button type="button" data-p="GT">🇬🇹 Guatemala</button>
+      <button type="button" data-p="HN">🇭🇳 Honduras</button><button type="button" data-p="PE">🇵🇪 Perú</button><button type="button" data-p="CL">🇨🇱 Chile</button>
+      <button type="button" data-p="AR">🇦🇷 Argentina</button>
     </div>
     <div id="pais-cuerpo"></div>
   </section>
   <style>
     .pais-elegir { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; font-size: 13px; color: var(--suave); }
-    .pais-elegir button { font: 600 13px inherit; font-family: inherit; border: 1px solid var(--borde); background: var(--sobre); color: var(--texto); border-radius: 999px; padding: 6px 10px; cursor: pointer; }
-    .pais-elegir button[aria-pressed="true"] { background: var(--dorado); color: #061428; border-color: var(--dorado); }
+    .pais-elegir button, .eco-elegir button { font: 600 13px inherit; font-family: inherit; border: 1px solid var(--borde); background: var(--sobre); color: var(--texto); border-radius: 999px; padding: 6px 10px; cursor: pointer; }
+    .pais-elegir button[aria-pressed="true"], .eco-elegir button[aria-pressed="true"] { background: var(--dorado); color: #061428; border-color: var(--dorado); }
     .pais-tarjeta.solo-elegir { padding-top: 12px; padding-bottom: 12px; }
     #pais-cuerpo h2 { margin-top: 14px; }
     .pais-cajas { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; margin: 12px 0; }
@@ -342,151 +345,106 @@
     .pais-enlaces { display: flex; gap: 14px; flex-wrap: wrap; margin-top: 10px; font-weight: 700; }
     .pais-enlaces a { color: var(--acento); }
     .pais-sub { margin: 18px 0 0; font-size: 16px; color: var(--texto); }
-    .pais-tarjeta.solo-elegir .pais-sub { margin-top: 12px; }
+    .eco-elegir { display: flex; gap: 6px; flex-wrap: wrap; margin: 8px 0 4px; }
   </style>
   <script>
   (function () {
-    var SERVIDOR = "https://divisas-rd.juanbatista88.workers.dev";
+    // Países con su propia moneda (EE. UU. y Puerto Rico usan el dólar: ya sale arriba en toda la página)
     var PAISES = {
-      CO: { nombre: "Colombia", bandera: "🇨🇴", mon: "COP", sim: "$", moneda: "peso colombiano", miles: 1000 },
-      MX: { nombre: "México", bandera: "🇲🇽", mon: "MXN", sim: "$", moneda: "peso mexicano", miles: 100 },
-      VE: { nombre: "Venezuela", bandera: "🇻🇪", mon: "VES", sim: "Bs.", moneda: "bolívar", miles: 100 },
-      US: { nombre: "Estados Unidos", bandera: "🇺🇸", mon: "USD", sim: "US$", moneda: "dólar", wu: "us" },
-      PR: { nombre: "Puerto Rico", bandera: "🇵🇷", mon: "USD", sim: "US$", moneda: "dólar", wu: "pr" }
+      CO: { nombre: "Colombia", bandera: "🇨🇴", mon: "COP", sim: "$", moneda: "peso colombiano", miles: 1000, ej: 100000 },
+      MX: { nombre: "México", bandera: "🇲🇽", mon: "MXN", sim: "$", moneda: "peso mexicano", miles: 100, ej: 1000 },
+      VE: { nombre: "Venezuela", bandera: "🇻🇪", mon: "VES", sim: "Bs.", moneda: "bolívar", miles: 100, ej: 1000 },
+      HT: { nombre: "Haití", bandera: "🇭🇹", mon: "HTG", sim: "G", moneda: "gourde", miles: 100, ej: 1000 },
+      GT: { nombre: "Guatemala", bandera: "🇬🇹", mon: "GTQ", sim: "Q", moneda: "quetzal", miles: 100, ej: 1000 },
+      HN: { nombre: "Honduras", bandera: "🇭🇳", mon: "HNL", sim: "L", moneda: "lempira", miles: 100, ej: 1000 },
+      PE: { nombre: "Perú", bandera: "🇵🇪", mon: "PEN", sim: "S/", moneda: "sol", miles: 100, ej: 1000 },
+      CL: { nombre: "Chile", bandera: "🇨🇱", mon: "CLP", sim: "$", moneda: "peso chileno", miles: 10000, ej: 100000 },
+      AR: { nombre: "Argentina", bandera: "🇦🇷", mon: "ARS", sim: "$", moneda: "peso argentino", miles: 10000, ej: 100000 }
     };
-    // País por la zona horaria del teléfono o la computadora (sin pedir permisos ni la ubicación)
-    var ZONAS = { "America/Bogota": "CO", "America/Caracas": "VE", "America/Puerto_Rico": "PR", "America/Santo_Domingo": "DO" };
+    var ZONAS = { "America/Bogota": "CO", "America/Caracas": "VE", "America/Port-au-Prince": "HT", "America/Guatemala": "GT",
+      "America/Tegucigalpa": "HN", "America/Lima": "PE", "America/Santiago": "CL", "America/Punta_Arenas": "CL", "America/Santo_Domingo": "DO" };
     function paisDeZona(z) {
       if (ZONAS[z]) return ZONAS[z];
       if (/^America\/(Mexico_City|Cancun|Merida|Monterrey|Matamoros|Chihuahua|Ciudad_Juarez|Ojinaga|Hermosillo|Mazatlan|Bahia_Banderas|Tijuana)$/.test(z)) return "MX";
-      if (/^America\/(New_York|Chicago|Denver|Los_Angeles|Phoenix|Anchorage|Detroit|Boise|Indiana\/.+|Kentucky\/.+|North_Dakota\/.+|Menominee|Juneau|Nome|Sitka|Yakutat|Metlakatla|Adak)$|^Pacific\/Honolulu$/.test(z)) return "US";
+      if (/^America\/(Argentina\/.+|Buenos_Aires)$/.test(z)) return "AR";
+      if (/^America\/(New_York|Chicago|Denver|Los_Angeles|Phoenix|Anchorage|Detroit|Boise|Puerto_Rico|Indiana\/.+|Kentucky\/.+)$|^Pacific\/Honolulu$/.test(z)) return "US";
       return null;
     }
-    function detectar() {
-      try { var g = localStorage.getItem("dv_pais"); if (g) return g; } catch (_) {}
+    function detectar() {   // país real del visitante (para la economía puede ser EE. UU. o Puerto Rico)
       var z = ""; try { z = Intl.DateTimeFormat().resolvedOptions().timeZone || ""; } catch (_) {}
-      var p = paisDeZona(z);
-      if (p) return p;
+      if (z === "America/Puerto_Rico") return "PR";
+      var p = paisDeZona(z); if (p) return p;
       var langs = navigator.languages || [navigator.language || ""];
-      for (var i = 0; i < langs.length; i++) { var r = (langs[i].split("-")[1] || "").toUpperCase(); if (r === "DO" || PAISES[r]) return r; }
+      for (var i = 0; i < langs.length; i++) { var r = (langs[i].split("-")[1] || "").toUpperCase(); if (r === "DO" || r === "US" || r === "PR" || PAISES[r]) return r; }
       return "DO";
     }
+    var real = detectar();
     var $ = function (id) { return document.getElementById(id); };
     var f = function (n, d) { return n == null || isNaN(n) ? "—" : Number(n).toLocaleString("es-DO", { minimumFractionDigits: d == null ? 2 : d, maximumFractionDigits: d == null ? 2 : d }); };
     var p4 = function (n) { return n < 1 ? f(n, 4) : f(n); };
     var esc = function (s) { return String(s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); };
     function pedir(u) { return fetch(u, { cache: "no-store" }).then(function (r) { if (!r.ok) throw r.status; return r.json(); }); }
-    var mercado = null, oficial = {}, servidor = null, wu = null, actual = "DO", paisesDatos = null, combUS = null;
-    var NOMBRES_ECO = { inflacion: ["Inflación", "subida de precios en el año"], crecimiento: ["Crecimiento", "de la economía (PIB)"],
-      remesas: ["Remesas", "recibidas, % del PIB"], desempleo: ["Desempleo", "de la gente que busca trabajo"] };
-    // Economía del país (Banco Mundial, último año con datos)
-    function bloqueEconomia(cod, nombre) {
-      var e = paisesDatos && paisesDatos.economia && paisesDatos.economia[cod.toLowerCase()];
-      if (!e) return "";
-      var cajas = Object.keys(NOMBRES_ECO).filter(function (k) { return e[k]; }).map(function (k) {
-        return "<div><small>" + NOMBRES_ECO[k][0] + " (" + esc(e[k].anio) + ")</small><b>" + f(e[k].valor, 1) + " %</b><small>" + NOMBRES_ECO[k][1] + "</small></div>"; }).join("");
-      return cajas ? '<h3 class="pais-sub">📊 Economía de ' + esc(nombre) + '</h3><div class="pais-cajas">' + cajas + "</div>" : "";
-    }
-    // Combustibles: EE. UU. (EIA, por galón) y México (CRE, por litro)
-    function bloqueCombustibles(cod) {
-      if (cod === "US") {
-        var n = combUS && (combUS.estados || []).filter(function (x) { return /nacional/i.test(x.nombre); })[0];
-        if (!n) return "";
-        var c = [["Regular", n.regular], ["Premium", n.premium], ["Diésel", n.diesel]].filter(function (x) { return x[1] != null; });
-        return '<h3 class="pais-sub">⛽ Gasolina en Estados Unidos</h3><div class="pais-cajas">' + c.map(function (x) { return "<div><small>" + x[0] + "</small><b>US$ " + f(x[1], 3) + "</b><small>por galón</small></div>"; }).join("")
-          + '</div><p class="nota" style="margin:0">Promedio nacional de la semana' + (combUS.semana ? " del " + esc(combUS.semana) : "") + " · EIA. <a href=\"#combustibles\">Ver por estado ↓</a></p>";
-      }
-      var m = paisesDatos && paisesDatos.combustibles && paisesDatos.combustibles[cod.toLowerCase()];
-      if (!m) return "";
-      var r = mercado && mercado.rates, aUsd = function (v) { return r && r.MXN ? " · US$ " + f(v / r.MXN * 3.785, 2) + " el galón" : ""; };
-      var c2 = [["Regular (Magna)", m.regular], ["Premium", m.premium], ["Diésel", m.diesel]].filter(function (x) { return x[1] != null; });
-      return '<h3 class="pais-sub">⛽ Gasolina en México</h3><div class="pais-cajas">' + c2.map(function (x) { return "<div><small>" + x[0] + "</small><b>$ " + f(x[1]) + " MXN</b><small>por litro" + aUsd(x[1]) + "</small></div>"; }).join("")
-        + '</div><p class="nota" style="margin:0">' + esc(m.fuente || "") + (m.fecha ? " · " + esc(m.fecha) : "") + "</p>";
-    }
+    var mercado = null, oficial = {}, paisesDatos = null, actual = "DO";
+    function inicial() { try { var g = localStorage.getItem("dv_pais"); if (g && (g === "DO" || PAISES[g])) return g; } catch (_) {} return PAISES[real] ? real : "DO"; }
 
     function cargar() {
       var ps = [pedir("https://open.er-api.com/v6/latest/USD").then(function (j) { mercado = j; }),
-                pedir("/paises.json").then(function (j) { paisesDatos = j; }).catch(function () {})];
-      if (actual === "US") ps.push(pedir(SERVIDOR + "/combustibles").then(function (j) { combUS = j && j.eeuu; }).catch(function () {}));
+                pedir("/paises.json").then(function (j) { paisesDatos = j; window.dvPaisesDatos = j; window.dispatchEvent(new Event("dv-paises")); }).catch(function () {})];
       if (actual === "CO") ps.push(pedir("https://www.datos.gov.co/resource/32sa-8pi3.json?$order=vigenciadesde%20DESC&$limit=1").then(function (j) {
         if (j && j[0] && +j[0].valor) oficial.CO = { valor: +j[0].valor, fecha: j[0].vigenciadesde, fuente: "TRM oficial de hoy (Superintendencia Financiera de Colombia)" }; }).catch(function () {}));
       if (actual === "VE") ps.push(pedir("https://ve.dolarapi.com/v1/dolares/oficial").then(function (j) {
         var v = j && (j.promedio || j.venta); if (v) oficial.VE = { valor: +v, fecha: j.fechaActualizacion, fuente: "Tasa oficial del Banco Central de Venezuela (BCV)" }; }).catch(function () {}));
-      if (actual === "US" || actual === "PR") {
-        ps.push(pedir(SERVIDOR + "/tasas").then(function (j) { servidor = j; }).catch(function () {}));
-        ps.push(pedir(SERVIDOR + "/westernunion").then(function (j) { wu = j; }).catch(function () {}));
-      }
       return Promise.all(ps.map(function (x) { return x.catch(function () {}); }));
+    }
+    // Gasolina de México (CRE, por litro): la arma cada día el trabajo "Paises"
+    function bloqueCombustibles(cod) {
+      var m = paisesDatos && paisesDatos.combustibles && paisesDatos.combustibles[cod.toLowerCase()];
+      if (!m) return "";
+      var r = mercado && mercado.rates, mon = PAISES[cod].mon;
+      var aUsd = function (v) { return r && r[mon] ? " · US$ " + f(v / r[mon] * 3.785, 2) + " el galón" : ""; };
+      var c2 = [["Regular", m.regular], ["Premium", m.premium], ["Diésel", m.diesel]].filter(function (x) { return x[1] != null; });
+      return '<h3 class="pais-sub">⛽ Gasolina en ' + PAISES[cod].nombre + '</h3><div class="pais-cajas">' + c2.map(function (x) { return "<div><small>" + x[0] + "</small><b>" + PAISES[cod].sim + " " + f(x[1]) + "</b><small>por litro" + aUsd(x[1]) + "</small></div>"; }).join("")
+        + '</div><p class="nota" style="margin:0">' + esc(m.fuente || "") + (m.fecha ? " · " + esc(m.fecha) : "") + "</p>";
     }
 
     function pintar() {
       var c = $("pais-cuerpo"), tarjeta = $("pais");
       tarjeta.hidden = false;
       document.querySelectorAll(".pais-elegir button").forEach(function (b) { b.setAttribute("aria-pressed", b.dataset.p === actual); });
-      if (actual === "DO" || !PAISES[actual]) {
-        tarjeta.classList.add("solo-elegir"); $("pais-pregunta").textContent = "📍 ¿Estás fuera de RD? Escoge tu país:";
-        c.innerHTML = bloqueEconomia("do", "República Dominicana"); return;
+      if (!PAISES[actual]) {
+        tarjeta.classList.add("solo-elegir"); $("pais-pregunta").textContent = "📍 ¿Estás en otro país? Escoge el tuyo:"; c.innerHTML = ""; return;
       }
       tarjeta.classList.remove("solo-elegir"); $("pais-pregunta").textContent = "📍 Ver como:";
       var P = PAISES[actual], r = mercado && mercado.rates;
-      if (!r) { c.innerHTML = '<p class="nota" style="margin-top:12px">Cargando las tasas de ' + P.nombre + '…</p>'; return; }
-      var dop = r.DOP, html = "";
-      if (P.mon === "USD") {
-        // EE. UU. y Puerto Rico: lo que llega a RD
-        var wp = wu && wu.paises && (wu.paises[P.wu] || wu.paises.us);
-        var ents = ((servidor && servidor.entidades) || []).filter(function (e) { return e.compra != null; });
-        var mejor = ents.slice().sort(function (a, b) { return b.compra - a.compra; })[0];
-        var remes = ents.filter(function (e) { return e.tipo === "remesadora"; }).sort(function (a, b) { return b.compra - a.compra; });
-        html += '<h2 id="t-pais">' + P.bandera + " Desde " + P.nombre + ": tu dólar en RD</h2>"
-          + '<p class="nota">Si vives en ' + P.nombre + ' y mandas o llevas dólares a República Dominicana.</p>'
-          + '<div class="pais-cajas"><div><small>Mercado internacional</small><b>US$ 1 = RD$ ' + f(dop) + "</b></div>"
-          + (wp && wp.aPesos ? "<div><small>Western Union desde " + P.nombre + "</small><b>RD$ " + f(wp.aPesos) + "</b><small>por cada US$ 1 que mandas</small></div>" : "")
-          + (mejor ? "<div><small>Mejor compra en RD hoy</small><b>RD$ " + f(mejor.compra) + "</b><small>" + esc(mejor.nombre) + "</small></div>" : "")
-          + "</div>";
-        if (remes.length) html += '<p class="nota" style="margin:0 0 6px">Remesadoras en RD (lo que pagan por dólar): ' + remes.slice(0, 5).map(function (e) { return esc(e.nombre) + " RD$ " + f(e.compra); }).join(" · ") + "</p>";
-        html += '<div class="pais-conv"><label>Si mandas US$ <input id="pais-monto" inputmode="decimal" value="100"></label>'
-          + '<select id="pais-tasa"><option value="' + dop + '">con la tasa de mercado</option>'
-          + (wp && wp.aPesos ? '<option value="' + wp.aPesos + '" selected>con Western Union</option>' : "")
-          + (mejor ? '<option value="' + mejor.compra + '">con la mejor compra (' + esc(mejor.nombre) + ")</option>" : "") + "</select></div>"
-          + '<p class="pais-res" id="pais-res"></p>'
-          + '<p class="nota" style="margin-top:6px">Sin contar la comisión de envío. Confirma la tasa con la remesadora antes de mandar.</p>'
-          + '<div class="pais-enlaces"><a href="#bancos">Ver todas las remesadoras ↓</a><a href="#wu">Western Union ↓</a><a href="#convertidor">Convertidor ↓</a></div>'
-          + bloqueCombustibles(actual) + bloqueEconomia(actual, P.nombre) + (actual === "US" ? bloqueEconomia("do", "República Dominicana") : "")
-          + (paisesDatos ? '<p class="nota" style="margin-top:6px">Economía: Banco Mundial, último año con datos de cada país.</p>' : "");
-        c.innerHTML = html;
-        var calc = function () { var m = parseFloat(String($("pais-monto").value).replace(/,/g, "")) || 0; $("pais-res").innerHTML = "En RD llegan unos <b>RD$ " + f(m * parseFloat($("pais-tasa").value)) + "</b>"; };
-        $("pais-monto").oninput = calc; $("pais-tasa").onchange = calc; calc();
-        return;
-      }
-      // Colombia, México y Venezuela: el dólar en su moneda y el peso dominicano
-      var of = oficial[actual], usd = of ? of.valor : r[P.mon], fuente = of ? of.fuente : "Tasa de mercado internacional (no es la de una casa de cambio)";
-      var porDop = usd / (dop || 1);                 // 1 RD$ = X moneda local (usando el mismo dólar de referencia)
-      var porEur = usd / (r.EUR || 1);               // 1 EUR = X moneda local
-      html += '<h2 id="t-pais">' + P.bandera + " Dólar hoy en " + P.nombre + "</h2>"
+      if (!r || !r[P.mon]) { c.innerHTML = '<p class="nota" style="margin-top:12px">Cargando las tasas de ' + P.nombre + '…</p>'; return; }
+      var dop = r.DOP, of = oficial[actual], usd = of ? of.valor : r[P.mon];
+      var fuente = of ? of.fuente : "Tasa de mercado internacional (no es la de una casa de cambio)";
+      var porDop = usd / (dop || 1), porEur = usd / (r.EUR || 1);
+      var guia = { CO: "Bancos y casas de cambio autorizadas compran el dólar por debajo de la TRM y lo venden por encima. Compara en dos o tres y pide siempre el recibo.",
+        VE: "Los bancos y casas de cambio autorizados operan con la tasa oficial del BCV como referencia. Confirma la tasa del día antes de cambiar." }[actual]
+        || "Los bancos y las casas de cambio tienen su propia compra y venta, cerca de la tasa de mercado. Compara antes de cambiar y evita cambiar en la calle.";
+      c.innerHTML = '<h2 id="t-pais">' + P.bandera + " Dólar hoy en " + P.nombre + "</h2>"
         + '<div class="grande" style="margin-top:6px"><div><small>Dólar estadounidense</small><strong>' + P.sim + " " + f(usd) + " " + P.mon + "</strong></div></div>"
         + '<p class="nota" style="margin-top:4px">' + esc(fuente) + (of && of.fecha ? " · " + new Date(of.fecha).toLocaleDateString("es-DO", { day: "numeric", month: "long", year: "numeric", timeZone: "UTC" }) : "") + "</p>"
         + '<div class="pais-cajas"><div><small>Euro</small><b>€ 1 = ' + P.sim + " " + f(porEur) + "</b></div>"
         + "<div><small>Peso dominicano</small><b>RD$ 1 = " + P.sim + " " + p4(porDop) + "</b></div>"
         + "<div><small>" + P.sim + " " + f(P.miles, 0) + " " + P.mon + " en pesos dominicanos</small><b>RD$ " + p4(P.miles / porDop) + "</b></div></div>"
-        + '<div class="pais-conv"><input id="pais-monto" inputmode="decimal" value="' + (actual === "VE" ? 1000 : actual === "MX" ? 1000 : 100000) + '" aria-label="Cantidad">'
+        + '<div class="pais-conv"><input id="pais-monto" inputmode="decimal" value="' + P.ej + '" aria-label="Cantidad">'
         + '<select id="pais-de"><option value="L">' + P.mon + " (" + P.moneda + ')</option><option value="USD">USD (dólar)</option><option value="DOP">RD$ (peso dominicano)</option><option value="EUR">EUR (euro)</option></select></div>'
         + '<p class="pais-res" id="pais-res"></p>'
-        + '<p class="nota" style="margin-top:8px"><b>¿Dónde cambiar en ' + P.nombre + "?</b> " + (actual === "CO"
-            ? "Bancos y casas de cambio autorizadas compran el dólar por debajo de la TRM y lo venden por encima. Compara en dos o tres y pide siempre el recibo."
-            : actual === "MX" ? "Los bancos y las casas de cambio tienen su propia compra y venta, cerca de la tasa de mercado. Compara antes de cambiar y evita cambiar en la calle."
-            : "Los bancos y casas de cambio autorizados operan con la tasa oficial del BCV como referencia. Confirma la tasa del día antes de cambiar.") + "</p>"
-        + '<div class="pais-enlaces"><a href="#bancos">Ver la tasa en RD ↓</a><a href="#convertidor">Convertidor ↓</a><a href="#monedas">Monedas del mundo ↓</a></div>'
-        + bloqueCombustibles(actual) + bloqueEconomia(actual, P.nombre)
-        + (paisesDatos ? '<p class="nota" style="margin-top:6px">Economía: Banco Mundial, último año con datos de cada país.</p>' : "");
-      c.innerHTML = html;
+        + '<p class="nota" style="margin-top:8px"><b>¿Dónde cambiar en ' + P.nombre + "?</b> " + guia + "</p>"
+        + bloqueCombustibles(actual)
+        + '<div class="pais-enlaces"><a href="#bancos">Ver la tasa en RD ↓</a><a href="#economia">📊 Economía de ' + P.nombre + ' ↓</a><a href="#convertidor">Convertidor ↓</a></div>';
       var enUsd = { L: 1 / usd, USD: 1, DOP: 1 / dop, EUR: 1 / r.EUR };
-      var calc2 = function () {
+      var calc = function () {
         var m = parseFloat(String($("pais-monto").value).replace(/,/g, "")) || 0, de = $("pais-de").value, u = m * enUsd[de];
         var sal = [["L", P.sim + " ", " " + P.mon, u * usd], ["USD", "US$ ", "", u], ["DOP", "RD$ ", "", u * dop], ["EUR", "€ ", "", u * r.EUR]]
           .filter(function (x) { return x[0] !== de; }).map(function (x) { return "<b>" + x[1] + p4(x[3]) + x[2] + "</b>"; });
         $("pais-res").innerHTML = "= " + sal.join(" · ");
       };
-      $("pais-monto").oninput = calc2; $("pais-de").onchange = calc2; calc2();
+      $("pais-monto").oninput = calc; $("pais-de").onchange = calc; calc();
+      var enlace = c.querySelector('a[href="#economia"]');
+      if (enlace) enlace.onclick = function () { window.dispatchEvent(new CustomEvent("dv-eco", { detail: actual })); };
     }
 
     function escoger(p, guardarlo) {
@@ -495,7 +453,8 @@
       pintar(); cargar().then(pintar);
     }
     document.querySelectorAll(".pais-elegir button").forEach(function (b) { b.onclick = function () { escoger(b.dataset.p, true); }; });
-    escoger(detectar(), false);
+    window.dvPaisReal = real;
+    escoger(inicial(), false);
     setInterval(function () { if (actual !== "DO") cargar().then(pintar); }, 30 * 60 * 1000);
   })();
   </script>
@@ -686,6 +645,42 @@
   <!-- Mercados -->
   <div class="rejilla" id="mercados" style="margin-top:16px">
     <section class="tarjeta" id="monedas"><h2>Monedas del mundo</h2><p class="nota">Cuántos pesos dominicanos vale cada moneda.</p><div id="g-monedas"><div class="cargando">Cargando…</div></div><p class="nota" id="act-monedas" style="margin-top:8px"></p></section>
+    <section class="tarjeta" id="economia"><h2>📊 Economía por país</h2>
+      <p class="nota">Inflación, crecimiento, remesas y desempleo de cada país (Banco Mundial, último año con datos).</p>
+      <div class="eco-elegir" role="group" aria-label="Escoge el país">
+        <button type="button" data-e="do">🇩🇴 RD</button><button type="button" data-e="us">🇺🇸 EE. UU.</button><button type="button" data-e="pr">🇵🇷 Puerto Rico</button>
+        <button type="button" data-e="co">🇨🇴 Colombia</button><button type="button" data-e="mx">🇲🇽 México</button><button type="button" data-e="ve">🇻🇪 Venezuela</button>
+        <button type="button" data-e="ht">🇭🇹 Haití</button><button type="button" data-e="gt">🇬🇹 Guatemala</button><button type="button" data-e="hn">🇭🇳 Honduras</button>
+        <button type="button" data-e="pe">🇵🇪 Perú</button><button type="button" data-e="cl">🇨🇱 Chile</button><button type="button" data-e="ar">🇦🇷 Argentina</button>
+      </div>
+      <div id="eco-cuerpo"><div class="cargando">Cargando…</div></div>
+      <script>
+      (function () {
+        var NOMBRES = { do: "República Dominicana", us: "Estados Unidos", pr: "Puerto Rico", co: "Colombia", mx: "México", ve: "Venezuela",
+          ht: "Haití", gt: "Guatemala", hn: "Honduras", pe: "Perú", cl: "Chile", ar: "Argentina" };
+        var IND = [["inflacion", "Inflación", "subida de los precios en el año"], ["crecimiento", "Crecimiento", "de la economía (PIB)"],
+          ["remesas", "Remesas", "recibidas, % de la economía"], ["desempleo", "Desempleo", "de la gente que busca trabajo"]];
+        var datos = null, actual = ((window.dvPaisReal || "DO") + "").toLowerCase();
+        if (!NOMBRES[actual]) actual = "do";
+        var f1 = function (n) { return Number(n).toLocaleString("es-DO", { minimumFractionDigits: 1, maximumFractionDigits: 1 }); };
+        function pintar() {
+          document.querySelectorAll(".eco-elegir button").forEach(function (b) { b.setAttribute("aria-pressed", b.dataset.e === actual); });
+          var c = document.getElementById("eco-cuerpo");
+          if (!datos) { c.innerHTML = '<p class="nota">Los datos de economía todavía no están listos. Vuelve más tarde.</p>'; return; }
+          var e = (datos.economia || {})[actual] || {};
+          var cajas = IND.filter(function (x) { return e[x[0]]; }).map(function (x) {
+            return "<div><small>" + x[1] + " (" + e[x[0]].anio + ")</small><b>" + f1(e[x[0]].valor) + " %</b><small>" + x[2] + "</small></div>"; }).join("");
+          c.innerHTML = '<h3 class="pais-sub" style="margin-top:6px">' + NOMBRES[actual] + "</h3>"
+            + (cajas ? '<div class="pais-cajas">' + cajas + "</div>" : '<p class="nota">El Banco Mundial no tiene datos recientes de este país.</p>')
+            + '<p class="nota" style="margin:0">Fuente: Banco Mundial. Son datos anuales: el año sale al lado de cada número.</p>';
+        }
+        document.querySelectorAll(".eco-elegir button").forEach(function (b) { b.onclick = function () { actual = b.dataset.e; pintar(); }; });
+        window.addEventListener("dv-eco", function (ev) { var p = (ev.detail || "").toLowerCase(); if (NOMBRES[p]) { actual = p; pintar(); } });
+        fetch("/paises.json", { cache: "no-store" }).then(function (r) { return r.ok ? r.json() : null; }).then(function (j) { datos = j; pintar(); }).catch(function () { pintar(); });
+      })();
+      </script>
+    </section>
+
     <section class="tarjeta" id="cripto"><h2>Criptomonedas</h2><div id="g-cripto"><div class="cargando">Cargando…</div></div><p class="nota act-mercados" style="margin-top:8px"></p></section>
     <section class="tarjeta" id="bolsa"><h2>Bolsa de EE. UU.</h2><div id="g-indices"><div class="cargando">Cargando…</div></div><p class="nota act-mercados" style="margin-top:8px"></p></section>
     <section class="tarjeta"><h2>Grandes empresas</h2><div id="g-grandes"><div class="cargando">Cargando…</div></div><p class="nota act-mercados" style="margin-top:8px"></p></section>
