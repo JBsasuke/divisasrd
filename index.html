@@ -34,12 +34,12 @@
     --borde: rgba(255,193,7,.25);
     --texto: #ffffff;            /* texto principal */
     --acento: #ffc107;           /* títulos y números en dorado */
-    --sobre: var(--sobre);
-    --sobre2: var(--sobre2);
-    --hondo: var(--hondo);  /* fondo de las filas */
-    --campo-bg: var(--campo-bg);
+    --sobre: rgba(255,255,255,.06);
+    --sobre2: rgba(255,255,255,.10);
+    --hondo: transparent;  /* fondo de las filas */
+    --campo-bg: transparent;
     --destacada-bg: #08203f;
-    --texto-p: var(--texto-p);
+    --texto-p: #ffffff;
     --fondo: linear-gradient(180deg, var(--noche) 0%, var(--bandera) 55%, var(--claro) 100%);
     color-scheme: dark;
   }
@@ -97,7 +97,7 @@
   .marca b { display: block; font-size: 32px; line-height: 1.1; letter-spacing: -0.02em; }
   .marca span { display: block; margin-top: 4px; color: var(--acento); font-size: 12px; font-weight: 800; letter-spacing: .12em; }
   /* Menú de secciones: botones bien visibles; al tocar uno, la página baja hasta esa parte */
-  /* Dos filas de 4 en el teléfono; en computadora, una sola fila */
+  /* Cuatro filas de 3 en el teléfono; en computadora, dos filas de 6 */
   nav { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; width: 100%; max-width: 520px; margin: 0 auto; }
   nav a {
     color: var(--texto); text-decoration: none; font-size: 12px; font-weight: 700; text-align: center;
@@ -106,7 +106,7 @@
     transition: border-color .15s, background .15s, color .15s;
   }
   @media (max-width: 380px) { nav { gap: 5px; } nav a { font-size: 11px; padding: 7px 2px; letter-spacing: -0.01em; } }
-  @media (min-width: 860px) { nav { grid-template-columns: repeat(9, auto); max-width: none; justify-content: center; } nav a { padding: 7px 12px; font-size: 13.5px; } }
+  @media (min-width: 860px) { nav { grid-template-columns: repeat(6, minmax(130px, auto)); max-width: none; justify-content: center; } nav a { padding: 7px 12px; font-size: 13.5px; } }
   nav a:hover, nav a:focus-visible { border-color: var(--dorado); background: var(--dorado); color: var(--noche); }
   main .tarjeta, main .rejilla { scroll-margin-top: 16px; }
 
@@ -303,6 +303,9 @@
       <a href="#bancos">🏦 Bancos</a>
       <a href="#wu">💸 W. Union</a>
       <a href="#convertidor">🔄 Convertir</a>
+      <a href="#grafica">📉 Gráfica</a>
+      <a href="#remesas">💵 Remesas</a>
+      <a href="#certificados">📜 Certificados</a>
       <a href="#combustibles">⛽ Gasolina</a>
       <a href="#monedas">💱 Monedas</a>
       <a href="#cripto">₿ Cripto</a>
@@ -613,6 +616,199 @@
     <p class="detalle" id="detalle"></p>
   </section>
 
+  <!-- Gráfica del dólar, comparador de remesas y certificados -->
+  <style>
+    .gr-cajas { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 8px; margin: 12px 0 10px; }
+    .gr-cajas div { background: var(--sobre); border: 1px solid var(--borde); border-radius: 12px; padding: 8px 10px; }
+    .gr-cajas small { display: block; color: var(--suave); font-size: 12px; }
+    .gr-cajas b { font-size: 17px; color: var(--acento); }
+    .gr-caja { position: relative; min-height: 200px; }
+    .gr-caja svg { display: block; width: 100%; touch-action: pan-y; }
+    .gr-caja text { fill: var(--suave); font-size: 11px; font-family: inherit; }
+    .gr-red { stroke: var(--borde); stroke-width: 1; }
+    .gr-m { stroke: var(--acento); }
+    .gr-b { stroke: #4dd0e1; }
+    .gr-punto-m { fill: var(--acento); }
+    .gr-punto-b { fill: #4dd0e1; }
+    .gr-ley i.ley-b { background: #4dd0e1; }
+    .gr-guia { stroke: var(--suave); stroke-dasharray: 3 3; }
+    .gr-info { min-height: 22px; margin: 6px 0 0; font-size: 14px; }
+    .gr-ley { display: flex; gap: 16px; flex-wrap: wrap; font-size: 13px; color: var(--suave); margin: 6px 0 0; }
+    .gr-ley i { display: inline-block; width: 18px; height: 3px; border-radius: 2px; vertical-align: middle; margin-right: 6px; }
+    .lista-comp { display: grid; gap: 8px; margin-top: 12px; }
+    .comp { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: 12px; border: 1px solid var(--borde); background: var(--sobre); }
+    .comp.mejor { border-color: var(--dorado); background: rgba(255,193,7,.12); }
+    .comp .pos { flex: none; width: 26px; height: 26px; border-radius: 50%; display: grid; place-items: center; font-size: 13px; font-weight: 800; background: var(--sobre2); }
+    .comp.mejor .pos { background: var(--dorado); color: #061428; }
+    .comp .nom { flex: 1; min-width: 0; }
+    .comp .nom b { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .comp .nom small, .comp .val small { color: var(--suave); font-size: 12px; display: block; }
+    .comp .val { text-align: right; flex: none; }
+    .comp .val b { color: var(--acento); font-size: 17px; }
+    .comp .val small.top { color: var(--sube); font-weight: 700; }
+    .comp.lejos { opacity: .55; }
+    .ver-mas { margin-top: 10px; width: 100%; padding: 10px; border-radius: 999px; border: 1px solid var(--dorado); background: transparent; color: var(--texto); font: inherit; font-weight: 700; cursor: pointer; }
+    @media (prefers-color-scheme: light) { :root:not([data-tema="oscuro"]) .gr-b { stroke: #00838f; } :root:not([data-tema="oscuro"]) .gr-punto-b { fill: #00838f; } :root:not([data-tema="oscuro"]) .gr-ley i.ley-b { background: #00838f; } }
+    :root[data-tema="claro"] .gr-b { stroke: #00838f; }
+    :root[data-tema="claro"] .gr-punto-b { fill: #00838f; }
+    :root[data-tema="claro"] .gr-ley i.ley-b { background: #00838f; }
+  </style>
+
+  <!-- El dólar día por día: sale de paises.json (el trabajo "Paises" de GitHub guarda la tasa de cada día) -->
+  <section class="tarjeta" id="grafica" aria-labelledby="t-grafica">
+    <h2 id="t-grafica">📉 El dólar en los últimos días</h2>
+    <p class="nota">Cuántos pesos vale un dólar cada día. Toca o pasa el dedo por la gráfica para ver un día.</p>
+    <div class="pastillas" id="gr-rango" role="group" aria-label="Período">
+      <button type="button" data-d="30" class="activo">30 días</button><button type="button" data-d="90">90 días</button>
+    </div>
+    <div class="gr-cajas" id="gr-cajas"></div>
+    <div class="gr-caja" id="gr-caja"><div class="cargando">Cargando…</div></div>
+    <p class="gr-info" id="gr-info"></p>
+    <p class="gr-ley" id="gr-ley"></p>
+    <p class="nota" id="gr-nota" style="margin:6px 0 0"></p>
+  </section>
+  <script>
+  (function () {
+    var datos = null, dias = 30, serie = [], caja = document.getElementById("gr-caja");
+    var f2 = function (n) { return Number(n).toLocaleString("es-DO", { minimumFractionDigits: 2, maximumFractionDigits: 2 }); };
+    function corta(f) { return new Date(f + "T12:00:00").toLocaleDateString("es-DO", { day: "numeric", month: "short" }).replace(".", ""); }
+    function larga(f) { return new Date(f + "T12:00:00").toLocaleDateString("es-DO", { weekday: "long", day: "numeric", month: "long" }); }
+    function info(i) {
+      var d = serie[i], t = "<b>" + larga(d.f) + "</b>";
+      if (d.m != null) t += " · Internacional: <b>RD$ " + f2(d.m) + "</b>";
+      if (d.b != null) t += " · Bancos (compra): <b>RD$ " + f2(d.b) + "</b>";
+      document.getElementById("gr-info").innerHTML = t;
+    }
+    function pintar() {
+      document.querySelectorAll("#gr-rango button").forEach(function (b) { b.classList.toggle("activo", +b.dataset.d === dias); });
+      var todos = ((datos && datos.dolar) || []).filter(function (d) { return d.m != null || d.b != null; });
+      serie = todos.slice(-(dias + 1));
+      var cajas = document.getElementById("gr-cajas");
+      if (serie.length < 2) {
+        cajas.innerHTML = ""; document.getElementById("gr-ley").innerHTML = ""; document.getElementById("gr-info").innerHTML = "";
+        caja.innerHTML = '<p class="nota">La gráfica se va llenando con la tasa de cada día. Vuelve mañana.</p>'; return;
+      }
+      // Números de arriba (con la tasa internacional, que tiene todos los días)
+      var conM = serie.filter(function (d) { return d.m != null; });
+      if (conM.length >= 2) {
+        var hoy = conM[conM.length - 1], antes = conM[0], dif = hoy.m - antes.m, pct = dif / antes.m * 100;
+        var vals = conM.map(function (d) { return d.m; });
+        var signo = dif > 0 ? "+" : dif < 0 ? "−" : "";
+        cajas.innerHTML = "<div><small>Hoy</small><b>RD$ " + f2(hoy.m) + "</b></div>"
+          + "<div><small>Hace " + dias + " días</small><b>RD$ " + f2(antes.m) + "</b></div>"
+          + "<div><small>" + (dif > 0 ? "Subió" : dif < 0 ? "Bajó" : "Cambio") + "</small><b>" + signo + f2(Math.abs(dif)) + " (" + signo + f2(Math.abs(pct)) + " %)</b></div>"
+          + "<div><small>Más bajo · más alto</small><b>" + f2(Math.min.apply(null, vals)) + " · " + f2(Math.max.apply(null, vals)) + "</b></div>";
+      } else cajas.innerHTML = "";
+      // Gráfica
+      var W = Math.max(caja.clientWidth, 260), H = 210, PL = 46, PR = 8, PT = 10, PB = 24, n = serie.length;
+      var todosV = [];
+      serie.forEach(function (d) { if (d.m != null) todosV.push(d.m); if (d.b != null) todosV.push(d.b); });
+      var mn = Math.min.apply(null, todosV), mx = Math.max.apply(null, todosV), r = (mx - mn) || 0.5;
+      mn -= r * 0.12; mx += r * 0.12;
+      var x = function (i) { return PL + i * (W - PL - PR) / (n - 1); };
+      var y = function (v) { return PT + (mx - v) / (mx - mn) * (H - PT - PB); };
+      var s = '<svg viewBox="0 0 ' + W + " " + H + '" height="' + H + '" role="img" aria-label="Gráfica de la tasa del dólar en pesos dominicanos">';
+      for (var k = 0; k <= 3; k++) {
+        var v = mn + (mx - mn) * k / 3, yy = y(v).toFixed(1);
+        s += '<line class="gr-red" x1="' + PL + '" x2="' + (W - PR) + '" y1="' + yy + '" y2="' + yy + '"/>'
+          + '<text x="' + (PL - 6) + '" y="' + (+yy + 4) + '" text-anchor="end">' + f2(v) + "</text>";
+      }
+      [0, Math.floor((n - 1) / 2), n - 1].forEach(function (i, j) {
+        s += '<text x="' + x(i).toFixed(1) + '" y="' + (H - 6) + '" text-anchor="' + (j === 0 ? "start" : j === 2 ? "end" : "middle") + '">' + corta(serie[i].f) + "</text>";
+      });
+      function linea(clave, clase) {
+        var p = "", abierto = false, puntos = 0;
+        serie.forEach(function (d, i) {
+          if (d[clave] == null) { abierto = false; return; }
+          p += (abierto ? "L" : "M") + x(i).toFixed(1) + " " + y(d[clave]).toFixed(1); abierto = true; puntos++;
+        });
+        return puntos >= 2 ? '<path class="' + clase + '" d="' + p + '" fill="none" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>' : "";
+      }
+      var lineaB = linea("b", "gr-b");
+      s += linea("m", "gr-m") + lineaB;
+      s += '<g id="gr-marca" style="display:none"><line class="gr-guia" y1="' + PT + '" y2="' + (H - PB) + '"/><circle class="gr-punto-m" r="4"/><circle class="gr-punto-b" r="4"/></g></svg>';
+      caja.innerHTML = s;
+      var svg = caja.querySelector("svg"), marca = svg.querySelector("#gr-marca");
+      function mover(ev) {
+        var rc = svg.getBoundingClientRect(), px = (ev.clientX - rc.left) * W / rc.width;
+        var i = Math.round((px - PL) / (W - PL - PR) * (n - 1)); i = Math.max(0, Math.min(n - 1, i));
+        var d = serie[i], cs = marca.querySelectorAll("circle");
+        marca.style.display = ""; marca.querySelector("line").setAttribute("x1", x(i)); marca.querySelector("line").setAttribute("x2", x(i));
+        [["m", cs[0]], ["b", cs[1]]].forEach(function (z) {
+          if (d[z[0]] == null) z[1].style.display = "none";
+          else { z[1].style.display = ""; z[1].setAttribute("cx", x(i)); z[1].setAttribute("cy", y(d[z[0]])); }
+        });
+        info(i);
+      }
+      svg.addEventListener("pointermove", mover);
+      svg.addEventListener("pointerdown", mover);
+      info(n - 1);
+      var conB = serie.filter(function (d) { return d.b != null; });
+      document.getElementById("gr-ley").innerHTML = '<span><i style="background:var(--acento)"></i>Tasa internacional</span>'
+        + (lineaB ? '<span><i class="ley-b"></i>Promedio de compra en los bancos de RD</span>' : "");
+      document.getElementById("gr-nota").textContent = conB.length && conB.length < n
+        ? "El promedio de los bancos se guarda desde el " + larga(conB[0].f) + ": cada día se agrega uno."
+        : "Tasa internacional: currency-api. Bancos: promedio de las tasas de compra que salen arriba.";
+    }
+    document.querySelectorAll("#gr-rango button").forEach(function (b) { b.onclick = function () { dias = +b.dataset.d; pintar(); }; });
+    var ancho = 0;
+    window.addEventListener("resize", function () { if (datos && Math.abs(caja.clientWidth - ancho) > 20) { ancho = caja.clientWidth; pintar(); } });
+    fetch("/paises.json", { cache: "no-store" }).then(function (r) { return r.ok ? r.json() : null; })
+      .then(function (j) { datos = j; ancho = caja.clientWidth; pintar(); })
+      .catch(function () { caja.innerHTML = '<p class="nota">La gráfica no se pudo cargar ahora mismo.</p>'; });
+  })();
+  </script>
+
+  <!-- Comparador de remesas: usa las tasas de compra de arriba (el código está en el script principal: pintarRemesas) -->
+  <section class="tarjeta" id="remesas" aria-labelledby="t-remesas">
+    <h2 id="t-remesas">💵 Comparador de remesas</h2>
+    <p class="nota">Escribe cuántos dólares te mandan y mira dónde te dan más pesos hoy.</p>
+    <div class="dos">
+      <div><label for="rm-monto">Dólares que recibes</label><input id="rm-monto" type="number" inputmode="decimal" min="0" step="any" value="200"></div>
+      <div><label for="rm-ver">Comparar</label><select id="rm-ver"><option value="rem">Solo remesadoras</option><option value="todas">Remesadoras, bancos y casas de cambio</option></select></div>
+    </div>
+    <div class="lista-comp" id="rm-lista"><div class="cargando">Cargando tasas…</div></div>
+    <p class="nota" style="margin:10px 0 0">Se usa la tasa de compra de hoy de cada entidad. No incluye la comisión del envío (la paga quien manda) ni promociones. Western Union: tasa para envíos desde EE. UU.</p>
+  </section>
+
+  <!-- Certificados financieros: las tasas están en /certificados.json (se cambian a mano) -->
+  <section class="tarjeta" id="certificados" aria-labelledby="t-cert">
+    <h2 id="t-cert">📜 Tasas de certificados financieros</h2>
+    <p class="nota">Cuánto paga cada banco o asociación por un certificado en pesos a 1 año. Escribe cuánto quieres ahorrar.</p>
+    <div><label for="cf-monto">Monto en pesos (RD$)</label><input id="cf-monto" type="number" inputmode="decimal" min="0" step="any" value="100000"></div>
+    <div class="lista-comp" id="cf-lista"><div class="cargando">Cargando tasas…</div></div>
+    <p class="nota" id="cf-nota" style="margin:10px 0 0"></p>
+  </section>
+  <script>
+  (function () {
+    var datos = null, todas = false;
+    var f0 = function (n) { return Number(n).toLocaleString("es-DO", { maximumFractionDigits: 0 }); };
+    var f2 = function (n) { return Number(n).toLocaleString("es-DO", { minimumFractionDigits: 2, maximumFractionDigits: 2 }); };
+    var esc = function (s) { return String(s == null ? "" : s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); };
+    function pintar() {
+      var c = document.getElementById("cf-lista");
+      if (!datos || !(datos.certificados || []).length) { c.innerHTML = '<p class="nota">Las tasas de certificados no están disponibles ahora mismo.</p>'; return; }
+      var monto = parseFloat(document.getElementById("cf-monto").value) || 0, imp = (datos.impuesto == null ? 10 : datos.impuesto) / 100;
+      var lista = datos.certificados.slice().sort(function (a, b) { return b.tasa - a.tasa; });
+      var ver = todas ? lista : lista.slice(0, 8);
+      c.innerHTML = ver.map(function (e, i) {
+        var gana = monto * e.tasa / 100 * (1 - imp), falta = e.minimo && monto < e.minimo;
+        return '<div class="comp' + (i === 0 ? " mejor" : "") + (falta ? " lejos" : "") + '"><span class="pos">' + (i + 1) + '</span>'
+          + '<div class="nom"><b>' + esc(e.entidad) + "</b><small>" + f2(e.tasa) + " % al año" + (e.minimo ? " · mínimo RD$ " + f0(e.minimo) : "") + (e.nota ? " · " + esc(e.nota) : "") + "</small></div>"
+          + '<div class="val"><b>RD$ ' + f0(gana) + "</b><small" + (falta ? ">Monto menor al mínimo" : i === 0 ? ' class="top">★ La que más paga' : ">ganas en un año") + "</small></div></div>";
+      }).join("") + (lista.length > 8 ? '<button type="button" class="ver-mas" id="cf-mas">' + (todas ? "Ver menos" : "Ver todas (" + lista.length + ")") + "</button>" : "");
+      var b = document.getElementById("cf-mas"); if (b) b.onclick = function () { todas = !todas; pintar(); };
+      var rev = datos.revisado ? new Date(datos.revisado + "T12:00:00").toLocaleDateString("es-DO", { day: "numeric", month: "long", year: "numeric" }) : "";
+      document.getElementById("cf-nota").textContent = "Ganancia aproximada en un año, después del " + Math.round(imp * 100) + " % de impuesto sobre los intereses. "
+        + "Tasas para certificados en pesos a " + (datos.plazo || "1 año") + (rev ? ", revisadas el " + rev : "") + ". Cambian a menudo y pueden depender del monto: confírmalas con la entidad antes de invertir."
+        + (datos.fuente ? " Fuente: " + datos.fuente + "." : "");
+    }
+    document.getElementById("cf-monto").addEventListener("input", pintar);
+    fetch("/certificados.json", { cache: "no-store" }).then(function (r) { return r.ok ? r.json() : null; })
+      .then(function (j) { datos = j; pintar(); }).catch(function () { pintar(); });
+  })();
+  </script>
+
   <!-- App -->
   <section class="tarjeta app" aria-labelledby="t-app">
     <div class="logo" aria-hidden="true">$</div>
@@ -645,7 +841,15 @@
   <!-- Mercados -->
   <div class="rejilla" id="mercados" style="margin-top:16px">
     <section class="tarjeta" id="monedas"><h2>Monedas del mundo</h2><p class="nota">Cuántos pesos dominicanos vale cada moneda.</p><div id="g-monedas"><div class="cargando">Cargando…</div></div><p class="nota" id="act-monedas" style="margin-top:8px"></p></section>
-    <section class="tarjeta" id="economia"><h2>📊 Economía por país</h2>
+    <section class="tarjeta" id="cripto"><h2>Criptomonedas</h2><div id="g-cripto"><div class="cargando">Cargando…</div></div><p class="nota act-mercados" style="margin-top:8px"></p></section>
+    <section class="tarjeta" id="bolsa"><h2>Bolsa de EE. UU.</h2><div id="g-indices"><div class="cargando">Cargando…</div></div><p class="nota act-mercados" style="margin-top:8px"></p></section>
+    <section class="tarjeta"><h2>Grandes empresas</h2><div id="g-grandes"><div class="cargando">Cargando…</div></div><p class="nota act-mercados" style="margin-top:8px"></p></section>
+    <section class="tarjeta"><h2>Videojuegos</h2><div id="g-empresas"><div class="cargando">Cargando…</div></div><p class="nota act-mercados" style="margin-top:8px"></p></section>
+    <section class="tarjeta" id="materias"><h2>Oro, plata y materias primas</h2><div id="g-materias"><div class="cargando">Cargando…</div></div><p class="nota act-mercados" style="margin-top:8px"></p></section>
+  </div>
+
+  <!-- Economía por país: fila propia, de ancho completo -->
+  <section class="tarjeta" id="economia" style="margin-top:16px"><h2>📊 Economía por país</h2>
       <p class="nota">Inflación, crecimiento, remesas y desempleo de cada país (Banco Mundial, último año con datos).</p>
       <div class="eco-elegir" role="group" aria-label="Escoge el país">
         <button type="button" data-e="do">🇩🇴 RD</button><button type="button" data-e="us">🇺🇸 EE. UU.</button><button type="button" data-e="pr">🇵🇷 Puerto Rico</button>
@@ -680,13 +884,6 @@
       })();
       </script>
     </section>
-
-    <section class="tarjeta" id="cripto"><h2>Criptomonedas</h2><div id="g-cripto"><div class="cargando">Cargando…</div></div><p class="nota act-mercados" style="margin-top:8px"></p></section>
-    <section class="tarjeta" id="bolsa"><h2>Bolsa de EE. UU.</h2><div id="g-indices"><div class="cargando">Cargando…</div></div><p class="nota act-mercados" style="margin-top:8px"></p></section>
-    <section class="tarjeta"><h2>Grandes empresas</h2><div id="g-grandes"><div class="cargando">Cargando…</div></div><p class="nota act-mercados" style="margin-top:8px"></p></section>
-    <section class="tarjeta"><h2>Videojuegos</h2><div id="g-empresas"><div class="cargando">Cargando…</div></div><p class="nota act-mercados" style="margin-top:8px"></p></section>
-    <section class="tarjeta" id="materias"><h2>Oro, plata y materias primas</h2><div id="g-materias"><div class="cargando">Cargando…</div></div><p class="nota act-mercados" style="margin-top:8px"></p></section>
-  </div>
 
   <!-- Texto para buscadores y lectores -->
 
@@ -821,7 +1018,7 @@
     const p = window.wuPais || { codigo: "us", nombre: "EE. UU.", moneda: "dólares (USD)", simbolo: "US$" };
     const t = wuDatos && wuDatos.paises && wuDatos.paises[p.codigo];
     wuEntidad = t && t.aPesos ? { nombre: "Western Union", tipo: "remesadora", compra: t.aPesos, venta: null, wu: p } : null;
-    pintarSelector(); convertir();
+    pintarSelector(); convertir(); pintarRemesas();
   }
   window.addEventListener("wu-pais", () => { if (wuDatos) armarWu(); });
   const paraConvertir = () => (wuEntidad ? entidades.concat([wuEntidad]) : entidades);
@@ -850,6 +1047,28 @@
     convertir();
   }
 
+  // ---------- Comparador de remesas ----------
+  function pintarRemesas() {
+    const caja = $("rm-lista");
+    if (!caja) return;
+    const usd = parseFloat($("rm-monto").value) || 0;
+    const base = entidades.filter((e) => e.compra);
+    const rem = base.filter((e) => e.tipo === "remesadora");
+    const wu = wuDatos && wuDatos.paises && wuDatos.paises.us && wuDatos.paises.us.aPesos;
+    let lista = ($("rm-ver").value === "todas" || !rem.length) ? base.slice() : rem.slice();
+    if (wu) lista.push({ nombre: "Western Union", tipo: "remesadora", compra: wu });
+    if (!lista.length) { caja.innerHTML = '<p class="aviso">Sin tasas por ahora.</p>'; return; }
+    lista.sort((a, b) => b.compra - a.compra);
+    const mejor = lista[0].compra * usd;
+    caja.innerHTML = lista.map((e, i) => {
+      const pesos = e.compra * usd, menos = mejor - pesos;
+      return `<div class="comp${i === 0 ? " mejor" : ""}"><span class="pos">${i + 1}</span>
+        <div class="nom"><b>${esc(e.nombre)}</b><small>RD$ ${fmt(e.compra)} por dólar · ${esc(TIPOS[e.tipo] || "Casa de cambio")}</small></div>
+        <div class="val"><b>RD$ ${fmt(pesos)}</b>${i === 0 ? '<small class="top">★ La que más da</small>' : `<small>RD$ ${fmt(menos)} menos</small>`}</div></div>`;
+    }).join("");
+  }
+  ["rm-monto", "rm-ver"].forEach((id) => { const el = $(id); if (el) el.addEventListener("input", pintarRemesas); });
+
   async function cargarServidor() {
     try {
       const d = await json(SERVIDOR + "/tasas");
@@ -857,6 +1076,7 @@
       entidades = (d.entidades || []).filter((e) => e.compra != null || e.venta != null);
       pintarBancos();
       pintarSelector();
+      pintarRemesas();
       // La tasa de Western Union (si el servidor la consiguió)
       json(SERVIDOR + "/westernunion").then((w) => { wuDatos = w; armarWu(); }).catch(() => {});
       pintarMercados(d.mercados || []);
