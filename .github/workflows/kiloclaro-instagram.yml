@@ -45,7 +45,7 @@ concurrency:
 jobs:
   publicar:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 25   # el miércoles salen 4 y cada una puede esperar reintentos
     steps:
       - uses: actions/checkout@v4
 
@@ -132,7 +132,17 @@ jobs:
             done
             if [ "$LISTA" != "1" ]; then echo "::error::$NOMBRE no apareció en divisasrd.com"; FALLOS=$((FALLOS+1)); continue; fi
             echo "== $NOMBRE =="
-            if node instagram/publicar.mjs "$URL?v=${{ github.run_id }}" "ig/kc/$NOMBRE.txt"; then
+            # A veces Instagram busca la imagen antes de que Cloudflare la tenga en todos lados y la rechaza
+            # ("Only photo or video can be accepted", código 9004/2207052). En ese caso no se publicó nada,
+            # así que se espera y se intenta otra vez (hasta 3). Con cualquier otro error no se repite.
+            OK=0
+            for INTENTO in 1 2 3; do
+              if SALIDA=$(node instagram/publicar.mjs "$URL?v=${{ github.run_id }}-$INTENTO" "ig/kc/$NOMBRE.txt" 2>&1); then echo "$SALIDA"; OK=1; break; fi
+              echo "$SALIDA"
+              if ! echo "$SALIDA" | grep -qE '2207052|2207003|2207004|Only photo or video'; then break; fi
+              [ "$INTENTO" = "3" ] || { echo "Instagram no pudo leer la imagen (intento $INTENTO de 3): se espera 60 segundos"; sleep 60; }
+            done
+            if [ "$OK" = "1" ]; then
               # Si la historia falla no se marca error: la publicación del perfil ya salió
               node instagram/publicar.mjs --historia "https://divisasrd.com/ig/kc/$NOMBRE-historia.jpg?v=${{ github.run_id }}" \
                 || echo "::warning::La historia de $NOMBRE no salió"
