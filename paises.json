@@ -600,7 +600,814 @@
    "v": 61.4125
   }
  ],
+ "gasolina": {
+  "rd": [
+   {
+    "semana": "07 al 13 noviembre del 2026",
+    "f": "2026-11-07",
+    "p": {
+     "premium": 362.1,
+     "regular": 317.5,
+     "gasoilOptimo": 322.1,
+     "gasoilRegular": 270.8,
+     "glp": 135.2,
+     "gasNatural": 43.97
+    }
+   }
+  ],
+  "nombres_rd": {
+   "premium": "Gasolina Premium",
+   "regular": "Gasolina Regular",
+   "gasoilOptimo": "Gasoil Óptimo",
+   "gasoilRegular": "Gasoil Regular",
+   "glp": "Gas de cocina (GLP)",
+   "gasNatural": "Gas Natural (GNV)",
+   "avtur": "Avtur (aviones)",
+   "kerosene": "Kerosene",
+   "fuelOil6": "Fuel Oil #6 (industria)",
+   "fuelOil1": "Fuel Oil 1%S (industria)"
+  },
+  "us_semanal": [
+   {
+    "f": "2024-11-11",
+    "Promedio nacional": 3.052
+   },
+   {
+    "f": "2024-11-18",
+    "Promedio nacional": 3.046
+   },
+   {
+    "f": "2024-11-25",
+    "Promedio nacional": 3.044
+   },
+   {
+    "f": "2024-12-02",
+    "Promedio nacional": 3.034
+   },
+   {
+    "f": "2024-12-09",
+    "Promedio nacional": 3.008
+   },
+   {
+    "f": "2024-12-16",
+    "Promedio nacional": 3.016
+   },
+   {
+    "f": "2024-12-23",
+    "Promedio nacional": 3.024
+   },
+   {
+    "f": "2024-12-30",
+    "Promedio nacional": 3.006
+   },
+   {
+    "f": "2025-01-06",
+    "Promedio nacional": 3.047
+   },
+   {
+    "f": "2025-01-13",
+    "Promedio nacional": 3.043
+   },
+   {
+    "f": "2025-01-20",
+    "Promedio nacional": 3.109
+   },
+   {
+    "f": "2025-01-27",
+    "Promedio nacional": 3.103
+   },
+   {
+    "f": "2025-02-03",
+    "Promedio nacional": 3.082
+   },
+   {
+    "f": "2025-02-10",
+    "Promedio nacional": 3.128
+   },
+   {
+    "f": "2025-02-17",
+    "Promedio nacional": 3.148
+   },
+   {
+    "f": "2025-02-24",
+    "Promedio nacional": 3.125
+   },
+   {
+    "f": "2025-03-03",
+    "Promedio nacional": 3.078
+   },
+   {
+    "f": "2025-03-10",
+    "Promedio nacional": 3.069
+   },
+   {
+    "f": "2025-03-17",
+    "Promedio nacional": 3.058
+   },
+   {
+    "f": "2025-03-24",
+    "Promedio nacional": 3.115
+   },
+   {
+    "f": "2025-03-31",
+    "Promedio nacional": 3.162
+   },
+   {
+    "f": "2025-04-07",
+    "Promedio nacional": 3.243
+   },
+   {
+    "f": "2025-04-14",
+    "Promedio nacional": 3.168
+   },
+   {
+    "f": "2025-04-21",
+    "Promedio nacional": 3.141
+   },
+   {
+    "f": "2025-04-28",
+    "Promedio nacional": 3.133
+   },
+   {
+    "f": "2025-05-05",
+    "Promedio nacional": 3.147
+   },
+   {
+    "f": "2025-05-12",
+    "Promedio nacional": 3.12
+   },
+   {
+    "f": "2025-05-19",
+    "Promedio nacional": 3.173
+   },
+   {
+    "f": "2025-05-26",
+    "Promedio nacional": 3.16
+   },
+   {
+    "f": "2025-06-02",
+    "Promedio nacional": 3.127
+   },
+   {
+    "f": "2025-06-09",
+    "Promedio nacional": 3.108
+   },
+   {
+    "f": "2025-06-16",
+    "Promedio nacional": 3.139
+   },
+   {
+    "f": "2025-06-23",
+    "Promedio nacional": 3.213
+   },
+   {
+    "f": "2025-06-30",
+    "Promedio nacional": 3.164
+   },
+   {
+    "f": "2025-07-07",
+    "Promedio nacional": 3.125
+   },
+   {
+    "f": "2025-07-14",
+    "Promedio nacional": 3.13
+   },
+   {
+    "f": "2025-07-21",
+    "Promedio nacional": 3.121
+   },
+   {
+    "f": "2025-07-28",
+    "Promedio nacional": 3.123
+   },
+   {
+    "f": "2025-08-04",
+    "Promedio nacional": 3.14
+   },
+   {
+    "f": "2025-08-11",
+    "Promedio nacional": 3.118
+   },
+   {
+    "f": "2025-08-18",
+    "Promedio nacional": 3.125
+   },
+   {
+    "f": "2025-08-25",
+    "Promedio nacional": 3.147
+   },
+   {
+    "f": "2025-09-01",
+    "Promedio nacional": 3.177
+   },
+   {
+    "f": "2025-09-08",
+    "Promedio nacional": 3.192
+   },
+   {
+    "f": "2025-09-15",
+    "Promedio nacional": 3.168
+   },
+   {
+    "f": "2025-09-22",
+    "Promedio nacional": 3.173
+   },
+   {
+    "f": "2025-09-29",
+    "Promedio nacional": 3.118
+   },
+   {
+    "f": "2025-10-06",
+    "Promedio nacional": 3.124
+   },
+   {
+    "f": "2025-10-13",
+    "Promedio nacional": 3.061
+   },
+   {
+    "f": "2025-10-20",
+    "Promedio nacional": 3.019
+   },
+   {
+    "f": "2025-10-27",
+    "Promedio nacional": 3.035
+   },
+   {
+    "f": "2025-11-03",
+    "Promedio nacional": 3.019
+   },
+   {
+    "f": "2025-11-10",
+    "Promedio nacional": 3.056
+   },
+   {
+    "f": "2025-11-17",
+    "Promedio nacional": 3.062
+   },
+   {
+    "f": "2025-11-24",
+    "Promedio nacional": 3.061
+   },
+   {
+    "f": "2025-12-01",
+    "Promedio nacional": 2.985
+   },
+   {
+    "f": "2025-12-08",
+    "Promedio nacional": 2.94
+   },
+   {
+    "f": "2025-12-15",
+    "Promedio nacional": 2.895
+   },
+   {
+    "f": "2025-12-22",
+    "Promedio nacional": 2.841
+   },
+   {
+    "f": "2025-12-29",
+    "Promedio nacional": 2.811
+   },
+   {
+    "f": "2026-01-05",
+    "Promedio nacional": 2.796
+   },
+   {
+    "f": "2026-01-12",
+    "Promedio nacional": 2.779
+   },
+   {
+    "f": "2026-01-19",
+    "Promedio nacional": 2.806
+   },
+   {
+    "f": "2026-01-26",
+    "Promedio nacional": 2.853
+   },
+   {
+    "f": "2026-02-02",
+    "Promedio nacional": 2.867
+   },
+   {
+    "f": "2026-02-09",
+    "Promedio nacional": 2.902
+   },
+   {
+    "f": "2026-02-16",
+    "Promedio nacional": 2.924
+   },
+   {
+    "f": "2026-02-23",
+    "Promedio nacional": 2.937
+   },
+   {
+    "f": "2026-03-02",
+    "Promedio nacional": 3.015
+   },
+   {
+    "f": "2026-03-09",
+    "Promedio nacional": 3.502
+   },
+   {
+    "f": "2026-03-16",
+    "Promedio nacional": 3.72
+   },
+   {
+    "f": "2026-03-23",
+    "Promedio nacional": 3.961
+   },
+   {
+    "f": "2026-03-30",
+    "Promedio nacional": 3.99
+   },
+   {
+    "f": "2026-04-06",
+    "Promedio nacional": 4.12
+   },
+   {
+    "f": "2026-04-13",
+    "Promedio nacional": 4.123
+   },
+   {
+    "f": "2026-04-20",
+    "Promedio nacional": 4.044
+   },
+   {
+    "f": "2026-04-27",
+    "Promedio nacional": 4.123
+   },
+   {
+    "f": "2026-05-04",
+    "Promedio nacional": 4.452
+   },
+   {
+    "f": "2026-05-11",
+    "Promedio nacional": 4.5
+   },
+   {
+    "f": "2026-05-18",
+    "Promedio nacional": 4.49
+   },
+   {
+    "f": "2026-05-25",
+    "Promedio nacional": 4.475
+   },
+   {
+    "f": "2026-06-01",
+    "Promedio nacional": 4.305
+   },
+   {
+    "f": "2026-06-08",
+    "Promedio nacional": 4.146
+   },
+   {
+    "f": "2026-06-15",
+    "Promedio nacional": 4.052
+   },
+   {
+    "f": "2026-06-22",
+    "Promedio nacional": 3.914
+   },
+   {
+    "f": "2026-06-29",
+    "Promedio nacional": 3.831
+   },
+   {
+    "f": "2026-07-06",
+    "Promedio nacional": 3.777
+   },
+   {
+    "f": "2026-07-13",
+    "Promedio nacional": 3.855
+   },
+   {
+    "f": "2026-07-20",
+    "Promedio nacional": 4.001
+   },
+   {
+    "f": "2026-07-27",
+    "Promedio nacional": 4.096
+   },
+   {
+    "f": "2026-08-03",
+    "Promedio nacional": 4.079
+   },
+   {
+    "f": "2026-08-10",
+    "Promedio nacional": 4.006
+   },
+   {
+    "f": "2026-08-17",
+    "Promedio nacional": 4.049
+   },
+   {
+    "f": "2026-08-24",
+    "Promedio nacional": 4.085
+   },
+   {
+    "f": "2026-08-31",
+    "Promedio nacional": 4.071
+   },
+   {
+    "f": "2026-09-07",
+    "Promedio nacional": 4.157
+   },
+   {
+    "f": "2026-09-14",
+    "Promedio nacional": 4.319
+   },
+   {
+    "f": "2026-09-21",
+    "Promedio nacional": 4.478
+   },
+   {
+    "f": "2026-09-28",
+    "Promedio nacional": 4.465
+   },
+   {
+    "f": "2026-10-05",
+    "Promedio nacional": 4.354
+   },
+   {
+    "f": "2026-10-12",
+    "Promedio nacional": 4.331
+   },
+   {
+    "f": "2026-10-19",
+    "Promedio nacional": 4.284
+   },
+   {
+    "f": "2026-10-26",
+    "Promedio nacional": 4.269
+   },
+   {
+    "f": "2026-11-02",
+    "Promedio nacional": 4.153
+   }
+  ],
+  "estados": {
+   "AL": {
+    "n": "Alabama",
+    "r": 3.6432,
+    "m": 4.1264,
+    "p": 4.5313,
+    "d": 5.8011
+   },
+   "AK": {
+    "n": "Alaska",
+    "r": 4.6432,
+    "m": 4.7884,
+    "p": 5.074,
+    "d": 6.3863
+   },
+   "AZ": {
+    "n": "Arizona",
+    "r": 4.287,
+    "m": 4.6456,
+    "p": 4.9861,
+    "d": 6.241
+   },
+   "AR": {
+    "n": "Arkansas",
+    "r": 3.6687,
+    "m": 4.1852,
+    "p": 4.5715,
+    "d": 5.8006
+   },
+   "CA": {
+    "n": "California",
+    "r": 5.7646,
+    "m": 6.0146,
+    "p": 6.2044,
+    "d": 8.191
+   },
+   "CO": {
+    "n": "Colorado",
+    "r": 3.9407,
+    "m": 4.3353,
+    "p": 4.6553,
+    "d": 6.2116
+   },
+   "CT": {
+    "n": "Connecticut",
+    "r": 4.1669,
+    "m": 4.8469,
+    "p": 5.262,
+    "d": 6.365
+   },
+   "DE": {
+    "n": "Delaware",
+    "r": 3.9089,
+    "m": 4.5016,
+    "p": 4.8264,
+    "d": 6.2687
+   },
+   "DC": {
+    "n": "Washington D. C.",
+    "r": 4.2749,
+    "m": 4.9434,
+    "p": 5.2699,
+    "d": 6.422
+   },
+   "FL": {
+    "n": "Florida",
+    "r": 3.8147,
+    "m": 4.3014,
+    "p": 4.6443,
+    "d": 5.9113
+   },
+   "GA": {
+    "n": "Georgia",
+    "r": 3.4961,
+    "m": 4.0,
+    "p": 4.4407,
+    "d": 5.6308
+   },
+   "HI": {
+    "n": "Hawái",
+    "r": 5.6497,
+    "m": 5.9102,
+    "p": 6.1785,
+    "d": 7.2362
+   },
+   "ID": {
+    "n": "Idaho",
+    "r": 4.3734,
+    "m": 4.6992,
+    "p": 4.9544,
+    "d": 6.3992
+   },
+   "IL": {
+    "n": "Illinois",
+    "r": 4.5194,
+    "m": 5.1455,
+    "p": 5.7054,
+    "d": 6.5341
+   },
+   "IN": {
+    "n": "Indiana",
+    "r": 3.6423,
+    "m": 4.25,
+    "p": 4.7855,
+    "d": 6.652
+   },
+   "IA": {
+    "n": "Iowa",
+    "r": 3.8892,
+    "m": 4.2489,
+    "p": 4.7867,
+    "d": 5.9419
+   },
+   "KS": {
+    "n": "Kansas",
+    "r": 3.7592,
+    "m": 4.1549,
+    "p": 4.5091,
+    "d": 5.8402
+   },
+   "KY": {
+    "n": "Kentucky",
+    "r": 3.7746,
+    "m": 4.3698,
+    "p": 4.8078,
+    "d": 6.0532
+   },
+   "LA": {
+    "n": "Luisiana",
+    "r": 3.6094,
+    "m": 4.1066,
+    "p": 4.5129,
+    "d": 5.683
+   },
+   "ME": {
+    "n": "Maine",
+    "r": 4.1797,
+    "m": 4.7818,
+    "p": 5.2573,
+    "d": 6.3511
+   },
+   "MD": {
+    "n": "Maryland",
+    "r": 3.9292,
+    "m": 4.5534,
+    "p": 4.8694,
+    "d": 6.2839
+   },
+   "MA": {
+    "n": "Massachusetts",
+    "r": 4.1049,
+    "m": 4.7773,
+    "p": 5.1877,
+    "d": 6.2673
+   },
+   "MI": {
+    "n": "Míchigan",
+    "r": 4.2079,
+    "m": 4.9012,
+    "p": 5.4931,
+    "d": 6.5472
+   },
+   "MN": {
+    "n": "Minnesota",
+    "r": 3.9303,
+    "m": 4.4096,
+    "p": 4.9412,
+    "d": 6.0663
+   },
+   "MS": {
+    "n": "Misisipi",
+    "r": 3.6872,
+    "m": 4.1816,
+    "p": 4.5706,
+    "d": 5.7602
+   },
+   "MO": {
+    "n": "Misuri",
+    "r": 3.716,
+    "m": 4.1002,
+    "p": 4.4683,
+    "d": 5.9458
+   },
+   "MT": {
+    "n": "Montana",
+    "r": 4.0988,
+    "m": 4.4249,
+    "p": 4.7871,
+    "d": 6.0539
+   },
+   "NE": {
+    "n": "Nebraska",
+    "r": 4.0704,
+    "m": 4.3204,
+    "p": 4.8248,
+    "d": 5.9976
+   },
+   "NV": {
+    "n": "Nevada",
+    "r": 5.1099,
+    "m": 5.4435,
+    "p": 5.7518,
+    "d": 6.7738
+   },
+   "NH": {
+    "n": "Nuevo Hampshire",
+    "r": 4.1046,
+    "m": 4.7177,
+    "p": 5.1812,
+    "d": 6.2713
+   },
+   "NJ": {
+    "n": "Nueva Jersey",
+    "r": 4.0631,
+    "m": 4.6925,
+    "p": 5.0088,
+    "d": 6.3017
+   },
+   "NM": {
+    "n": "Nuevo México",
+    "r": 3.9193,
+    "m": 4.3363,
+    "p": 4.6682,
+    "d": 5.8846
+   },
+   "NY": {
+    "n": "Nueva York",
+    "r": 4.2719,
+    "m": 4.8336,
+    "p": 5.2321,
+    "d": 6.4467
+   },
+   "NC": {
+    "n": "Carolina del Norte",
+    "r": 3.2902,
+    "m": 3.7473,
+    "p": 4.1782,
+    "d": 5.4505
+   },
+   "ND": {
+    "n": "Dakota del Norte",
+    "r": 3.8832,
+    "m": 4.3618,
+    "p": 4.7731,
+    "d": 5.9558
+   },
+   "OH": {
+    "n": "Ohio",
+    "r": 3.86,
+    "m": 4.446,
+    "p": 4.9937,
+    "d": 6.3274
+   },
+   "OK": {
+    "n": "Oklahoma",
+    "r": 3.6703,
+    "m": 4.0871,
+    "p": 4.4012,
+    "d": 5.7314
+   },
+   "OR": {
+    "n": "Oregón",
+    "r": 4.6792,
+    "m": 4.9419,
+    "p": 5.2386,
+    "d": 6.6473
+   },
+   "PA": {
+    "n": "Pensilvania",
+    "r": 4.3675,
+    "m": 4.8004,
+    "p": 5.2467,
+    "d": 6.563
+   },
+   "RI": {
+    "n": "Rhode Island",
+    "r": 4.0333,
+    "m": 4.8119,
+    "p": 5.1849,
+    "d": 6.1959
+   },
+   "SC": {
+    "n": "Carolina del Sur",
+    "r": 3.5383,
+    "m": 3.9914,
+    "p": 4.389,
+    "d": 5.6706
+   },
+   "SD": {
+    "n": "Dakota del Sur",
+    "r": 3.9716,
+    "m": 4.2234,
+    "p": 4.7482,
+    "d": 5.9191
+   },
+   "TN": {
+    "n": "Tennessee",
+    "r": 3.627,
+    "m": 4.1011,
+    "p": 4.5199,
+    "d": 5.8569
+   },
+   "TX": {
+    "n": "Texas",
+    "r": 3.5119,
+    "m": 4.0282,
+    "p": 4.4093,
+    "d": 5.6243
+   },
+   "UT": {
+    "n": "Utah",
+    "r": 4.4038,
+    "m": 4.7008,
+    "p": 4.9503,
+    "d": 6.341
+   },
+   "VT": {
+    "n": "Vermont",
+    "r": 4.2749,
+    "m": 4.8443,
+    "p": 5.2838,
+    "d": 6.3149
+   },
+   "VA": {
+    "n": "Virginia",
+    "r": 3.8722,
+    "m": 4.3667,
+    "p": 4.7806,
+    "d": 6.1668
+   },
+   "WA": {
+    "n": "Washington",
+    "r": 5.0512,
+    "m": 5.3371,
+    "p": 5.5939,
+    "d": 7.1917
+   },
+   "WV": {
+    "n": "Virginia Occidental",
+    "r": 4.082,
+    "m": 4.501,
+    "p": 4.9585,
+    "d": 6.346
+   },
+   "WI": {
+    "n": "Wisconsin",
+    "r": 3.9928,
+    "m": 4.6523,
+    "p": 5.2014,
+    "d": 6.1895
+   },
+   "WY": {
+    "n": "Wyoming",
+    "r": 4.1796,
+    "m": 4.4556,
+    "p": 4.7539,
+    "d": 6.2393
+   }
+  },
+  "estados_fecha": "11/7/26",
+  "fuente": "RD: MICM (precios oficiales de cada semana). EE. UU.: EIA (promedio semanal) y AAA (promedio de cada estado)."
+ },
  "fuente_dolar": "Tasa internacional: currency-api (fawazahmed0). Bancos: promedio de las tasas de los bancos de RD en Divisas RD.",
  "fuente_economia": "Banco Mundial (último año con datos de cada país)",
- "actualizado": "2026-11-07T16:55:36+00:00"
+ "actualizado": "2026-11-07T19:17:44+00:00"
 }
