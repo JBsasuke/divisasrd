@@ -837,6 +837,172 @@
       <p class="nota" id="act-comb-us"></p>
     </section>
   </div>
+  <!-- Gráficas de la gasolina: salen de paises.json (el trabajo "Paises" de GitHub las guarda cada día) -->
+  <style>
+    .gs-tabs { display: flex; gap: 6px; margin: 4px 0 10px; }
+    .gs-tabs button { flex: 1; padding: 9px 6px; border-radius: 999px; border: 1px solid var(--borde); background: var(--sobre); color: var(--texto); font: inherit; font-weight: 700; cursor: pointer; }
+    .gs-tabs button.activo { background: var(--dorado); color: #061428; border-color: var(--dorado); }
+    .gs-chips { display: flex; flex-wrap: wrap; gap: 6px; margin: 0 0 10px; }
+    .gs-chips button { padding: 6px 12px; border-radius: 999px; border: 1px solid var(--borde); background: transparent; color: var(--texto); font: inherit; font-size: 13px; cursor: pointer; }
+    .gs-chips button.activo { border-color: var(--dorado); background: rgba(255,193,7,.15); font-weight: 700; }
+    .gs-caja { position: relative; min-height: 190px; }
+    .gs-caja svg { display: block; width: 100%; touch-action: pan-y; }
+    .gs-caja text { fill: var(--suave); font-size: 11px; font-family: inherit; }
+    .gs-l1 { stroke: var(--acento); } .gs-p1 { fill: var(--acento); }
+    .gs-l2 { stroke: #4dd0e1; } .gs-p2 { fill: #4dd0e1; }
+    .gs-barras { display: grid; gap: 5px; }
+    .gs-barra { display: grid; grid-template-columns: 26px minmax(90px, 34%) 1fr 62px; align-items: center; gap: 8px; font-size: 13px; }
+    .gs-barra .pos { color: var(--suave); text-align: right; font-size: 12px; }
+    .gs-barra .nom { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .gs-barra .tubo { height: 12px; border-radius: 6px; background: var(--sobre2); overflow: hidden; }
+    .gs-barra .tubo i { display: block; height: 100%; border-radius: 6px; }
+    .gs-barra .val { text-align: right; font-weight: 700; font-variant-numeric: tabular-nums; }
+    .gs-barra.prom .nom, .gs-barra.prom .val { color: var(--acento); font-weight: 800; }
+    .gs-barra.tu { outline: 2px solid var(--dorado); outline-offset: 2px; border-radius: 6px; }
+    @media (prefers-color-scheme: light) { :root:not([data-tema="oscuro"]) .gs-l2 { stroke: #00838f; } :root:not([data-tema="oscuro"]) .gs-p2 { fill: #00838f; } }
+    :root[data-tema="claro"] .gs-l2 { stroke: #00838f; }
+    :root[data-tema="claro"] .gs-p2 { fill: #00838f; }
+  </style>
+  <section class="tarjeta" id="grafica-gasolina" aria-labelledby="t-gs" style="margin-top:16px">
+    <h2 id="t-gs">📈 Gasolina: cómo ha cambiado</h2>
+    <p class="nota">Mira cómo han subido o bajado los combustibles y compara los estados de EE. UU.</p>
+    <div class="gs-tabs" role="tablist">
+      <button type="button" data-t="rd" class="activo">🇩🇴 RD</button>
+      <button type="button" data-t="us">🇺🇸 EE. UU.</button>
+      <button type="button" data-t="estados">Por estado</button>
+    </div>
+    <div class="gs-chips" id="gs-chips"></div>
+    <div class="gr-cajas" id="gs-cajas"></div>
+    <div class="gs-caja" id="gs-caja"><div class="cargando">Cargando…</div></div>
+    <p class="gr-info" id="gs-info"></p>
+    <p class="gr-ley" id="gs-ley"></p>
+    <p class="nota" id="gs-nota" style="margin:6px 0 0"></p>
+  </section>
+  <script>
+  (function () {
+    var verTodos = false;
+    var datos = null, tab = "rd", combRD = "regular", area = "Ohio", rango = 52, grado = "r", orden = "asc";
+    var NOMBRES_RD = { premium: "Gasolina premium", regular: "Gasolina regular", gasoilOptimo: "Gasoil óptimo", gasoilRegular: "Gasoil regular", glp: "GLP (gas)" };
+    var GRADOS = { r: "Regular", m: "Mid", p: "Premium", d: "Diésel" };
+    var $ = function (id) { return document.getElementById(id); };
+    var f2 = function (n) { return Number(n).toLocaleString("es-DO", { minimumFractionDigits: 2, maximumFractionDigits: 2 }); };
+    var esc = function (s) { return String(s == null ? "" : s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); };
+    function corta(f) { return new Date(f + "T12:00:00").toLocaleDateString("es-DO", { day: "numeric", month: "short", year: "2-digit" }).replace(/\./g, ""); }
+    function larga(f) { return new Date(f + "T12:00:00").toLocaleDateString("es-DO", { day: "numeric", month: "long", year: "numeric" }); }
+    function chips(lista, actual, alTocar) {
+      $("gs-chips").innerHTML = lista.map(function (x) { return '<button type="button" data-v="' + esc(x[0]) + '"' + (x[0] === actual ? ' class="activo"' : "") + ">" + esc(x[1]) + "</button>"; }).join("");
+      [].forEach.call($("gs-chips").querySelectorAll("button"), function (b) { b.onclick = function () { alTocar(b.dataset.v); }; });
+    }
+    // Números de arriba: hoy, antes, cuánto cambió, más bajo y más alto
+    function cajas(vals, fechas, pre, cuando) {
+      if (vals.length < 2) { $("gs-cajas").innerHTML = ""; return; }
+      var hoy = vals[vals.length - 1], antes = vals[0], dif = hoy - antes, pct = dif / antes * 100, s = dif > 0 ? "+" : dif < 0 ? "−" : "";
+      $("gs-cajas").innerHTML = "<div><small>Ahora</small><b>" + pre + f2(hoy) + "</b></div>"
+        + "<div><small>" + cuando + "</small><b>" + pre + f2(antes) + "</b></div>"
+        + "<div><small>" + (dif > 0 ? "Subió" : dif < 0 ? "Bajó" : "Sin cambio") + "</small><b>" + s + f2(Math.abs(dif)) + " (" + s + f2(Math.abs(pct)) + " %)</b></div>"
+        + "<div><small>Más bajo · más alto</small><b>" + f2(Math.min.apply(null, vals)) + " · " + f2(Math.max.apply(null, vals)) + "</b></div>";
+    }
+    // Gráfica de líneas (1 o 2 series) con el dedo para ver cada fecha
+    function lineas(serie, claves, pre, unidad) {
+      var caja = $("gs-caja"), W = Math.max(caja.clientWidth, 260), H = 200, PL = 50, PR = 8, PT = 10, PB = 24, n = serie.length;
+      var vals = []; serie.forEach(function (d) { claves.forEach(function (c) { if (d[c.k] != null) vals.push(d[c.k]); }); });
+      var mn = Math.min.apply(null, vals), mx = Math.max.apply(null, vals), r = (mx - mn) || Math.max(mx * 0.02, 0.1); mn -= r * 0.12; mx += r * 0.12;
+      var x = function (i) { return PL + i * (W - PL - PR) / Math.max(n - 1, 1); }, y = function (v) { return PT + (mx - v) / (mx - mn) * (H - PT - PB); };
+      var s = '<svg viewBox="0 0 ' + W + " " + H + '" height="' + H + '" role="img" aria-label="Gráfica de precios de combustible">';
+      for (var k = 0; k <= 3; k++) { var v = mn + (mx - mn) * k / 3, yy = y(v).toFixed(1); s += '<line class="gr-red" x1="' + PL + '" x2="' + (W - PR) + '" y1="' + yy + '" y2="' + yy + '"/><text x="' + (PL - 6) + '" y="' + (+yy + 4) + '" text-anchor="end">' + f2(v) + "</text>"; }
+      [0, Math.floor((n - 1) / 2), n - 1].forEach(function (i, j) { s += '<text x="' + x(i).toFixed(1) + '" y="' + (H - 6) + '" text-anchor="' + (j === 0 ? "start" : j === 2 ? "end" : "middle") + '">' + corta(serie[i].f) + "</text>"; });
+      claves.forEach(function (c, ci) {
+        var p = "", abierto = false, pts = 0;
+        serie.forEach(function (d, i) { if (d[c.k] == null) { abierto = false; return; } p += (abierto ? "L" : "M") + x(i).toFixed(1) + " " + y(d[c.k]).toFixed(1); abierto = true; pts++; });
+        if (pts >= 2) s += '<path class="gs-l' + (ci + 1) + '" d="' + p + '" fill="none" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>';
+      });
+      s += '<g id="gs-marca" style="display:none"><line class="gr-guia" y1="' + PT + '" y2="' + (H - PB) + '"/>' + claves.map(function (c, ci) { return '<circle class="gs-p' + (ci + 1) + '" r="4"/>'; }).join("") + "</g></svg>";
+      caja.innerHTML = s;
+      var svg = caja.querySelector("svg"), marca = svg.querySelector("#gs-marca");
+      function info(i) {
+        var d = serie[i];
+        $("gs-info").innerHTML = "<b>" + larga(d.f) + "</b>" + claves.map(function (c) { return d[c.k] == null ? "" : " · " + esc(c.n) + ": <b>" + pre + f2(d[c.k]) + "</b>"; }).join("");
+      }
+      function mover(ev) {
+        var rc = svg.getBoundingClientRect(), i = Math.round(((ev.clientX - rc.left) * W / rc.width - PL) / (W - PL - PR) * (n - 1)); i = Math.max(0, Math.min(n - 1, i));
+        marca.style.display = ""; var l = marca.querySelector("line"); l.setAttribute("x1", x(i)); l.setAttribute("x2", x(i));
+        [].forEach.call(marca.querySelectorAll("circle"), function (cir, ci) { var v = serie[i][claves[ci].k]; if (v == null) cir.style.display = "none"; else { cir.style.display = ""; cir.setAttribute("cx", x(i)); cir.setAttribute("cy", y(v)); } });
+        info(i);
+      }
+      svg.addEventListener("pointermove", mover); svg.addEventListener("pointerdown", mover); info(n - 1);
+      $("gs-ley").innerHTML = claves.map(function (c, ci) { return '<span><i style="background:' + (ci ? "#4dd0e1" : "var(--acento)") + '"></i>' + esc(c.n) + "</span>"; }).join("") + (unidad ? "<span>" + esc(unidad) + "</span>" : "");
+    }
+    function vacia(msg) { $("gs-cajas").innerHTML = ""; $("gs-info").innerHTML = ""; $("gs-ley").innerHTML = ""; $("gs-caja").innerHTML = '<p class="nota">' + msg + "</p>"; }
+
+    function pintarRD() {
+      var lista = (datos.gasolina && datos.gasolina.rd) || [], nombres = (datos.gasolina && datos.gasolina.nombres_rd) || {};
+      var claves = Object.keys(NOMBRES_RD).filter(function (k) { return lista.some(function (s) { return s.p && s.p[k] != null; }); });
+      if (claves.length && claves.indexOf(combRD) < 0) combRD = claves[0];
+      chips(claves.map(function (k) { return [k, NOMBRES_RD[k] || nombres[k] || k]; }), combRD, function (v) { combRD = v; pintar(); });
+      var serie = lista.filter(function (s) { return s.p && s.p[combRD] != null; }).map(function (s) { var o = { f: s.f }; o.v = s.p[combRD]; return o; });
+      $("gs-nota").textContent = "Precios oficiales del MICM por galón. Se guarda una semana cada viernes, cuando el MICM fija los precios.";
+      if (serie.length < 2) {
+        vacia("La gráfica de RD se va llenando cada semana (el MICM fija los precios los viernes)." + (serie.length ? " Ya está guardada la semana del " + esc(lista[lista.length - 1].semana) + "." : ""));
+        return;
+      }
+      cajas(serie.map(function (d) { return d.v; }), null, "RD$ ", "Hace " + (serie.length - 1) + " semanas");
+      lineas(serie, [{ k: "v", n: NOMBRES_RD[combRD] || nombres[combRD] || combRD }], "RD$ ", "por galón");
+    }
+    function pintarUS() {
+      var todas = (datos.gasolina && datos.gasolina.us_semanal) || [];
+      var areas = ["Promedio nacional", "Ohio", "Florida", "Nueva York", "Texas", "California", "Massachusetts", "Colorado", "Minnesota", "Washington"]
+        .filter(function (a) { return todas.some(function (d) { return d[a] != null; }); });
+      if (areas.indexOf(area) < 0) area = areas[0] || "Promedio nacional";
+      chips(areas.map(function (a) { return [a, a]; }).concat([["r26", rango === 26 ? "● 6 meses" : "6 meses"], ["r52", rango === 52 ? "● 1 año" : "1 año"], ["r104", rango === 104 ? "● 2 años" : "2 años"]]), area,
+        function (v) { if (v.charAt(0) === "r" && /^r\d+$/.test(v)) rango = +v.slice(1); else area = v; pintar(); });
+      var serie = todas.slice(-rango - 1);
+      $("gs-nota").textContent = "Gasolina regular, US$ por galón, promedio de cada semana (EIA). La EIA publica 9 estados semana por semana; los demás están en «Por estado».";
+      if (serie.length < 2) { vacia("La gráfica de EE. UU. no está disponible ahora mismo."); return; }
+      var claves = area === "Promedio nacional" ? [{ k: "Promedio nacional", n: "Promedio nacional" }] : [{ k: area, n: area }, { k: "Promedio nacional", n: "Promedio nacional" }];
+      var vals = serie.map(function (d) { return d[area]; }).filter(function (v) { return v != null; });
+      cajas(vals, null, "$", rango === 26 ? "Hace 6 meses" : rango === 52 ? "Hace 1 año" : "Hace 2 años");
+      lineas(serie, claves, "$", "US$ por galón");
+    }
+    function pintarEstados() {
+      var e = (datos.gasolina && datos.gasolina.estados) || {}, g = datos.gasolina || {};
+      chips([["r", "Regular"], ["p", "Premium"], ["d", "Diésel"], ["orden", orden === "asc" ? "↑ Más barato primero" : "↓ Más caro primero"]], grado,
+        function (v) { if (v === "orden") orden = orden === "asc" ? "desc" : "asc"; else grado = v; pintar(); });
+      var filas = Object.keys(e).map(function (c) { return { c: c, n: e[c].n, v: e[c][grado] }; }).filter(function (x) { return x.v != null; });
+      $("gs-ley").innerHTML = ""; $("gs-info").innerHTML = "";
+      if (filas.length < 10) { vacia("La comparación por estado no está disponible ahora mismo."); return; }
+      filas.sort(function (a, b) { return orden === "asc" ? a.v - b.v : b.v - a.v; });
+      var vs = filas.map(function (x) { return x.v; }), mn = Math.min.apply(null, vs), mx = Math.max.apply(null, vs), prom = vs.reduce(function (a, b) { return a + b; }, 0) / vs.length;
+      var barato = filas.slice().sort(function (a, b) { return a.v - b.v; })[0], caro = filas.slice().sort(function (a, b) { return b.v - a.v; })[0];
+      $("gs-cajas").innerHTML = "<div><small>Más barato</small><b>" + esc(barato.n) + " · $" + f2(barato.v) + "</b></div>"
+        + "<div><small>Más caro</small><b>" + esc(caro.n) + " · $" + f2(caro.v) + "</b></div>"
+        + "<div><small>Promedio de los estados</small><b>$" + f2(prom) + "</b></div>"
+        + "<div><small>Diferencia</small><b>$" + f2(mx - mn) + " por galón</b></div>";
+      var tuEstado = null; try { tuEstado = localStorage.getItem("dv_estado_us"); } catch (_) {}
+      var ancho = function (v) { return (12 + (v - mn) / ((mx - mn) || 1) * 88).toFixed(1) + "%"; };
+      // color según el precio: verde el más barato, amarillo en el medio, rojo el más caro
+      var color = function (v) { return "hsl(" + Math.round(120 - (v - mn) / ((mx - mn) || 1) * 120) + ", 70%, 45%)"; };
+      var html = filas.map(function (x, i) {
+        if (!verTodos && i >= 10 && x.c !== tuEstado) return "";
+        return '<div class="gs-barra' + (x.c === tuEstado ? " tu" : "") + '" data-c="' + x.c + '" title="Toca para marcar tu estado"><span class="pos">' + (i + 1) + '</span><span class="nom">' + esc(x.n) + '</span><span class="tubo"><i style="width:' + ancho(x.v) + ";background:" + color(x.v) + '"></i></span><span class="val">$' + f2(x.v) + "</span></div>";
+      }).join("");
+      $("gs-caja").innerHTML = '<div class="gs-barras">' + html + '</div><button type="button" class="ver-mas" id="gs-todos">' + (verTodos ? "Ver menos" : "Ver los " + filas.length + " estados") + "</button>";
+      $("gs-todos").onclick = function () { verTodos = !verTodos; pintar(); };
+      [].forEach.call($("gs-caja").querySelectorAll(".gs-barra"), function (b) { b.onclick = function () { try { localStorage.setItem("dv_estado_us", b.dataset.c === tuEstado ? "" : b.dataset.c); } catch (_) {} pintar(); }; });
+      $("gs-nota").textContent = "Promedio de " + GRADOS[grado].toLowerCase() + " por galón en cada estado (AAA" + (g.estados_fecha ? ", " + g.estados_fecha : "") + "). Toca un estado para marcarlo como el tuyo.";
+    }
+    function pintar() {
+      [].forEach.call(document.querySelectorAll("#grafica-gasolina .gs-tabs button"), function (b) { b.classList.toggle("activo", b.dataset.t === tab); });
+      if (!datos) return;
+      if (tab === "rd") pintarRD(); else if (tab === "us") pintarUS(); else pintarEstados();
+    }
+    [].forEach.call(document.querySelectorAll("#grafica-gasolina .gs-tabs button"), function (b) { b.onclick = function () { tab = b.dataset.t; pintar(); }; });
+    var ancho0 = 0;
+    window.addEventListener("resize", function () { var w = $("gs-caja").clientWidth; if (datos && tab !== "estados" && Math.abs(w - ancho0) > 20) { ancho0 = w; pintar(); } });
+    fetch("/paises.json", { cache: "no-store" }).then(function (r) { return r.ok ? r.json() : null; })
+      .then(function (j) { datos = j || {}; ancho0 = $("gs-caja").clientWidth; pintar(); })
+      .catch(function () { vacia("Las gráficas de la gasolina no se pudieron cargar ahora mismo."); });
+  })();
+  </script>
 
   <!-- Mercados -->
   <div class="rejilla" id="mercados" style="margin-top:16px">
