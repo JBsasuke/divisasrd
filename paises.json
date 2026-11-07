@@ -214,10 +214,10 @@
    "regular": 23.99,
    "premium": 28.79,
    "diesel": 27.0,
-   "estaciones": 13783,
+   "estaciones": 13786,
    "fuente": "Comisión Reguladora de Energía (CRE), precio típico de todas las gasolineras del país",
    "unidad": "litro",
-   "fecha": "2026-11-06"
+   "fecha": "2026-11-07"
   }
  },
  "dolar": [
@@ -592,9 +592,15 @@
    "m": 60.1135,
    "b": 58.5375,
    "v": 61.4125
+  },
+  {
+   "f": "2026-11-07",
+   "m": 60.9345,
+   "b": 58.5375,
+   "v": 61.4125
   }
  ],
  "fuente_dolar": "Tasa internacional: currency-api (fawazahmed0). Bancos: promedio de las tasas de los bancos de RD en Divisas RD.",
  "fuente_economia": "Banco Mundial (último año con datos de cada país)",
- "actualizado": "2026-11-06T18:08:36+00:00"
+ "actualizado": "2026-11-07T16:55:36+00:00"
 }
