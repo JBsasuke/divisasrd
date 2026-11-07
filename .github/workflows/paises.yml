@@ -1,8 +1,8 @@
-# Divisas RD - datos de cada país (economía y combustibles de México) una vez al día
+# Divisas RD - datos de cada país (economía, combustibles, gasolina por estado e historial del dólar) una vez al día
 name: Paises
 on:
   schedule:
-    - cron: "23 11 * * *"   # 7:23 a. m. hora de RD
+    - cron: "23 15 * * *"   # 11:23 a. m. hora de RD (a esa hora los bancos ya pusieron la tasa del día)
   workflow_dispatch:
 permissions:
   contents: write
@@ -18,12 +18,18 @@ jobs:
         with:
           python-version: "3.12"
       - name: Buscar los datos de cada país
-        run: python paises.py
+        run: |
+          pip install --quiet xlrd   # para leer el Excel de la gasolina de la EIA
+          python paises.py
       - name: Guardar paises.json
         run: |
           git config user.name "divisasrd-bot"
           git config user.email "bot@divisasrd.com"
           git add paises.json
           git commit -m "Datos de países $(date -u +%F)" || echo "sin cambios"
-          git pull --rebase || true
-          git push
+          # GitHub a veces rechaza la subida por un fallo suyo: se intenta hasta 3 veces
+          for i in 1 2 3; do
+            git pull --rebase && git push && break
+            if [ "$i" = "3" ]; then echo "::error::GitHub no aceptó la subida después de 3 intentos"; exit 1; fi
+            echo "GitHub rechazó la subida, se intenta otra vez en 15 segundos ($i)"; sleep 15
+          done
