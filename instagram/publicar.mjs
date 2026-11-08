@@ -60,5 +60,20 @@ for (let i = 0; i < 18; i++) {
 }
 
 // 3) Publicar
-const { id } = await api("POST", `/${IG_USER_ID}/media_publish`, { creation_id: contenedor });
+// A veces Instagram dice FINISHED pero todavía no deja publicar y responde
+// "Media ID is not available" (código 9007/2207027). No es un error de verdad:
+// se espera un poco y se intenta otra vez con el mismo contenedor (hasta 6 veces, ~2 min).
+await esperar(5000);
+let id;
+for (let intento = 1; ; intento++) {
+  try {
+    ({ id } = await api("POST", `/${IG_USER_ID}/media_publish`, { creation_id: contenedor }));
+    break;
+  } catch (e) {
+    const noListo = /2207027|9007|not available|not ready/i.test(e.message);
+    if (!noListo || intento >= 6) throw e;
+    console.log(`Instagram todavía no deja publicar (intento ${intento}), se espera 20 segundos…`);
+    await esperar(20000);
+  }
+}
 console.log(`${esHistoria ? "Historia publicada" : "Publicado en el perfil"} (id ${id})`);
