@@ -1,8 +1,9 @@
 {
-  "fecha": "2026-11-08",
-  "dolar": 60.515425,
-  "dolarAnterior": 60.523772,
+  "fecha": "2026-11-09",
+  "dolar": 60.443519,
+  "dolarAnterior": 60.515425,
   "usadas": [
+    "lunes:1",
     "mejor_compra:3",
     "mejor_compra:4",
     "gasolina_sube:0",
