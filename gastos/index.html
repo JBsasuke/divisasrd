@@ -87,114 +87,209 @@
   .lista .det b { white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
   .lista small { display:block; color:var(--texto-2); font-size:12px; } .lista .mon { text-align:right; }
   .lista .borrar { background:none; border:0; cursor:pointer; font-size:16px; padding:6px; }
+  .barra-arriba { display:flex; align-items:center; justify-content:space-between; gap:10px; }
+  .idioma, .pildoras { display:inline-flex; border:1px solid var(--acento); border-radius:99px; overflow:hidden; }
+  .idioma button, .pildoras button { background:transparent; border:0; color:var(--texto); font:600 14px system-ui,sans-serif; padding:7px 13px; cursor:pointer; }
+  .idioma button.activo, .pildoras button.activo { background:var(--acento); color:#fff; }
+  @media (prefers-color-scheme: dark) { .idioma button.activo, .pildoras button.activo { color:#0b1220; } }
+  .ver-en { display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin:12px 0 4px; color:var(--texto-2); font-size:15px; }
   @media (max-width:560px) { .grafica { grid-template-columns:1fr; justify-items:center; } .leyenda { width:100%; } .cuadre b { font-size:15px; } }
 </style>
 </head>
 <body>
 <main>
   <header>
-    <a class="marca" href="/"><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='0' y2='1'%3E%3Cstop offset='0' stop-color='%23ffd54f'/%3E%3Cstop offset='.5' stop-color='%23ffc107'/%3E%3Cstop offset='1' stop-color='%23e0a000'/%3E%3C/linearGradient%3E%3C/defs%3E%3Ccircle cx='32' cy='32' r='30' fill='url(%23g)'/%3E%3Ctext x='32' y='44' text-anchor='middle' font-family='Arial' font-weight='900' font-size='36' fill='%23fff'%3E$%3C/text%3E%3C/svg%3E" alt="" width="44" height="44"><span><b>Divisas RD</b><small>La tasa del dólar hoy en RD</small></span></a>
-    <nav><a href="/">Inicio</a><a href="/guias/">Guías</a></nav>
+    <a class="marca" href="/"><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='0' y2='1'%3E%3Cstop offset='0' stop-color='%23ffd54f'/%3E%3Cstop offset='.5' stop-color='%23ffc107'/%3E%3Cstop offset='1' stop-color='%23e0a000'/%3E%3C/linearGradient%3E%3C/defs%3E%3Ccircle cx='32' cy='32' r='30' fill='url(%23g)'/%3E%3Ctext x='32' y='44' text-anchor='middle' font-family='Arial' font-weight='900' font-size='36' fill='%23fff'%3E$%3C/text%3E%3C/svg%3E" alt="" width="44" height="44"><span><b>Divisas RD</b><small data-i="lema">La tasa del dólar hoy en RD</small></span></a>
+    <nav><a href="/" data-i="inicio">Inicio</a><a href="/guias/" data-i="guias">Guías</a></nav>
   </header>
-  <nav class="migas" aria-label="Estás en"><a href="/">Inicio</a> › <span>Mis gastos</span></nav>
+  <div class="barra-arriba">
+    <nav class="migas" aria-label="Estás en"><a href="/" data-i="inicio">Inicio</a> › <span data-i="migas">Mis gastos</span></nav>
+    <div class="idioma" role="group" aria-label="Idioma / Language">
+      <button type="button" data-lang="es">ES</button><button type="button" data-lang="en">EN</button>
+    </div>
+  </div>
   <article class="tarjeta">
-<h1>Mis gastos del mes</h1>
-<p class="resumen">Anota lo que ganas y lo que gastas, mira en qué se va tu dinero y cuánto te queda. Puedes anotar en pesos o en dólares: los dólares se pasan a pesos con la tasa del día.</p>
-<p class="nota">🔒 Todo se guarda <b>solo en este navegador</b>, en tu teléfono o computadora. No hay cuentas y nadie más ve tus datos. Si borras los datos del navegador, se borran también.</p>
+<h1 data-i="h1">Mis gastos del mes</h1>
+<p class="resumen" data-i="resumen">Anota lo que ganas y lo que gastas, mira en qué se va tu dinero y cuánto te queda. Puedes anotar en pesos o en dólares.</p>
+<p class="nota" data-i="privado" data-html>🔒 Todo se guarda <b>solo en este navegador</b>, en tu teléfono o computadora. No hay cuentas y nadie más ve tus datos. Si borras los datos del navegador, se borran también.</p>
+
+<div class="ver-en">
+  <span data-i="verEn">Ver todo en:</span>
+  <div class="pildoras" role="group">
+    <button type="button" data-ver="DOP">RD$ Pesos</button><button type="button" data-ver="USD" data-i="usd">US$ Dólares</button>
+  </div>
+</div>
 
 <div id="aviso-ejemplo" class="ejemplo" hidden>
-  <b>👋 Esto es un ejemplo.</b> Así se ve un mes con gastos anotados. Cuando anotes tu primer gasto, el ejemplo se borra solo.
-  <button type="button" id="borrar-ejemplo" class="enlace">Borrar el ejemplo y empezar</button>
+  <b data-i="ejTitulo">👋 Esto es un ejemplo.</b> <span data-i="ejTexto">Así se ve un mes con gastos anotados. Cuando anotes tu primer gasto, el ejemplo se borra solo.</span>
+  <button type="button" id="borrar-ejemplo" class="enlace" data-i="ejBorrar">Borrar el ejemplo y empezar</button>
 </div>
 
 <div class="mes">
-  <button type="button" id="mes-antes" class="enlace">‹ Antes</button>
+  <button type="button" id="mes-antes" class="enlace" data-i="antes">‹ Antes</button>
   <b id="mes-nombre"></b>
-  <button type="button" id="mes-despues" class="enlace">Después ›</button>
+  <button type="button" id="mes-despues" class="enlace" data-i="despues">Después ›</button>
 </div>
 
 <div class="cuadre">
-  <div><small>Ganas</small><b id="c-ingreso">—</b></div>
-  <div><small>Gastado</small><b id="c-gastado" class="rojo">—</b></div>
-  <div><small>Te queda</small><b id="c-queda">—</b></div>
+  <div><small data-i="ganas">Ganas</small><b id="c-ingreso">—</b></div>
+  <div><small data-i="gastado">Gastado</small><b id="c-gastado" class="rojo">—</b></div>
+  <div><small data-i="queda">Te queda</small><b id="c-queda">—</b></div>
 </div>
 <div class="barra-uso"><span id="barra"></span></div>
 <p id="pct" class="pequeno"></p>
-<button type="button" id="editar-ingreso" class="enlace">➕ Poner cuánto gano al mes</button>
+<button type="button" id="editar-ingreso" class="enlace"></button>
 
 <form id="ingreso-form" class="caja" hidden>
-  <label>¿Cuánto ganas al mes? <small>(sueldo, negocio, remesas que recibes…)</small>
-    <input id="ingreso-monto" inputmode="decimal" autocomplete="off" placeholder="Ej.: 45000"></label>
+  <label><span data-i="ingresoPregunta">¿Cuánto ganas al mes?</span> <small data-i="ingresoAyuda">(sueldo, negocio, remesas que recibes…)</small>
+    <input id="ingreso-monto" inputmode="decimal" autocomplete="off" placeholder="45000"></label>
   <div class="monedas"><label><input type="radio" name="ingreso-moneda" value="DOP" checked> RD$ Pesos</label>
-    <label><input type="radio" name="ingreso-moneda" value="USD"> US$ Dólares</label></div>
-  <button type="submit" class="boton">Guardar</button> <button type="button" id="ingreso-cancelar" class="enlace">Cancelar</button>
+    <label><input type="radio" name="ingreso-moneda" value="USD"> <span data-i="usd">US$ Dólares</span></label></div>
+  <button type="submit" class="boton" data-i="guardar">Guardar</button> <button type="button" id="ingreso-cancelar" class="enlace" data-i="cancelar">Cancelar</button>
 </form>
 
-<h2>Anotar un gasto</h2>
+<h2 data-i="anotar">Anotar un gasto</h2>
 <form id="gasto-form" class="caja">
-  <label>¿Cuánto? <input id="g-monto" inputmode="decimal" autocomplete="off" placeholder="Ej.: 1500" required></label>
+  <label><span data-i="cuanto">¿Cuánto?</span> <input id="g-monto" inputmode="decimal" autocomplete="off" placeholder="1500" required></label>
   <div class="monedas"><label><input type="radio" name="g-moneda" value="DOP" checked> RD$ Pesos</label>
-    <label><input type="radio" name="g-moneda" value="USD"> US$ Dólares</label></div>
+    <label><input type="radio" name="g-moneda" value="USD"> <span data-i="usd">US$ Dólares</span></label></div>
   <p id="g-equivale" class="pequeno"></p>
-  <p style="margin:8px 0 4px"><b>¿En qué?</b></p>
+  <p style="margin:8px 0 4px"><b data-i="enQue">¿En qué?</b></p>
   <div id="categorias" class="categorias"></div>
-  <label>Nota (opcional) <input id="g-nota" maxlength="40" autocomplete="off" placeholder="Ej.: Compra del súper"></label>
-  <label>Fecha <input id="g-fecha" type="date"></label>
-  <button type="submit" class="boton">➕ Guardar gasto</button>
+  <label><span data-i="nota">Nota (opcional)</span> <input id="g-nota" maxlength="40" autocomplete="off"></label>
+  <label><span data-i="fecha">Fecha</span> <input id="g-fecha" type="date"></label>
+  <button type="submit" class="boton" data-i="guardarGasto">➕ Guardar gasto</button>
 </form>
 
-<h2>¿En qué se va el dinero?</h2>
-<div id="grafica-vacia" class="pequeno">Todavía no hay gastos este mes.</div>
+<h2 data-i="dondeVa">¿En qué se va el dinero?</h2>
+<div id="grafica-vacia" class="pequeno" data-i="sinGastos">Todavía no hay gastos este mes.</div>
 <div class="grafica" id="grafica-caja">
-  <svg id="pastel" viewBox="0 0 200 200" role="img" aria-label="Gráfica de gastos por categoría"></svg>
+  <svg id="pastel" viewBox="0 0 200 200" role="img" aria-label="Gráfica"></svg>
   <ul id="leyenda" class="leyenda"></ul>
 </div>
 
-<h2 id="titulo-lista">Gastos del mes</h2>
+<h2 id="titulo-lista"></h2>
 <ul id="lista" class="lista"></ul>
 <p class="pequeno" id="nota-tasa"></p>
+<p class="pequeno" data-i="appAvisos" data-html>🔔 ¿Quieres que te recuerde cuándo pagar la luz o la tarjeta? En la <b>app de Divisas RD</b> puedes ponerle recordatorios a tus pagos.</p>
 
-<h2>Consejos para que te rinda el dinero</h2>
-<ul>
+<h2 data-i="consejosT">Consejos para que te rinda el dinero</h2>
+<ul data-i="consejos" data-html>
 <li><b>Anota todo, aunque sea poco.</b> Los gastos pequeños de cada día (un refresco, un pasaje, una recarga) son los que más se escapan al final del mes.</li>
 <li><b>Mira la gráfica cada semana.</b> Si una categoría crece mucho, ahí es donde más fácil puedes ajustar.</li>
-<li><b>Separa primero lo fijo.</b> Alquiler, luz, agua, teléfono y préstamos son gastos que llegan todos los meses: réstalos de lo que ganas y sabrás cuánto te queda para lo demás.</li>
+<li><b>Separa primero lo fijo.</b> Alquiler, luz, agua, teléfono y préstamos llegan todos los meses: réstalos de lo que ganas y sabrás cuánto te queda para lo demás.</li>
 <li><b>Intenta guardar una parte apenas cobres</b>, aunque sea poca, en vez de ahorrar lo que sobre al final.</li>
 <li><b>Si recibes o gastas en dólares,</b> compara la tasa antes de cambiar. En <a href="/#bancos">Bancos</a> ves quién paga más hoy, y en la guía <a href="/guias/ahorrar-en-dolares-o-en-pesos/">¿Ahorrar en dólares o en pesos?</a> te explicamos las ventajas de cada una.</li>
 <li><b>Para la factura de la luz</b>, puedes calcular cuánto vas a pagar según tu consumo con <a href="https://kiloclarord.com" rel="noopener">KiloClaro</a>.</li>
 </ul>
 
-<p class="pequeno"><button type="button" id="borrar-todo" class="enlace rojo">Borrar todos mis datos</button></p>
-    <p><a class="boton" href="/">Ver la tasa de hoy →</a></p>
+<p class="pequeno"><button type="button" id="borrar-todo" class="enlace rojo" data-i="borrarTodo">Borrar todos mis datos</button></p>
+    <p><a class="boton" href="/" data-i="verTasa">Ver la tasa de hoy →</a></p>
   </article>
 </main>
 <footer>
-  <p><a href="/">Inicio</a>·<a href="/guias/">Guías</a>·<a href="/quienes-somos/">Quiénes somos</a>·<a href="/contacto/">Contacto</a>·<a href="/privacidad/">Política de privacidad</a></p>
+  <p><a href="/" data-i="inicio">Inicio</a>·<a href="/guias/" data-i="guias">Guías</a>·<a href="/quienes-somos/" data-i="quienes">Quiénes somos</a>·<a href="/contacto/" data-i="contacto">Contacto</a>·<a href="/privacidad/" data-i="privacidad">Política de privacidad</a></p>
   <p>📸 Instagram <a href="https://www.instagram.com/divisas_rd/" rel="noopener">@divisas_rd</a> · 𝕏 <a href="https://x.com/DivisasRD" rel="noopener">@DivisasRD</a> · <a href="mailto:divisasrdapp@gmail.com">divisasrdapp@gmail.com</a></p>
-  <p>Solo informativo. Confirma la tasa con la entidad antes de cambiar.</p>
+  <p data-i="soloInfo">Solo informativo. Confirma la tasa con la entidad antes de cambiar.</p>
   <p>© 2026 Divisas RD</p>
 </footer>
+
 <script>
 (function () {
+  // ---------- Idioma: según el navegador (inglés si está en inglés; si no, español) y botón ES / EN ----------
+  var T = {
+    inicio: ["Inicio", "Home"], lema: ["La tasa del dólar hoy en RD", "Today's dollar rate in the DR"], migas: ["Mis gastos", "My expenses"], h1: ["Mis gastos del mes", "My monthly expenses"],
+    resumen: ["Anota lo que ganas y lo que gastas, mira en qué se va tu dinero y cuánto te queda. Puedes anotar en pesos o en dólares.",
+      "Track what you earn and what you spend, see where your money goes and how much you have left. Use pesos or dollars."],
+    privado: ["🔒 Todo se guarda <b>solo en este navegador</b>, en tu teléfono o computadora. No hay cuentas y nadie más ve tus datos. Si borras los datos del navegador, se borran también.",
+      "🔒 Everything is saved <b>only in this browser</b>, on your phone or computer. No accounts, and nobody else sees your data. If you clear your browser data, it's deleted too."],
+    verEn: ["Ver todo en:", "Show in:"], usd: ["US$ Dólares", "US$ Dollars"],
+    ejTitulo: ["👋 Esto es un ejemplo.", "👋 This is an example."],
+    ejTexto: ["Así se ve un mes con gastos anotados. Cuando anotes tu primer gasto, el ejemplo se borra solo.",
+      "This is what a month with expenses looks like. When you add your first expense, the example is removed."],
+    ejBorrar: ["Borrar el ejemplo y empezar", "Clear the example and start"],
+    antes: ["‹ Antes", "‹ Prev"], despues: ["Después ›", "Next ›"],
+    ganas: ["Ganas", "Income"], gastado: ["Gastado", "Spent"], queda: ["Te queda", "Left"],
+    pct: ["Has gastado el {n}% de lo que ganas.", "You've spent {n}% of your income."],
+    sinIngreso: ["Pon cuánto ganas al mes para ver cuánto te queda.", "Set your monthly income to see how much you have left."],
+    ponerIngreso: ["➕ Poner cuánto gano al mes", "➕ Set my monthly income"], cambiarIngreso: ["✏️ Cambiar cuánto gano al mes", "✏️ Change my monthly income"],
+    ingresoPregunta: ["¿Cuánto ganas al mes?", "What's your monthly income?"],
+    ingresoAyuda: ["(sueldo, negocio, remesas que recibes…)", "(salary, business, money you receive…)"],
+    guardar: ["Guardar", "Save"], cancelar: ["Cancelar", "Cancel"],
+    anotar: ["Anotar un gasto", "Add an expense"], cuanto: ["¿Cuánto?", "How much?"], enQue: ["¿En qué?", "On what?"],
+    nota: ["Nota (opcional)", "Note (optional)"], fecha: ["Fecha", "Date"], guardarGasto: ["➕ Guardar gasto", "➕ Save expense"],
+    notaEj: ["Ej.: Compra del súper", "E.g. Grocery shopping"],
+    dondeVa: ["¿En qué se va el dinero?", "Where does your money go?"], sinGastos: ["Todavía no hay gastos este mes.", "No expenses this month yet."],
+    gastosDe: ["Gastos de {m}", "Expenses in {m}"], total: ["Total", "Total"],
+    equivale: ["≈ {v} con la tasa de hoy", "≈ {v} at today's rate"],
+    notaTasa: ["Los montos en otra moneda se convierten con la tasa de mercado de hoy", "Amounts in another currency are converted with today's market rate"],
+    esperandoTasa: ["Esperando la tasa del día para convertir algunos montos…", "Waiting for today's rate to convert some amounts…"],
+    appAvisos: ["🔔 ¿Quieres que te recuerde cuándo pagar la luz o la tarjeta? En la <b>app de Divisas RD</b> puedes ponerle recordatorios a tus pagos.",
+      "🔔 Want a reminder to pay your electric bill or credit card? In the <b>Divisas RD app</b> you can set payment reminders."],
+    consejosT: ["Consejos para que te rinda el dinero", "Tips to make your money go further"],
+    consejos: [null, '<li><b>Write everything down, even small amounts.</b> Small daily expenses (a soda, a ride, a phone top-up) are what slip away the most by the end of the month.</li>' +
+      '<li><b>Check the chart every week.</b> If one category keeps growing, that\'s the easiest place to cut back.</li>' +
+      '<li><b>Start with the fixed bills.</b> Rent, electricity, water, phone and loans come every month: subtract them from your income and you\'ll know what\'s left for everything else.</li>' +
+      '<li><b>Try to save a little as soon as you get paid</b>, instead of saving whatever is left at the end.</li>' +
+      '<li><b>If you send or receive money to the Dominican Republic,</b> compare rates first. See who pays the most today in <a href="/#bancos">Banks</a>.</li>'],
+    borrarTodo: ["Borrar todos mis datos", "Delete all my data"], verTasa: ["Ver la tasa de hoy →", "See today's rate →"],
+    guias: ["Guías", "Guides"], quienes: ["Quiénes somos", "About us"], contacto: ["Contacto", "Contact"], privacidad: ["Política de privacidad", "Privacy policy"],
+    soloInfo: ["Solo informativo. Confirma la tasa con la entidad antes de cambiar.", "For information only. Confirm the rate with the provider before exchanging."],
+    borrarGasto: ["¿Borrar este gasto?", "Delete this expense?"],
+    borrarTodoPregunta: ["¿Borrar todos tus gastos y tu ingreso de este navegador? No se puede deshacer.", "Delete all your expenses and income from this browser? This can't be undone."],
+    titulo: ["Mis gastos: control de gastos personales en pesos y dólares | Divisas RD", "My expenses: personal budget tracker in pesos and dollars | Divisas RD"]
+  };
+  var CLAVE_IDIOMA = "divisasrd_idioma";
+  var lang = "es";
+  try { lang = localStorage.getItem(CLAVE_IDIOMA) || ""; } catch (e) { lang = ""; }
+  if (lang !== "es" && lang !== "en") lang = /^en/i.test(navigator.language || "") ? "en" : "es";
+  function tr(k, vars) {
+    var par = T[k]; if (!par) return k;
+    var s = (lang === "en" ? par[1] : par[0]) || par[0] || "";
+    if (vars) Object.keys(vars).forEach(function (v) { s = s.replace("{" + v + "}", vars[v]); });
+    return s;
+  }
+  var originales = {};   // texto original en español de los bloques con HTML
+  function aplicarIdioma() {
+    document.documentElement.lang = lang;
+    document.title = tr("titulo");
+    Array.prototype.forEach.call(document.querySelectorAll("[data-i]"), function (el, i) {
+      var k = el.getAttribute("data-i");
+      if (el.hasAttribute("data-html")) {
+        if (!(i in originales)) originales[i] = el.innerHTML;
+        el.innerHTML = lang === "en" && T[k] && T[k][1] ? T[k][1] : (T[k] && T[k][0]) || originales[i];
+      } else el.textContent = tr(k);
+    });
+    $("g-nota").placeholder = tr("notaEj");
+    Array.prototype.forEach.call(document.querySelectorAll("[data-lang]"), function (b) { b.classList.toggle("activo", b.getAttribute("data-lang") === lang); });
+  }
+
+  // ---------- Categorías ----------
   var CATS = [
-    ["comida", "Comida y súper", "🛒", "#4CAF50"], ["luz", "Luz", "💡", "#FFC107"], ["agua", "Agua", "🚰", "#29B6F6"],
-    ["telefono", "Teléfono e internet", "📱", "#7E57C2"], ["casa", "Alquiler o casa", "🏠", "#8D6E63"],
-    ["carro", "Carro y transporte", "🚗", "#EF5350"], ["combustible", "Combustible", "⛽", "#FF7043"],
-    ["salud", "Salud y farmacia", "💊", "#EC407A"], ["educacion", "Educación", "📚", "#5C6BC0"],
-    ["mascota", "Mascota", "🐶", "#A1887F"], ["ropa", "Ropa", "👕", "#26A69A"], ["salidas", "Salidas y diversión", "🎉", "#AB47BC"],
-    ["deudas", "Préstamos y tarjetas", "💳", "#78909C"], ["remesas", "Dinero enviado", "💸", "#66BB6A"], ["otros", "Otros", "📦", "#90A4AE"]
+    ["comida", "Comida y súper", "Groceries", "🛒", "#4CAF50"], ["luz", "Luz", "Electricity", "💡", "#FFC107"], ["agua", "Agua", "Water", "🚰", "#29B6F6"],
+    ["telefono", "Teléfono e internet", "Phone & internet", "📱", "#7E57C2"], ["casa", "Alquiler o casa", "Rent or home", "🏠", "#8D6E63"],
+    ["carro", "Carro y transporte", "Car & transportation", "🚗", "#EF5350"], ["combustible", "Combustible", "Gas / fuel", "⛽", "#FF7043"],
+    ["salud", "Salud y farmacia", "Health & pharmacy", "💊", "#EC407A"], ["educacion", "Educación", "Education", "📚", "#5C6BC0"],
+    ["mascota", "Mascota", "Pets", "🐶", "#A1887F"], ["ropa", "Ropa", "Clothing", "👕", "#26A69A"], ["salidas", "Salidas y diversión", "Going out & fun", "🎉", "#AB47BC"],
+    ["deudas", "Préstamos y tarjetas", "Loans & credit cards", "💳", "#78909C"], ["remesas", "Dinero enviado", "Money sent", "💸", "#66BB6A"], ["otros", "Otros", "Other", "📦", "#90A4AE"]
   ];
-  var MESES = ["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"];
+  function cat(c) { for (var i = 0; i < CATS.length; i++) if (CATS[i][0] === c) return CATS[i]; return CATS[CATS.length - 1]; }
+  function nomCat(c) { return lang === "en" ? c[2] : c[1]; }
+  var MESES = { es: ["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"],
+    en: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"] };
   var CLAVE = "divisasrd_gastos_v1";
   var $ = function (id) { return document.getElementById(id); };
-  function cat(c) { for (var i = 0; i < CATS.length; i++) if (CATS[i][0] === c) return CATS[i]; return CATS[CATS.length - 1]; }
   function dos(n) { return (n < 10 ? "0" : "") + n; }
   function hoy() { var d = new Date(); return d.getFullYear() + "-" + dos(d.getMonth() + 1) + "-" + dos(d.getDate()); }
   function mesDe(f) { return f.slice(0, 7); }
   function mesActual() { return hoy().slice(0, 7); }
   function moverMes(m, n) { var a = +m.slice(0, 4), b = +m.slice(5, 7) - 1 + n; a += Math.floor(b / 12); b = ((b % 12) + 12) % 12; return a + "-" + dos(b + 1); }
-  function nombreMes(m) { var t = MESES[+m.slice(5, 7) - 1]; return t.charAt(0).toUpperCase() + t.slice(1) + " " + m.slice(0, 4); }
+  function soloMes(m) { return MESES[lang][+m.slice(5, 7) - 1]; }
+  function nombreMes(m) { var t = soloMes(m); return t.charAt(0).toUpperCase() + t.slice(1) + " " + m.slice(0, 4); }
+  function fechaCorta(f) { return lang === "en" ? f.slice(5, 7) + "/" + f.slice(8) : f.slice(8) + "/" + f.slice(5, 7); }
   function pesos(v) { return "RD$ " + Math.round(v).toLocaleString("en-US"); }
+  function dolares(v) { return "US$ " + v.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 }); }
+  function montoTexto(v, moneda) { return moneda === "USD" ? dolares(v) : pesos(v); }
   function leerMonto(t) {
     t = String(t || "").trim();
     if (t.indexOf(".") >= 0) t = t.replace(/,/g, "");
@@ -204,114 +299,121 @@
   }
   function esc(s) { return String(s).replace(/[&<>"']/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; }); }
 
-  // ---- Datos (solo en este navegador) ----
-  var datos = null, memoria = null;
-  function ejemplo() {
-    var m = mesActual();
-    var l = [["comida", 9800, "Compra del súper"], ["luz", 2850, "Factura de la luz"], ["agua", 450, "Agua"], ["telefono", 1900, "Celular e internet"],
-      ["casa", 12000, "Alquiler"], ["carro", 3500, "Pago y mantenimiento"], ["combustible", 3200, "Gasolina"], ["mascota", 1200, "Comida del perro"],
-      ["salud", 950, "Farmacia"], ["salidas", 1800, "Salida del fin de semana"]];
-    return { ingreso: 45000, monedaIngreso: "DOP", ejemplo: true, gastos: l.map(function (g, i) {
-      return { id: i + 1, fecha: m + "-" + dos(Math.min(28, 1 + i * 3)), cat: g[0], monto: g[1], moneda: "DOP", nota: g[2] }; }) };
+  // ---------- Datos (solo en este navegador) ----------
+  var memoria = null;
+  function ejemplo(moneda) {
+    var m = mesActual(), usd = moneda === "USD";
+    var l = [["comida", 9800, 520, "Compra del súper", "Grocery shopping"], ["luz", 2850, 140, "Factura de la luz", "Electric bill"], ["agua", 450, 45, "Agua", "Water bill"],
+      ["telefono", 1900, 95, "Celular e internet", "Cell phone & internet"], ["casa", 12000, 1400, "Alquiler", "Rent"], ["carro", 3500, 380, "Pago y mantenimiento", "Car payment"],
+      ["combustible", 3200, 160, "Gasolina", "Gas"], ["mascota", 1200, 60, "Comida del perro", "Dog food"], ["salud", 950, 40, "Farmacia", "Pharmacy"],
+      ["salidas", 1800, 120, "Salida del fin de semana", "Weekend outing"]];
+    return { ingreso: usd ? 3800 : 45000, monedaIngreso: moneda, monedaVer: moneda, ejemplo: true, gastos: l.map(function (g, i) {
+      return { id: i + 1, fecha: m + "-" + dos(Math.min(28, 1 + i * 3)), cat: g[0], monto: usd ? g[2] : g[1], moneda: moneda, nota: lang === "en" ? g[4] : g[3] }; }) };
   }
   function cargar() {
-    try { var t = localStorage.getItem(CLAVE); if (t) return JSON.parse(t); } catch (e) {}
-    return memoria || ejemplo();
+    try { var t = localStorage.getItem(CLAVE); if (t) { var d = JSON.parse(t); if (!d.monedaVer) d.monedaVer = "DOP"; return d; } } catch (e) {}
+    return memoria || ejemplo(lang === "en" ? "USD" : "DOP");
   }
-  function guardar() {
-    memoria = datos;
-    try { localStorage.setItem(CLAVE, JSON.stringify(datos)); } catch (e) {}
-  }
-  datos = cargar();
+  function guardar() { memoria = datos; try { localStorage.setItem(CLAVE, JSON.stringify(datos)); } catch (e) {} }
+  var datos = cargar();
 
-  // ---- Tasa del día ----
+  // ---------- Tasa del día y conversión a la moneda escogida ----------
   var dop = null;
   fetch("https://open.er-api.com/v6/latest/USD").then(function (r) { return r.json(); })
     .then(function (j) { dop = j && j.rates && j.rates.DOP; pintar(); }).catch(function () {});
-  function enPesos(monto, moneda) { return moneda === "USD" ? monto * (dop || 0) : monto; }
+  function aVer(monto, moneda) {
+    if (moneda === datos.monedaVer) return monto;
+    if (!dop) return null;
+    return datos.monedaVer === "USD" ? monto / dop : monto * dop;
+  }
+  function dinero(v) { return v === null ? "—" : montoTexto(v, datos.monedaVer); }
 
-  // ---- Pintar todo ----
+  // ---------- Pintar ----------
   var mes = mesActual();
   var catElegida = "comida";
   function pintar() {
     $("aviso-ejemplo").hidden = !datos.ejemplo;
     $("mes-nombre").textContent = nombreMes(mes);
     $("mes-despues").disabled = mes >= mesActual();
+    Array.prototype.forEach.call(document.querySelectorAll("[data-ver]"), function (b) { b.classList.toggle("activo", b.getAttribute("data-ver") === datos.monedaVer); });
     var delMes = datos.gastos.filter(function (g) { return mesDe(g.fecha) === mes; })
       .sort(function (a, b) { return a.fecha < b.fecha ? 1 : a.fecha > b.fecha ? -1 : b.id - a.id; });
-    var total = delMes.reduce(function (s, g) { return s + enPesos(g.monto, g.moneda); }, 0);
-    var ingreso = enPesos(datos.ingreso || 0, datos.monedaIngreso);
+    var falta = false;
+    function conv(m, mon) { var v = aVer(m, mon); if (v === null) { falta = true; return 0; } return v; }
+    var total = delMes.reduce(function (s, g) { return s + conv(g.monto, g.moneda); }, 0);
+    var ingreso = conv(datos.ingreso || 0, datos.monedaIngreso);
     var queda = ingreso - total;
-    $("c-ingreso").textContent = pesos(ingreso);
-    $("c-gastado").textContent = pesos(total);
-    $("c-queda").textContent = pesos(queda);
+    $("c-ingreso").textContent = dinero(ingreso);
+    $("c-gastado").textContent = dinero(total);
+    $("c-queda").textContent = dinero(queda);
     $("c-queda").className = queda >= 0 ? "verde" : "rojo";
     var uso = ingreso > 0 ? Math.min(1, total / ingreso) : 0;
     $("barra").style.width = (uso * 100) + "%";
     $("barra").className = total > ingreso ? "pasado" : "";
-    $("pct").textContent = ingreso > 0 ? "Has gastado el " + Math.floor(total / ingreso * 100) + "% de lo que ganas." : "Pon cuánto ganas al mes para ver cuánto te queda.";
-    $("editar-ingreso").textContent = datos.ingreso > 0 ? "✏️ Cambiar cuánto gano al mes" : "➕ Poner cuánto gano al mes";
+    $("pct").textContent = (ingreso > 0 ? tr("pct", { n: Math.floor(total / ingreso * 100) }) : tr("sinIngreso")) + (falta ? " " + tr("esperandoTasa") : "");
+    $("editar-ingreso").textContent = datos.ingreso > 0 ? tr("cambiarIngreso") : tr("ponerIngreso");
 
-    // Gráfica de pastel
     var grupos = {};
-    delMes.forEach(function (g) { grupos[g.cat] = (grupos[g.cat] || 0) + enPesos(g.monto, g.moneda); });
-    var partes = Object.keys(grupos).map(function (k) { return [cat(k), grupos[k]]; }).sort(function (a, b) { return b[1] - a[1]; });
+    delMes.forEach(function (g) { grupos[g.cat] = (grupos[g.cat] || 0) + conv(g.monto, g.moneda); });
+    var partes = Object.keys(grupos).filter(function (k) { return grupos[k] > 0; })
+      .map(function (k) { return [cat(k), grupos[k]]; }).sort(function (a, b) { return b[1] - a[1]; });
     $("grafica-vacia").hidden = partes.length > 0;
     $("grafica-caja").hidden = partes.length === 0;
     var svg = "", inicio = -Math.PI / 2, R = 80, C = 100;
     partes.forEach(function (p) {
       var ang = p[1] / total * Math.PI * 2;
-      if (partes.length === 1) { svg += '<circle cx="100" cy="100" r="80" fill="none" stroke="' + p[0][3] + '" stroke-width="34"/>'; return; }
+      if (partes.length === 1) { svg += '<circle cx="100" cy="100" r="80" fill="none" stroke="' + p[0][4] + '" stroke-width="34"/>'; return; }
       var fin = inicio + ang - 0.02;
       var x1 = C + R * Math.cos(inicio), y1 = C + R * Math.sin(inicio), x2 = C + R * Math.cos(fin), y2 = C + R * Math.sin(fin);
       svg += '<path d="M' + x1.toFixed(2) + " " + y1.toFixed(2) + " A" + R + " " + R + " 0 " + (ang > Math.PI ? 1 : 0) + " 1 " + x2.toFixed(2) + " " + y2.toFixed(2) +
-        '" fill="none" stroke="' + p[0][3] + '" stroke-width="34"><title>' + esc(p[0][1]) + ": " + pesos(p[1]) + "</title></path>";
+        '" fill="none" stroke="' + p[0][4] + '" stroke-width="34"><title>' + esc(nomCat(p[0])) + ": " + dinero(p[1]) + "</title></path>";
       inicio += ang;
     });
-    svg += '<text x="100" y="95" text-anchor="middle" class="t1">Total</text><text x="100" y="116" text-anchor="middle" class="t2">' + pesos(total) + "</text>";
+    svg += '<text x="100" y="95" text-anchor="middle" class="t1">' + tr("total") + '</text><text x="100" y="116" text-anchor="middle" class="t2">' + dinero(total) + "</text>";
     $("pastel").innerHTML = svg;
     $("leyenda").innerHTML = partes.map(function (p) {
-      return '<li><span class="punto" style="background:' + p[0][3] + '"></span><span class="nom">' + p[0][2] + " " + esc(p[0][1]) +
-        '</span><span class="pc">' + Math.round(p[1] / total * 100) + '%</span><b>' + pesos(p[1]) + "</b></li>";
+      return '<li><span class="punto" style="background:' + p[0][4] + '"></span><span class="nom">' + p[0][3] + " " + esc(nomCat(p[0])) +
+        '</span><span class="pc">' + Math.round(p[1] / total * 100) + '%</span><b>' + dinero(p[1]) + "</b></li>";
     }).join("");
 
-    // Lista
-    $("titulo-lista").textContent = "Gastos de " + MESES[+mes.slice(5, 7) - 1];
+    $("titulo-lista").textContent = tr("gastosDe", { m: soloMes(mes) });
     $("lista").innerHTML = delMes.length ? delMes.map(function (g) {
       var c = cat(g.cat);
-      var monto = g.moneda === "USD" ? "US$ " + g.monto.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : pesos(g.monto);
-      var equiv = g.moneda === "USD" && dop ? '<small>≈ ' + pesos(g.monto * dop) + "</small>" : "";
-      return '<li><span class="ico" style="background:' + c[3] + '33">' + c[2] + '</span><span class="det"><b>' + esc(g.nota || c[1]) + "</b><small>" + esc(c[1]) + " · " +
-        g.fecha.slice(8) + "/" + g.fecha.slice(5, 7) + '</small></span><span class="mon"><b>' + monto + "</b>" + equiv +
-        '</span><button type="button" class="borrar" data-id="' + g.id + '" aria-label="Borrar gasto">🗑</button></li>';
-    }).join("") : '<li class="pequeno">Todavía no hay gastos este mes.</li>';
-    $("nota-tasa").textContent = "Los gastos en dólares se pasan a pesos con la tasa de mercado de hoy" + (dop ? " (RD$ " + dop.toFixed(2) + ")." : ".");
+      var otra = g.moneda !== datos.monedaVer ? aVer(g.monto, g.moneda) : null;
+      return '<li><span class="ico" style="background:' + c[4] + '33">' + c[3] + '</span><span class="det"><b>' + esc(g.nota || nomCat(c)) + "</b><small>" + esc(nomCat(c)) + " · " +
+        fechaCorta(g.fecha) + '</small></span><span class="mon"><b>' + montoTexto(g.monto, g.moneda) + "</b>" + (otra !== null ? "<small>≈ " + dinero(otra) + "</small>" : "") +
+        '</span><button type="button" class="borrar" data-id="' + g.id + '" aria-label="' + esc(tr("borrarGasto")) + '">🗑</button></li>';
+    }).join("") : '<li class="pequeno">' + tr("sinGastos") + "</li>";
+    $("nota-tasa").textContent = tr("notaTasa") + (dop ? " (1 US$ = RD$ " + dop.toFixed(2) + ")." : ".");
     equivalencia();
   }
 
-  // ---- Categorías del formulario ----
-  $("categorias").innerHTML = CATS.map(function (c) {
-    return '<button type="button" data-cat="' + c[0] + '" style="border-color:' + c[3] + '">' + c[2] + " " + c[1] + "</button>";
-  }).join("");
+  function pintarCategorias() {
+    $("categorias").innerHTML = CATS.map(function (c) {
+      return '<button type="button" data-cat="' + c[0] + '" style="border-color:' + c[4] + '">' + c[3] + " " + esc(nomCat(c)) + "</button>";
+    }).join("");
+    marcarCat();
+  }
   function marcarCat() {
     Array.prototype.forEach.call($("categorias").children, function (b) { b.classList.toggle("activo", b.getAttribute("data-cat") === catElegida); });
   }
   $("categorias").addEventListener("click", function (e) {
     var b = e.target.closest("button"); if (!b) return; catElegida = b.getAttribute("data-cat"); marcarCat();
   });
-  marcarCat();
   $("g-fecha").value = hoy();
   $("g-fecha").max = hoy();
 
   function monedaDe(nombre) { var r = document.querySelector('input[name="' + nombre + '"]:checked'); return r ? r.value : "DOP"; }
+  function ponerMoneda(nombre, v) { var r = document.querySelector('input[name="' + nombre + '"][value="' + v + '"]'); if (r) r.checked = true; }
   function equivalencia() {
-    var v = leerMonto($("g-monto").value);
-    $("g-equivale").textContent = monedaDe("g-moneda") === "USD" && v && dop ? "≈ " + pesos(v * dop) + " con la tasa de hoy" : "";
+    var v = leerMonto($("g-monto").value), mon = monedaDe("g-moneda");
+    var otra = v && mon !== datos.monedaVer ? aVer(v, mon) : null;
+    $("g-equivale").textContent = otra !== null ? tr("equivale", { v: dinero(otra) }) : "";
   }
   $("g-monto").addEventListener("input", equivalencia);
   Array.prototype.forEach.call(document.querySelectorAll('input[name="g-moneda"]'), function (r) { r.addEventListener("change", equivalencia); });
 
-  // ---- Acciones ----
+  // ---------- Acciones ----------
   function quitarEjemplo() { if (datos.ejemplo) { datos.gastos = []; datos.ingreso = 0; datos.ejemplo = false; } }
   $("gasto-form").addEventListener("submit", function (e) {
     e.preventDefault();
@@ -328,14 +430,14 @@
   $("lista").addEventListener("click", function (e) {
     var b = e.target.closest(".borrar"); if (!b) return;
     var id = +b.getAttribute("data-id");
-    if (!confirm("¿Borrar este gasto?")) return;
+    if (!confirm(tr("borrarGasto"))) return;
     datos.gastos = datos.gastos.filter(function (g) { return g.id !== id; });
     guardar(); pintar();
   });
   $("editar-ingreso").addEventListener("click", function () {
     $("ingreso-form").hidden = false;
     $("ingreso-monto").value = datos.ingreso > 0 && !datos.ejemplo ? datos.ingreso : "";
-    var r = document.querySelector('input[name="ingreso-moneda"][value="' + (datos.monedaIngreso || "DOP") + '"]'); if (r) r.checked = true;
+    ponerMoneda("ingreso-moneda", datos.ejemplo ? datos.monedaVer : (datos.monedaIngreso || "DOP"));
     $("ingreso-monto").focus();
   });
   $("ingreso-cancelar").addEventListener("click", function () { $("ingreso-form").hidden = true; });
@@ -349,13 +451,30 @@
   });
   $("borrar-ejemplo").addEventListener("click", function () { quitarEjemplo(); guardar(); pintar(); });
   $("borrar-todo").addEventListener("click", function () {
-    if (!confirm("¿Borrar todos tus gastos y tu ingreso de este navegador? No se puede deshacer.")) return;
-    datos = { ingreso: 0, monedaIngreso: "DOP", ejemplo: false, gastos: [] }; guardar(); pintar();
+    if (!confirm(tr("borrarTodoPregunta"))) return;
+    datos = { ingreso: 0, monedaIngreso: datos.monedaVer, monedaVer: datos.monedaVer, ejemplo: false, gastos: [] }; guardar(); pintar();
   });
   $("mes-antes").addEventListener("click", function () { mes = moverMes(mes, -1); pintar(); });
   $("mes-despues").addEventListener("click", function () { if (mes < mesActual()) { mes = moverMes(mes, 1); pintar(); } });
+  Array.prototype.forEach.call(document.querySelectorAll("[data-ver]"), function (b) {
+    b.addEventListener("click", function () {
+      var m = b.getAttribute("data-ver");
+      if (datos.ejemplo) datos = ejemplo(m); else datos.monedaVer = m;   // el ejemplo se rehace en la moneda escogida
+      ponerMoneda("g-moneda", m);
+      guardar(); pintar();
+    });
+  });
+  Array.prototype.forEach.call(document.querySelectorAll("[data-lang]"), function (b) {
+    b.addEventListener("click", function () {
+      lang = b.getAttribute("data-lang");
+      try { localStorage.setItem(CLAVE_IDIOMA, lang); } catch (e) {}
+      if (datos.ejemplo) datos = ejemplo(datos.monedaVer);   // las notas del ejemplo en el idioma nuevo
+      aplicarIdioma(); pintarCategorias(); pintar();
+    });
+  });
 
-  pintar();
+  ponerMoneda("g-moneda", datos.monedaVer);
+  aplicarIdioma(); pintarCategorias(); pintar();
 })();
 </script>
 </body>
