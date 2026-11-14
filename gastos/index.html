@@ -104,9 +104,6 @@
   </header>
   <div class="barra-arriba">
     <nav class="migas" aria-label="Estás en"><a href="/" data-i="inicio">Inicio</a> › <span data-i="migas">Mis gastos</span></nav>
-    <div class="idioma" role="group" aria-label="Idioma / Language">
-      <button type="button" data-lang="es">ES</button><button type="button" data-lang="en">EN</button>
-    </div>
   </div>
   <article class="tarjeta">
 <h1 data-i="h1">Mis gastos del mes</h1>
@@ -243,6 +240,7 @@
   var lang = "es";
   try { lang = localStorage.getItem(CLAVE_IDIOMA) || ""; } catch (e) { lang = ""; }
   if (lang !== "es" && lang !== "en") lang = /^en/i.test(navigator.language || "") ? "en" : "es";
+  lang = "es";   // Por ahora la página va solo en español (los textos en inglés quedan guardados por si se activa luego)
   function tr(k, vars) {
     var par = T[k]; if (!par) return k;
     var s = (lang === "en" ? par[1] : par[0]) || par[0] || "";
