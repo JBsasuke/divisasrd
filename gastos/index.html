@@ -1,0 +1,362 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mis gastos: control de gastos personales en pesos y dólares | Divisas RD</title>
+<meta name="description" content="Anota cuánto ganas y cuánto gastas, mira en qué se va tu dinero con una gráfica y cuánto te queda. Gratis, en pesos o dólares y sin crear cuenta.">
+<link rel="canonical" href="https://divisasrd.com/gastos/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Mis gastos: control de gastos personales en pesos y dólares">
+<meta property="og:description" content="Anota cuánto ganas y cuánto gastas, mira en qué se va tu dinero con una gráfica y cuánto te queda. Gratis, en pesos o dólares y sin crear cuenta.">
+<meta property="og:url" content="https://divisasrd.com/gastos/">
+<meta property="og:locale" content="es_DO">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='0' y2='1'%3E%3Cstop offset='0' stop-color='%23ffd54f'/%3E%3Cstop offset='.5' stop-color='%23ffc107'/%3E%3Cstop offset='1' stop-color='%23e0a000'/%3E%3C/linearGradient%3E%3C/defs%3E%3Ccircle cx='32' cy='32' r='30' fill='url(%23g)'/%3E%3Ctext x='32' y='44' text-anchor='middle' font-family='Arial' font-weight='900' font-size='36' fill='%23fff'%3E$%3C/text%3E%3C/svg%3E">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebApplication", "name": "Mis gastos · Divisas RD", "url": "https://divisasrd.com/gastos/", "applicationCategory": "FinanceApplication", "operatingSystem": "Web", "inLanguage": "es-DO", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}}</script>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3979135814994883" crossorigin="anonymous"></script>
+<style>
+  :root { --fondo:#eef3fa; --tarjeta:#fff; --borde:#d7e0ee; --texto:#0E1726; --texto-2:#3d4a63; --acento:#9a6700; color-scheme: light; }
+  @media (prefers-color-scheme: dark) { :root { --fondo:#061428; --tarjeta:#0b2547; --borde:#1d3b66; --texto:#fff; --texto-2:#c3cde0; --acento:#ffc107; color-scheme: dark; } }
+  * { box-sizing: border-box; }
+  body { margin:0; background:var(--fondo); color:var(--texto); font:17px/1.65 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif; }
+  main { max-width:780px; margin:0 auto; padding:20px 16px 40px; }
+  header { display:flex; gap:12px; align-items:center; justify-content:space-between; flex-wrap:wrap; }
+  header .marca { display:flex; gap:10px; align-items:center; text-decoration:none; color:var(--texto); }
+  header .marca img { width:44px; height:44px; }
+  header .marca b { font-size:20px; display:block; line-height:1.1; }
+  header .marca small { color:var(--texto-2); font-size:13px; }
+  header nav a { margin-left:14px; font-size:15px; font-weight:600; }
+  .migas { font-size:14px; color:var(--texto-2); margin:16px 0 6px; }
+  .tarjeta { background:var(--tarjeta); border:1px solid var(--borde); border-radius:18px; padding:22px 20px; margin-top:12px; }
+  h1 { font-size:28px; line-height:1.2; margin:6px 0 6px; }
+  h2 { font-size:21px; margin:28px 0 6px; }
+  h3 { font-size:18px; margin:20px 0 4px; }
+  p, li { color:var(--texto-2); }
+  a { color:var(--acento); }
+  .fecha { font-size:14px; margin:0 0 10px; }
+  .resumen { font-size:18px; color:var(--texto); }
+  table { width:100%; border-collapse:collapse; margin:10px 0; font-size:15px; }
+  th, td { border-bottom:1px solid var(--borde); padding:8px 6px; text-align:left; }
+  th { color:var(--texto); }
+  td.n, th.n { text-align:right; white-space:nowrap; }
+  .tabla { overflow-x:auto; }
+  .nota { border-left:4px solid var(--acento); padding:8px 12px; background:color-mix(in srgb, var(--acento) 9%, transparent); border-radius:8px; }
+  .boton { display:inline-block; margin-top:14px; padding:12px 20px; border-radius:12px; background:var(--acento); color:#fff; font-weight:700; text-decoration:none; }
+  @media (prefers-color-scheme: dark) { .boton { color:#0b1220; } }
+  .lista-guias { list-style:none; padding:0; margin:0; }
+  .lista-guias li { border-bottom:1px solid var(--borde); padding:14px 0; }
+  .lista-guias li:last-child { border-bottom:0; }
+  .lista-guias a { font-weight:700; font-size:18px; text-decoration:none; }
+  .lista-guias p { margin:4px 0 0; }
+  footer { max-width:780px; margin:0 auto; padding:10px 16px 40px; font-size:14px; color:var(--texto-2); text-align:center; }
+  footer a { margin:0 6px; }
+</style>
+<style>
+  .ejemplo { border:1px dashed var(--acento); border-radius:12px; padding:10px 12px; margin:12px 0; color:var(--texto); }
+  .enlace { background:none; border:0; color:var(--acento); font:inherit; font-weight:600; cursor:pointer; padding:6px 0; }
+  .enlace:disabled { color:var(--texto-2); opacity:.5; cursor:default; }
+  .rojo { color:#d32f2f !important; } .verde { color:#12843d; }
+  @media (prefers-color-scheme: dark) { .rojo { color:#ff5a5f !important; } .verde { color:#4cd964; } }
+  .mes { display:flex; align-items:center; justify-content:space-between; margin:14px 0 6px; }
+  .mes b { font-size:19px; color:var(--texto); }
+  .cuadre { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; text-align:center; background:color-mix(in srgb, var(--acento) 10%, transparent);
+    border:2px solid var(--acento); border-radius:16px; padding:14px 6px; }
+  .cuadre small { display:block; color:var(--texto-2); font-size:13px; } .cuadre b { font-size:18px; color:var(--texto); }
+  .barra-uso { height:10px; border-radius:99px; background:var(--borde); margin-top:12px; overflow:hidden; }
+  .barra-uso span { display:block; height:100%; width:0; background:var(--acento); border-radius:99px; transition:width .3s; }
+  .barra-uso span.pasado { background:#d32f2f; }
+  .pequeno { font-size:14px; color:var(--texto-2); margin:6px 0; }
+  .caja { border:1px solid var(--borde); border-radius:14px; padding:14px; margin:10px 0; }
+  .caja label { display:block; margin:8px 0; color:var(--texto); font-weight:600; }
+  .caja input[type=text], .caja input:not([type]), .caja input[type=date] { display:block; width:100%; margin-top:4px; padding:11px 12px; font:inherit;
+    border:1px solid var(--borde); border-radius:10px; background:var(--fondo); color:var(--texto); }
+  .monedas { display:flex; gap:16px; flex-wrap:wrap; } .monedas label { font-weight:500; display:flex; gap:6px; align-items:center; }
+  .categorias { display:grid; grid-template-columns:repeat(auto-fill,minmax(128px,1fr)); gap:6px; }
+  .categorias button { text-align:left; padding:9px 8px; border-radius:10px; border:1px solid; background:transparent; color:var(--texto); font:13px system-ui,sans-serif; cursor:pointer; }
+  .categorias button.activo { background:var(--acento); color:#fff; border-color:var(--acento) !important; font-weight:700; }
+  @media (prefers-color-scheme: dark) { .categorias button.activo { color:#0b1220; } }
+  .caja .boton { border:0; cursor:pointer; font:inherit; font-weight:700; }
+  .grafica { display:grid; grid-template-columns:200px 1fr; gap:16px; align-items:center; }
+  .grafica svg { width:200px; height:200px; } .grafica .t1 { fill:var(--texto-2); font-size:12px; } .grafica .t2 { fill:var(--texto); font-size:15px; font-weight:700; }
+  .leyenda, .lista { list-style:none; padding:0; margin:0; }
+  .leyenda li { display:flex; gap:8px; align-items:center; padding:5px 0; color:var(--texto); font-size:15px; }
+  .leyenda .punto { width:12px; height:12px; border-radius:50%; flex:none; } .leyenda .nom { flex:1; } .leyenda .pc { color:var(--texto-2); font-size:13px; }
+  .lista li { display:flex; gap:10px; align-items:center; padding:9px 0; border-bottom:1px solid var(--borde); }
+  .lista .ico { width:38px; height:38px; border-radius:50%; display:flex; align-items:center; justify-content:center; flex:none; font-size:18px; }
+  .lista .det { flex:1; min-width:0; } .lista .det b, .lista .mon b { display:block; color:var(--texto); font-size:15px; }
+  .lista .det b { white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .lista small { display:block; color:var(--texto-2); font-size:12px; } .lista .mon { text-align:right; }
+  .lista .borrar { background:none; border:0; cursor:pointer; font-size:16px; padding:6px; }
+  @media (max-width:560px) { .grafica { grid-template-columns:1fr; justify-items:center; } .leyenda { width:100%; } .cuadre b { font-size:15px; } }
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <a class="marca" href="/"><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='0' y2='1'%3E%3Cstop offset='0' stop-color='%23ffd54f'/%3E%3Cstop offset='.5' stop-color='%23ffc107'/%3E%3Cstop offset='1' stop-color='%23e0a000'/%3E%3C/linearGradient%3E%3C/defs%3E%3Ccircle cx='32' cy='32' r='30' fill='url(%23g)'/%3E%3Ctext x='32' y='44' text-anchor='middle' font-family='Arial' font-weight='900' font-size='36' fill='%23fff'%3E$%3C/text%3E%3C/svg%3E" alt="" width="44" height="44"><span><b>Divisas RD</b><small>La tasa del dólar hoy en RD</small></span></a>
+    <nav><a href="/">Inicio</a><a href="/guias/">Guías</a></nav>
+  </header>
+  <nav class="migas" aria-label="Estás en"><a href="/">Inicio</a> › <span>Mis gastos</span></nav>
+  <article class="tarjeta">
+<h1>Mis gastos del mes</h1>
+<p class="resumen">Anota lo que ganas y lo que gastas, mira en qué se va tu dinero y cuánto te queda. Puedes anotar en pesos o en dólares: los dólares se pasan a pesos con la tasa del día.</p>
+<p class="nota">🔒 Todo se guarda <b>solo en este navegador</b>, en tu teléfono o computadora. No hay cuentas y nadie más ve tus datos. Si borras los datos del navegador, se borran también.</p>
+
+<div id="aviso-ejemplo" class="ejemplo" hidden>
+  <b>👋 Esto es un ejemplo.</b> Así se ve un mes con gastos anotados. Cuando anotes tu primer gasto, el ejemplo se borra solo.
+  <button type="button" id="borrar-ejemplo" class="enlace">Borrar el ejemplo y empezar</button>
+</div>
+
+<div class="mes">
+  <button type="button" id="mes-antes" class="enlace">‹ Antes</button>
+  <b id="mes-nombre"></b>
+  <button type="button" id="mes-despues" class="enlace">Después ›</button>
+</div>
+
+<div class="cuadre">
+  <div><small>Ganas</small><b id="c-ingreso">—</b></div>
+  <div><small>Gastado</small><b id="c-gastado" class="rojo">—</b></div>
+  <div><small>Te queda</small><b id="c-queda">—</b></div>
+</div>
+<div class="barra-uso"><span id="barra"></span></div>
+<p id="pct" class="pequeno"></p>
+<button type="button" id="editar-ingreso" class="enlace">➕ Poner cuánto gano al mes</button>
+
+<form id="ingreso-form" class="caja" hidden>
+  <label>¿Cuánto ganas al mes? <small>(sueldo, negocio, remesas que recibes…)</small>
+    <input id="ingreso-monto" inputmode="decimal" autocomplete="off" placeholder="Ej.: 45000"></label>
+  <div class="monedas"><label><input type="radio" name="ingreso-moneda" value="DOP" checked> RD$ Pesos</label>
+    <label><input type="radio" name="ingreso-moneda" value="USD"> US$ Dólares</label></div>
+  <button type="submit" class="boton">Guardar</button> <button type="button" id="ingreso-cancelar" class="enlace">Cancelar</button>
+</form>
+
+<h2>Anotar un gasto</h2>
+<form id="gasto-form" class="caja">
+  <label>¿Cuánto? <input id="g-monto" inputmode="decimal" autocomplete="off" placeholder="Ej.: 1500" required></label>
+  <div class="monedas"><label><input type="radio" name="g-moneda" value="DOP" checked> RD$ Pesos</label>
+    <label><input type="radio" name="g-moneda" value="USD"> US$ Dólares</label></div>
+  <p id="g-equivale" class="pequeno"></p>
+  <p style="margin:8px 0 4px"><b>¿En qué?</b></p>
+  <div id="categorias" class="categorias"></div>
+  <label>Nota (opcional) <input id="g-nota" maxlength="40" autocomplete="off" placeholder="Ej.: Compra del súper"></label>
+  <label>Fecha <input id="g-fecha" type="date"></label>
+  <button type="submit" class="boton">➕ Guardar gasto</button>
+</form>
+
+<h2>¿En qué se va el dinero?</h2>
+<div id="grafica-vacia" class="pequeno">Todavía no hay gastos este mes.</div>
+<div class="grafica" id="grafica-caja">
+  <svg id="pastel" viewBox="0 0 200 200" role="img" aria-label="Gráfica de gastos por categoría"></svg>
+  <ul id="leyenda" class="leyenda"></ul>
+</div>
+
+<h2 id="titulo-lista">Gastos del mes</h2>
+<ul id="lista" class="lista"></ul>
+<p class="pequeno" id="nota-tasa"></p>
+
+<h2>Consejos para que te rinda el dinero</h2>
+<ul>
+<li><b>Anota todo, aunque sea poco.</b> Los gastos pequeños de cada día (un refresco, un pasaje, una recarga) son los que más se escapan al final del mes.</li>
+<li><b>Mira la gráfica cada semana.</b> Si una categoría crece mucho, ahí es donde más fácil puedes ajustar.</li>
+<li><b>Separa primero lo fijo.</b> Alquiler, luz, agua, teléfono y préstamos son gastos que llegan todos los meses: réstalos de lo que ganas y sabrás cuánto te queda para lo demás.</li>
+<li><b>Intenta guardar una parte apenas cobres</b>, aunque sea poca, en vez de ahorrar lo que sobre al final.</li>
+<li><b>Si recibes o gastas en dólares,</b> compara la tasa antes de cambiar. En <a href="/#bancos">Bancos</a> ves quién paga más hoy, y en la guía <a href="/guias/ahorrar-en-dolares-o-en-pesos/">¿Ahorrar en dólares o en pesos?</a> te explicamos las ventajas de cada una.</li>
+<li><b>Para la factura de la luz</b>, puedes calcular cuánto vas a pagar según tu consumo con <a href="https://kiloclarord.com" rel="noopener">KiloClaro</a>.</li>
+</ul>
+
+<p class="pequeno"><button type="button" id="borrar-todo" class="enlace rojo">Borrar todos mis datos</button></p>
+    <p><a class="boton" href="/">Ver la tasa de hoy →</a></p>
+  </article>
+</main>
+<footer>
+  <p><a href="/">Inicio</a>·<a href="/guias/">Guías</a>·<a href="/quienes-somos/">Quiénes somos</a>·<a href="/contacto/">Contacto</a>·<a href="/privacidad/">Política de privacidad</a></p>
+  <p>📸 Instagram <a href="https://www.instagram.com/divisas_rd/" rel="noopener">@divisas_rd</a> · 𝕏 <a href="https://x.com/DivisasRD" rel="noopener">@DivisasRD</a> · <a href="mailto:divisasrdapp@gmail.com">divisasrdapp@gmail.com</a></p>
+  <p>Solo informativo. Confirma la tasa con la entidad antes de cambiar.</p>
+  <p>© 2026 Divisas RD</p>
+</footer>
+<script>
+(function () {
+  var CATS = [
+    ["comida", "Comida y súper", "🛒", "#4CAF50"], ["luz", "Luz", "💡", "#FFC107"], ["agua", "Agua", "🚰", "#29B6F6"],
+    ["telefono", "Teléfono e internet", "📱", "#7E57C2"], ["casa", "Alquiler o casa", "🏠", "#8D6E63"],
+    ["carro", "Carro y transporte", "🚗", "#EF5350"], ["combustible", "Combustible", "⛽", "#FF7043"],
+    ["salud", "Salud y farmacia", "💊", "#EC407A"], ["educacion", "Educación", "📚", "#5C6BC0"],
+    ["mascota", "Mascota", "🐶", "#A1887F"], ["ropa", "Ropa", "👕", "#26A69A"], ["salidas", "Salidas y diversión", "🎉", "#AB47BC"],
+    ["deudas", "Préstamos y tarjetas", "💳", "#78909C"], ["remesas", "Dinero enviado", "💸", "#66BB6A"], ["otros", "Otros", "📦", "#90A4AE"]
+  ];
+  var MESES = ["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"];
+  var CLAVE = "divisasrd_gastos_v1";
+  var $ = function (id) { return document.getElementById(id); };
+  function cat(c) { for (var i = 0; i < CATS.length; i++) if (CATS[i][0] === c) return CATS[i]; return CATS[CATS.length - 1]; }
+  function dos(n) { return (n < 10 ? "0" : "") + n; }
+  function hoy() { var d = new Date(); return d.getFullYear() + "-" + dos(d.getMonth() + 1) + "-" + dos(d.getDate()); }
+  function mesDe(f) { return f.slice(0, 7); }
+  function mesActual() { return hoy().slice(0, 7); }
+  function moverMes(m, n) { var a = +m.slice(0, 4), b = +m.slice(5, 7) - 1 + n; a += Math.floor(b / 12); b = ((b % 12) + 12) % 12; return a + "-" + dos(b + 1); }
+  function nombreMes(m) { var t = MESES[+m.slice(5, 7) - 1]; return t.charAt(0).toUpperCase() + t.slice(1) + " " + m.slice(0, 4); }
+  function pesos(v) { return "RD$ " + Math.round(v).toLocaleString("en-US"); }
+  function leerMonto(t) {
+    t = String(t || "").trim();
+    if (t.indexOf(".") >= 0) t = t.replace(/,/g, "");
+    else if (/,\d{1,2}$/.test(t) && (t.match(/,/g) || []).length === 1) t = t.replace(",", ".");
+    else t = t.replace(/,/g, "");
+    var v = parseFloat(t); return isFinite(v) ? v : null;
+  }
+  function esc(s) { return String(s).replace(/[&<>"']/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; }); }
+
+  // ---- Datos (solo en este navegador) ----
+  var datos = null, memoria = null;
+  function ejemplo() {
+    var m = mesActual();
+    var l = [["comida", 9800, "Compra del súper"], ["luz", 2850, "Factura de la luz"], ["agua", 450, "Agua"], ["telefono", 1900, "Celular e internet"],
+      ["casa", 12000, "Alquiler"], ["carro", 3500, "Pago y mantenimiento"], ["combustible", 3200, "Gasolina"], ["mascota", 1200, "Comida del perro"],
+      ["salud", 950, "Farmacia"], ["salidas", 1800, "Salida del fin de semana"]];
+    return { ingreso: 45000, monedaIngreso: "DOP", ejemplo: true, gastos: l.map(function (g, i) {
+      return { id: i + 1, fecha: m + "-" + dos(Math.min(28, 1 + i * 3)), cat: g[0], monto: g[1], moneda: "DOP", nota: g[2] }; }) };
+  }
+  function cargar() {
+    try { var t = localStorage.getItem(CLAVE); if (t) return JSON.parse(t); } catch (e) {}
+    return memoria || ejemplo();
+  }
+  function guardar() {
+    memoria = datos;
+    try { localStorage.setItem(CLAVE, JSON.stringify(datos)); } catch (e) {}
+  }
+  datos = cargar();
+
+  // ---- Tasa del día ----
+  var dop = null;
+  fetch("https://open.er-api.com/v6/latest/USD").then(function (r) { return r.json(); })
+    .then(function (j) { dop = j && j.rates && j.rates.DOP; pintar(); }).catch(function () {});
+  function enPesos(monto, moneda) { return moneda === "USD" ? monto * (dop || 0) : monto; }
+
+  // ---- Pintar todo ----
+  var mes = mesActual();
+  var catElegida = "comida";
+  function pintar() {
+    $("aviso-ejemplo").hidden = !datos.ejemplo;
+    $("mes-nombre").textContent = nombreMes(mes);
+    $("mes-despues").disabled = mes >= mesActual();
+    var delMes = datos.gastos.filter(function (g) { return mesDe(g.fecha) === mes; })
+      .sort(function (a, b) { return a.fecha < b.fecha ? 1 : a.fecha > b.fecha ? -1 : b.id - a.id; });
+    var total = delMes.reduce(function (s, g) { return s + enPesos(g.monto, g.moneda); }, 0);
+    var ingreso = enPesos(datos.ingreso || 0, datos.monedaIngreso);
+    var queda = ingreso - total;
+    $("c-ingreso").textContent = pesos(ingreso);
+    $("c-gastado").textContent = pesos(total);
+    $("c-queda").textContent = pesos(queda);
+    $("c-queda").className = queda >= 0 ? "verde" : "rojo";
+    var uso = ingreso > 0 ? Math.min(1, total / ingreso) : 0;
+    $("barra").style.width = (uso * 100) + "%";
+    $("barra").className = total > ingreso ? "pasado" : "";
+    $("pct").textContent = ingreso > 0 ? "Has gastado el " + Math.floor(total / ingreso * 100) + "% de lo que ganas." : "Pon cuánto ganas al mes para ver cuánto te queda.";
+    $("editar-ingreso").textContent = datos.ingreso > 0 ? "✏️ Cambiar cuánto gano al mes" : "➕ Poner cuánto gano al mes";
+
+    // Gráfica de pastel
+    var grupos = {};
+    delMes.forEach(function (g) { grupos[g.cat] = (grupos[g.cat] || 0) + enPesos(g.monto, g.moneda); });
+    var partes = Object.keys(grupos).map(function (k) { return [cat(k), grupos[k]]; }).sort(function (a, b) { return b[1] - a[1]; });
+    $("grafica-vacia").hidden = partes.length > 0;
+    $("grafica-caja").hidden = partes.length === 0;
+    var svg = "", inicio = -Math.PI / 2, R = 80, C = 100;
+    partes.forEach(function (p) {
+      var ang = p[1] / total * Math.PI * 2;
+      if (partes.length === 1) { svg += '<circle cx="100" cy="100" r="80" fill="none" stroke="' + p[0][3] + '" stroke-width="34"/>'; return; }
+      var fin = inicio + ang - 0.02;
+      var x1 = C + R * Math.cos(inicio), y1 = C + R * Math.sin(inicio), x2 = C + R * Math.cos(fin), y2 = C + R * Math.sin(fin);
+      svg += '<path d="M' + x1.toFixed(2) + " " + y1.toFixed(2) + " A" + R + " " + R + " 0 " + (ang > Math.PI ? 1 : 0) + " 1 " + x2.toFixed(2) + " " + y2.toFixed(2) +
+        '" fill="none" stroke="' + p[0][3] + '" stroke-width="34"><title>' + esc(p[0][1]) + ": " + pesos(p[1]) + "</title></path>";
+      inicio += ang;
+    });
+    svg += '<text x="100" y="95" text-anchor="middle" class="t1">Total</text><text x="100" y="116" text-anchor="middle" class="t2">' + pesos(total) + "</text>";
+    $("pastel").innerHTML = svg;
+    $("leyenda").innerHTML = partes.map(function (p) {
+      return '<li><span class="punto" style="background:' + p[0][3] + '"></span><span class="nom">' + p[0][2] + " " + esc(p[0][1]) +
+        '</span><span class="pc">' + Math.round(p[1] / total * 100) + '%</span><b>' + pesos(p[1]) + "</b></li>";
+    }).join("");
+
+    // Lista
+    $("titulo-lista").textContent = "Gastos de " + MESES[+mes.slice(5, 7) - 1];
+    $("lista").innerHTML = delMes.length ? delMes.map(function (g) {
+      var c = cat(g.cat);
+      var monto = g.moneda === "USD" ? "US$ " + g.monto.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : pesos(g.monto);
+      var equiv = g.moneda === "USD" && dop ? '<small>≈ ' + pesos(g.monto * dop) + "</small>" : "";
+      return '<li><span class="ico" style="background:' + c[3] + '33">' + c[2] + '</span><span class="det"><b>' + esc(g.nota || c[1]) + "</b><small>" + esc(c[1]) + " · " +
+        g.fecha.slice(8) + "/" + g.fecha.slice(5, 7) + '</small></span><span class="mon"><b>' + monto + "</b>" + equiv +
+        '</span><button type="button" class="borrar" data-id="' + g.id + '" aria-label="Borrar gasto">🗑</button></li>';
+    }).join("") : '<li class="pequeno">Todavía no hay gastos este mes.</li>';
+    $("nota-tasa").textContent = "Los gastos en dólares se pasan a pesos con la tasa de mercado de hoy" + (dop ? " (RD$ " + dop.toFixed(2) + ")." : ".");
+    equivalencia();
+  }
+
+  // ---- Categorías del formulario ----
+  $("categorias").innerHTML = CATS.map(function (c) {
+    return '<button type="button" data-cat="' + c[0] + '" style="border-color:' + c[3] + '">' + c[2] + " " + c[1] + "</button>";
+  }).join("");
+  function marcarCat() {
+    Array.prototype.forEach.call($("categorias").children, function (b) { b.classList.toggle("activo", b.getAttribute("data-cat") === catElegida); });
+  }
+  $("categorias").addEventListener("click", function (e) {
+    var b = e.target.closest("button"); if (!b) return; catElegida = b.getAttribute("data-cat"); marcarCat();
+  });
+  marcarCat();
+  $("g-fecha").value = hoy();
+  $("g-fecha").max = hoy();
+
+  function monedaDe(nombre) { var r = document.querySelector('input[name="' + nombre + '"]:checked'); return r ? r.value : "DOP"; }
+  function equivalencia() {
+    var v = leerMonto($("g-monto").value);
+    $("g-equivale").textContent = monedaDe("g-moneda") === "USD" && v && dop ? "≈ " + pesos(v * dop) + " con la tasa de hoy" : "";
+  }
+  $("g-monto").addEventListener("input", equivalencia);
+  Array.prototype.forEach.call(document.querySelectorAll('input[name="g-moneda"]'), function (r) { r.addEventListener("change", equivalencia); });
+
+  // ---- Acciones ----
+  function quitarEjemplo() { if (datos.ejemplo) { datos.gastos = []; datos.ingreso = 0; datos.ejemplo = false; } }
+  $("gasto-form").addEventListener("submit", function (e) {
+    e.preventDefault();
+    var v = leerMonto($("g-monto").value);
+    if (!v || v <= 0) { $("g-monto").focus(); return; }
+    quitarEjemplo();
+    var f = $("g-fecha").value || hoy();
+    datos.gastos.push({ id: Date.now(), fecha: f, cat: catElegida, monto: v, moneda: monedaDe("g-moneda"), nota: $("g-nota").value.trim().slice(0, 40) });
+    guardar();
+    mes = mesDe(f);
+    $("g-monto").value = ""; $("g-nota").value = "";
+    pintar();
+  });
+  $("lista").addEventListener("click", function (e) {
+    var b = e.target.closest(".borrar"); if (!b) return;
+    var id = +b.getAttribute("data-id");
+    if (!confirm("¿Borrar este gasto?")) return;
+    datos.gastos = datos.gastos.filter(function (g) { return g.id !== id; });
+    guardar(); pintar();
+  });
+  $("editar-ingreso").addEventListener("click", function () {
+    $("ingreso-form").hidden = false;
+    $("ingreso-monto").value = datos.ingreso > 0 && !datos.ejemplo ? datos.ingreso : "";
+    var r = document.querySelector('input[name="ingreso-moneda"][value="' + (datos.monedaIngreso || "DOP") + '"]'); if (r) r.checked = true;
+    $("ingreso-monto").focus();
+  });
+  $("ingreso-cancelar").addEventListener("click", function () { $("ingreso-form").hidden = true; });
+  $("ingreso-form").addEventListener("submit", function (e) {
+    e.preventDefault();
+    var v = leerMonto($("ingreso-monto").value);
+    if (v === null || v < 0) { $("ingreso-monto").focus(); return; }
+    quitarEjemplo();
+    datos.ingreso = v; datos.monedaIngreso = monedaDe("ingreso-moneda");
+    guardar(); $("ingreso-form").hidden = true; pintar();
+  });
+  $("borrar-ejemplo").addEventListener("click", function () { quitarEjemplo(); guardar(); pintar(); });
+  $("borrar-todo").addEventListener("click", function () {
+    if (!confirm("¿Borrar todos tus gastos y tu ingreso de este navegador? No se puede deshacer.")) return;
+    datos = { ingreso: 0, monedaIngreso: "DOP", ejemplo: false, gastos: [] }; guardar(); pintar();
+  });
+  $("mes-antes").addEventListener("click", function () { mes = moverMes(mes, -1); pintar(); });
+  $("mes-despues").addEventListener("click", function () { if (mes < mesActual()) { mes = moverMes(mes, 1); pintar(); } });
+
+  pintar();
+})();
+</script>
+</body>
+</html>
