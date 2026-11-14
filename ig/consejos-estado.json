@@ -1,6 +1,7 @@
 {
   "usadas": {
     "remesas": [
+      "rm07",
       "rm12",
       "rm02",
       "rm03",
