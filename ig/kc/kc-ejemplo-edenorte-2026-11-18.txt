@@ -1,9 +1,10 @@
-🧾 Edenorte tiene el primer tramo más barato, pero del kWh 301 en adelante sube bastante.
+🧾 Cibaeño, esto es lo que te llega de luz con Edenorte.
 
 ⚡ EDENORTE · El Cibao y el norte
-Si gastas 180 kWh al mes, tu factura sería de RD$ 1,201.41
+Si gastas 250 kWh al mes, tu factura sería de RD$ 1,746.31
 
-▫️ 180 kWh × RD$ 5.97 = RD$ 1,074.60
+▫️ 200 kWh × RD$ 5.97 = RD$ 1,194.00
+▫️ 50 kWh × RD$ 8.51 = RD$ 425.50
 ▫️ Cargo fijo: RD$ 126.81
 
 Tarifa BTS-1 residencial, octubre-diciembre 2026.
