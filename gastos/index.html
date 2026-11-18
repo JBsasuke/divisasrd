@@ -16,7 +16,7 @@
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3979135814994883" crossorigin="anonymous"></script>
 <style>
   :root { --fondo:#eef3fa; --tarjeta:#fff; --borde:#d7e0ee; --texto:#0E1726; --texto-2:#3d4a63; --acento:#9a6700; color-scheme: light; }
-  @media (prefers-color-scheme: dark) { :root { --fondo:#061428; --tarjeta:#0b2547; --borde:#1d3b66; --texto:#fff; --texto-2:#c3cde0; --acento:#ffc107; color-scheme: dark; } }
+  @media (prefers-color-scheme: dark) { :root { --fondo:#000000; --tarjeta:#111f35; --borde:#2f5183; --texto:#fff; --texto-2:#d2ddee; --acento:#ffc107; color-scheme: dark; } }
   * { box-sizing: border-box; }
   body { margin:0; background:var(--fondo); color:var(--texto); font:17px/1.65 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif; }
   main { max-width:780px; margin:0 auto; padding:20px 16px 40px; }
@@ -92,6 +92,19 @@
   .idioma button, .pildoras button { background:transparent; border:0; color:var(--texto); font:600 14px system-ui,sans-serif; padding:7px 13px; cursor:pointer; }
   .idioma button.activo, .pildoras button.activo { background:var(--acento); color:#fff; }
   @media (prefers-color-scheme: dark) { .idioma button.activo, .pildoras button.activo { color:#0b1220; } }
+  .mes b { cursor:pointer; border:1px solid var(--acento); border-radius:10px; padding:4px 12px; }
+  .calendario { border:1px solid var(--borde); border-radius:14px; padding:10px; margin:8px 0 12px; }
+  .cal-grid { display:grid; grid-template-columns:repeat(7,1fr); gap:4px; }
+  .cal-grid .cab { text-align:center; font-size:12px; color:var(--texto-2); }
+  .cal-grid button { aspect-ratio:1; border:0; border-radius:10px; background:color-mix(in srgb, var(--texto) 7%, transparent); color:var(--texto); font:600 14px system-ui,sans-serif; cursor:pointer; position:relative; padding:0; }
+  .cal-grid button.tiene { background:color-mix(in srgb, var(--acento) 22%, transparent); }
+  .cal-grid button.tiene::after { content:""; position:absolute; bottom:5px; left:50%; width:5px; height:5px; margin-left:-2.5px; border-radius:50%; background:var(--acento); }
+  .cal-grid button.hoy { outline:1.5px solid var(--acento); }
+  .cal-grid button.elegido { background:var(--acento); color:#fff; }
+  .cal-grid button.elegido::after { background:#fff; }
+  .cal-grid button:disabled { opacity:.35; cursor:default; }
+  #cal-titulo { font-size:16px; margin:12px 0 4px; color:var(--acento); }
+  .lista .editar { background:none; border:0; cursor:pointer; font-size:15px; padding:6px; }
   .ver-en { display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin:12px 0 4px; color:var(--texto-2); font-size:15px; }
   @media (max-width:560px) { .grafica { grid-template-columns:1fr; justify-items:center; } .leyenda { width:100%; } .cuadre b { font-size:15px; } }
 </style>
@@ -127,6 +140,12 @@
   <b id="mes-nombre"></b>
   <button type="button" id="mes-despues" class="enlace" data-i="despues">Después ›</button>
 </div>
+<div id="calendario" class="calendario" hidden>
+  <div class="cal-grid" id="cal-grid"></div>
+  <h3 id="cal-titulo"></h3>
+  <ul id="cal-lista" class="lista"></ul>
+  <button type="button" id="cal-agregar" class="boton">➕ Agregar gasto este día</button>
+</div>
 
 <div class="cuadre">
   <div><small data-i="ganas">Ganas</small><b id="c-ingreso">—</b></div>
@@ -145,7 +164,7 @@
   <button type="submit" class="boton" data-i="guardar">Guardar</button> <button type="button" id="ingreso-cancelar" class="enlace" data-i="cancelar">Cancelar</button>
 </form>
 
-<h2 data-i="anotar">Anotar un gasto</h2>
+<h2 data-i="anotar" id="titulo-form">Anotar un gasto</h2>
 <form id="gasto-form" class="caja">
   <label><span data-i="cuanto">¿Cuánto?</span> <input id="g-monto" inputmode="decimal" autocomplete="off" placeholder="1500" required></label>
   <div class="monedas"><label><input type="radio" name="g-moneda" value="DOP" checked> RD$ Pesos</label>
@@ -155,7 +174,8 @@
   <div id="categorias" class="categorias"></div>
   <label><span data-i="nota">Nota (opcional)</span> <input id="g-nota" maxlength="40" autocomplete="off"></label>
   <label><span data-i="fecha">Fecha</span> <input id="g-fecha" type="date"></label>
-  <button type="submit" class="boton" data-i="guardarGasto">➕ Guardar gasto</button>
+  <button type="submit" class="boton" data-i="guardarGasto" id="g-guardar">➕ Guardar gasto</button>
+  <button type="button" id="cancelar-edicion" class="enlace" hidden>Cancelar la corrección</button>
 </form>
 
 <h2 data-i="dondeVa">¿En qué se va el dinero?</h2>
@@ -331,7 +351,7 @@
   var catElegida = "comida";
   function pintar() {
     $("aviso-ejemplo").hidden = !datos.ejemplo;
-    $("mes-nombre").textContent = nombreMes(mes);
+    $("mes-nombre").textContent = "📅 " + nombreMes(mes);
     $("mes-despues").disabled = mes >= mesActual();
     Array.prototype.forEach.call(document.querySelectorAll("[data-ver]"), function (b) { b.classList.toggle("activo", b.getAttribute("data-ver") === datos.monedaVer); });
     var delMes = datos.gastos.filter(function (g) { return mesDe(g.fecha) === mes; })
@@ -380,10 +400,59 @@
       var otra = g.moneda !== datos.monedaVer ? aVer(g.monto, g.moneda) : null;
       return '<li><span class="ico" style="background:' + c[4] + '33">' + c[3] + '</span><span class="det"><b>' + esc(g.nota || nomCat(c)) + "</b><small>" + esc(nomCat(c)) + " · " +
         fechaCorta(g.fecha) + '</small></span><span class="mon"><b>' + montoTexto(g.monto, g.moneda) + "</b>" + (otra !== null ? "<small>≈ " + dinero(otra) + "</small>" : "") +
-        '</span><button type="button" class="borrar" data-id="' + g.id + '" aria-label="' + esc(tr("borrarGasto")) + '">🗑</button></li>';
+        '</span><button type="button" class="editar" data-id="' + g.id + '" aria-label="Corregir gasto">✏️</button><button type="button" class="borrar" data-id="' + g.id + '" aria-label="' + esc(tr("borrarGasto")) + '">🗑</button></li>';
     }).join("") : '<li class="pequeno">' + tr("sinGastos") + "</li>";
     $("nota-tasa").textContent = tr("notaTasa") + (dop ? " (1 US$ = RD$ " + dop.toFixed(2) + ")." : ".");
     equivalencia();
+    if (!$("calendario").hidden) pintarCal();
+  }
+
+  // ---------- Calendario: se toca un día y salen sus gastos para corregirlos o agregar ----------
+  var diaCal = null, editandoId = null;
+  function pintarCal() {
+    var hoyS = hoy(), a = +mes.slice(0, 4), m = +mes.slice(5, 7) - 1;
+    var dias = new Date(a, m + 1, 0).getDate(), hueco = (new Date(a, m, 1).getDay() + 6) % 7;
+    if (!diaCal || diaCal > dias) diaCal = hoyS.slice(0, 7) === mes ? +hoyS.slice(8) : 1;
+    var porDia = {};
+    datos.gastos.forEach(function (g) { if (mesDe(g.fecha) === mes) (porDia[+g.fecha.slice(8)] = porDia[+g.fecha.slice(8)] || []).push(g); });
+    var h = ["L", "M", "M", "J", "V", "S", "D"].map(function (d) { return '<span class="cab">' + d + "</span>"; }).join("");
+    for (var i = 0; i < hueco; i++) h += "<span></span>";
+    for (var n = 1; n <= dias; n++) {
+      var f = mes + "-" + dos(n), cl = [porDia[n] ? "tiene" : "", f === hoyS ? "hoy" : "", n === diaCal ? "elegido" : ""].join(" ");
+      h += '<button type="button" data-dia="' + n + '" class="' + cl + '"' + (f > hoyS ? " disabled" : "") + ">" + n + "</button>";
+    }
+    $("cal-grid").innerHTML = h;
+    var fd = mes + "-" + dos(diaCal), lista = porDia[diaCal] || [];
+    $("cal-titulo").textContent = "Gastos del " + diaCal + " de " + soloMes(mes);
+    $("cal-lista").innerHTML = lista.length ? lista.map(function (g) {
+      var c = cat(g.cat);
+      return '<li><span class="ico" style="background:' + c[4] + '33">' + c[3] + '</span><span class="det"><b>' + esc(g.nota || nomCat(c)) + "</b><small>" + esc(nomCat(c)) +
+        '</small></span><span class="mon"><b>' + montoTexto(g.monto, g.moneda) + '</b></span><button type="button" class="editar" data-id="' + g.id +
+        '" aria-label="Corregir gasto">✏️</button><button type="button" class="borrar" data-id="' + g.id + '" aria-label="Borrar gasto">🗑</button></li>';
+    }).join("") : '<li class="pequeno">No hay gastos este día.</li>';
+    $("cal-agregar").hidden = fd > hoyS;
+    $("cal-agregar").textContent = "➕ Agregar gasto el " + diaCal + " de " + soloMes(mes);
+  }
+  function empezarEdicion(id) {
+    var g = datos.gastos.find(function (x) { return x.id === id; }); if (!g) return;
+    editandoId = id;
+    $("g-monto").value = g.moneda === "USD" ? g.monto.toFixed(2) : String(Math.round(g.monto));
+    ponerMoneda("g-moneda", g.moneda); catElegida = g.cat; marcarCat();
+    $("g-nota").value = g.nota || ""; $("g-fecha").value = g.fecha;
+    $("titulo-form").textContent = "✏️ Corregir gasto"; $("g-guardar").textContent = "💾 Guardar cambios"; $("cancelar-edicion").hidden = false;
+    equivalencia();
+    $("titulo-form").scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+  function terminarEdicion() {
+    editandoId = null;
+    $("titulo-form").textContent = tr("anotar"); $("g-guardar").textContent = tr("guardarGasto"); $("cancelar-edicion").hidden = true;
+    $("g-monto").value = ""; $("g-nota").value = ""; $("g-fecha").value = hoy();
+  }
+  function borrarGasto(id) {
+    if (!confirm(tr("borrarGasto"))) return;
+    datos.gastos = datos.gastos.filter(function (g) { return g.id !== id; });
+    if (editandoId === id) terminarEdicion();
+    guardar(); pintar();
   }
 
   function pintarCategorias() {
@@ -417,21 +486,29 @@
     e.preventDefault();
     var v = leerMonto($("g-monto").value);
     if (!v || v <= 0) { $("g-monto").focus(); return; }
-    quitarEjemplo();
+    if (editandoId) datos.ejemplo = false; else quitarEjemplo();   // al corregir un gasto del ejemplo, el ejemplo se queda como tuyo
     var f = $("g-fecha").value || hoy();
-    datos.gastos.push({ id: Date.now(), fecha: f, cat: catElegida, monto: v, moneda: monedaDe("g-moneda"), nota: $("g-nota").value.trim().slice(0, 40) });
+    var nuevo = { id: editandoId || Date.now(), fecha: f, cat: catElegida, monto: v, moneda: monedaDe("g-moneda"), nota: $("g-nota").value.trim().slice(0, 40) };
+    var i = editandoId ? datos.gastos.findIndex(function (g) { return g.id === editandoId; }) : -1;
+    if (i >= 0) datos.gastos[i] = nuevo; else datos.gastos.push(nuevo);   // al corregir, se cambia en su lugar
     guardar();
-    mes = mesDe(f);
-    $("g-monto").value = ""; $("g-nota").value = "";
+    mes = mesDe(f); diaCal = +f.slice(8);
+    terminarEdicion();
     pintar();
   });
-  $("lista").addEventListener("click", function (e) {
-    var b = e.target.closest(".borrar"); if (!b) return;
-    var id = +b.getAttribute("data-id");
-    if (!confirm(tr("borrarGasto"))) return;
-    datos.gastos = datos.gastos.filter(function (g) { return g.id !== id; });
-    guardar(); pintar();
+  function clickEnLista(e) {
+    var ed = e.target.closest(".editar"); if (ed) { empezarEdicion(+ed.getAttribute("data-id")); return; }
+    var b = e.target.closest(".borrar"); if (b) borrarGasto(+b.getAttribute("data-id"));
+  }
+  $("lista").addEventListener("click", clickEnLista);
+  $("cal-lista").addEventListener("click", clickEnLista);
+  $("mes-nombre").addEventListener("click", function () { $("calendario").hidden = !$("calendario").hidden; if (!$("calendario").hidden) pintarCal(); });
+  $("cal-grid").addEventListener("click", function (e) { var b = e.target.closest("button[data-dia]"); if (!b || b.disabled) return; diaCal = +b.getAttribute("data-dia"); pintarCal(); });
+  $("cal-agregar").addEventListener("click", function () {
+    terminarEdicion(); $("g-fecha").value = mes + "-" + dos(diaCal);
+    $("titulo-form").scrollIntoView({ behavior: "smooth", block: "start" }); setTimeout(function () { $("g-monto").focus(); }, 400);
   });
+  $("cancelar-edicion").addEventListener("click", terminarEdicion);
   $("editar-ingreso").addEventListener("click", function () {
     $("ingreso-form").hidden = false;
     $("ingreso-monto").value = datos.ingreso > 0 && !datos.ejemplo ? datos.ingreso : "";
