@@ -3,6 +3,7 @@
   "dolar": 60.387529,
   "dolarAnterior": 60.456988,
   "usadas": [
+    "gasolina_igual:0",
     "dolar_igual:3",
     "dolar_baja:8",
     "dolar_baja:0",
@@ -41,7 +42,7 @@
     "btc_baja:3"
   ],
   "gasolina": {
-    "semana": "14 al 20 noviembre del 2026",
+    "semana": "21 al 27 noviembre del 2026",
     "precios": {
       "premium": 362.1,
       "regular": 317.5,
