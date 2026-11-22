@@ -1,0 +1,33 @@
+# Divisas RD - tasas de Banreservas y Popular (Banreservas no deja que Cloudflare lea su página)
+name: Bancos
+on:
+  schedule:
+    - cron: "41 */2 * * *"   # cada 2 horas
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: instagram          # el mismo grupo que Instagram, para que no choquen al guardar
+  cancel-in-progress: false
+jobs:
+  bancos:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Leer las tasas de los bancos
+        run: python bancos.py
+      - name: Guardar bancos.json
+        run: |
+          git config user.name "divisasrd-bot"
+          git config user.email "bot@divisasrd.com"
+          git add bancos.json
+          git commit -m "Tasas de bancos $(date -u +%F_%H%M)" || { echo "sin cambios"; exit 0; }
+          for i in 1 2 3; do
+            git pull --rebase && git push && break
+            if [ "$i" = "3" ]; then echo "::error::GitHub no aceptó la subida después de 3 intentos"; exit 1; fi
+            sleep 15
+          done
