@@ -2,6 +2,7 @@
 <html lang="es">
 <head>
 <meta charset="utf-8">
+<script>try { const t = localStorage.getItem("dv_tema"); if (t) document.documentElement.dataset.tema = t; } catch (_) {}</script>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Mis gastos: control de gastos personales en pesos y dólares | Divisas RD</title>
 <meta name="description" content="Anota cuánto ganas y cuánto gastas, mira en qué se va tu dinero con una gráfica y cuánto te queda. Gratis, en pesos o dólares y sin crear cuenta.">
@@ -16,7 +17,8 @@
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3979135814994883" crossorigin="anonymous"></script>
 <style>
   :root { --fondo:#eef3fa; --tarjeta:#fff; --borde:#d7e0ee; --texto:#0E1726; --texto-2:#3d4a63; --acento:#9a6700; color-scheme: light; }
-  @media (prefers-color-scheme: dark) { :root { --fondo:#000000; --tarjeta:#111f35; --borde:#2f5183; --texto:#fff; --texto-2:#d2ddee; --acento:#ffc107; color-scheme: dark; } }
+  @media (prefers-color-scheme: dark) { :root:not([data-tema="claro"]) { --fondo:#000000; --tarjeta:#111f35; --borde:#2f5183; --texto:#fff; --texto-2:#d2ddee; --acento:#ffc107; color-scheme: dark; } }
+  :root[data-tema="oscuro"] { --fondo:#000000; --tarjeta:#111f35; --borde:#2f5183; --texto:#fff; --texto-2:#d2ddee; --acento:#ffc107; color-scheme: dark; }
   * { box-sizing: border-box; }
   body { margin:0; background:var(--fondo); color:var(--texto); font:17px/1.65 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif; }
   main { max-width:780px; margin:0 auto; padding:20px 16px 40px; }
@@ -42,7 +44,8 @@
   .tabla { overflow-x:auto; }
   .nota { border-left:4px solid var(--acento); padding:8px 12px; background:color-mix(in srgb, var(--acento) 9%, transparent); border-radius:8px; }
   .boton { display:inline-block; margin-top:14px; padding:12px 20px; border-radius:12px; background:var(--acento); color:#fff; font-weight:700; text-decoration:none; }
-  @media (prefers-color-scheme: dark) { .boton { color:#0b1220; } }
+  @media (prefers-color-scheme: dark) { :root:not([data-tema="claro"]) .boton { color:#0b1220; } }
+  :root[data-tema="oscuro"] .boton { color:#0b1220; }
   .lista-guias { list-style:none; padding:0; margin:0; }
   .lista-guias li { border-bottom:1px solid var(--borde); padding:14px 0; }
   .lista-guias li:last-child { border-bottom:0; }
@@ -56,7 +59,9 @@
   .enlace { background:none; border:0; color:var(--acento); font:inherit; font-weight:600; cursor:pointer; padding:6px 0; }
   .enlace:disabled { color:var(--texto-2); opacity:.5; cursor:default; }
   .rojo { color:#d32f2f !important; } .verde { color:#12843d; }
-  @media (prefers-color-scheme: dark) { .rojo { color:#ff5a5f !important; } .verde { color:#4cd964; } }
+  @media (prefers-color-scheme: dark) { :root:not([data-tema="claro"]) .rojo { color:#ff5a5f !important; } :root:not([data-tema="claro"]) .verde { color:#4cd964; } }
+  :root[data-tema="oscuro"] .rojo { color:#ff5a5f !important; }
+  :root[data-tema="oscuro"] .verde { color:#4cd964; }
   .mes { display:flex; align-items:center; justify-content:space-between; margin:14px 0 6px; }
   .mes b { font-size:19px; color:var(--texto); }
   .cuadre { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; text-align:center; background:color-mix(in srgb, var(--acento) 10%, transparent);
@@ -74,7 +79,8 @@
   .categorias { display:grid; grid-template-columns:repeat(auto-fill,minmax(128px,1fr)); gap:6px; }
   .categorias button { text-align:left; padding:9px 8px; border-radius:10px; border:1px solid; background:transparent; color:var(--texto); font:13px system-ui,sans-serif; cursor:pointer; }
   .categorias button.activo { background:var(--acento); color:#fff; border-color:var(--acento) !important; font-weight:700; }
-  @media (prefers-color-scheme: dark) { .categorias button.activo { color:#0b1220; } }
+  @media (prefers-color-scheme: dark) { :root:not([data-tema="claro"]) .categorias button.activo { color:#0b1220; } }
+  :root[data-tema="oscuro"] .categorias button.activo { color:#0b1220; }
   .caja .boton { border:0; cursor:pointer; font:inherit; font-weight:700; }
   .grafica { display:grid; grid-template-columns:200px 1fr; gap:16px; align-items:center; }
   .grafica svg { width:200px; height:200px; } .grafica .t1 { fill:var(--texto-2); font-size:12px; } .grafica .t2 { fill:var(--texto); font-size:15px; font-weight:700; }
@@ -91,7 +97,8 @@
   .idioma, .pildoras { display:inline-flex; border:1px solid var(--acento); border-radius:99px; overflow:hidden; }
   .idioma button, .pildoras button { background:transparent; border:0; color:var(--texto); font:600 14px system-ui,sans-serif; padding:7px 13px; cursor:pointer; }
   .idioma button.activo, .pildoras button.activo { background:var(--acento); color:#fff; }
-  @media (prefers-color-scheme: dark) { .idioma button.activo, .pildoras button.activo { color:#0b1220; } }
+  @media (prefers-color-scheme: dark) { :root:not([data-tema="claro"]) .idioma button.activo, :root:not([data-tema="claro"]) .pildoras button.activo { color:#0b1220; } }
+  :root[data-tema="oscuro"] .idioma button.activo, :root[data-tema="oscuro"] .pildoras button.activo { color:#0b1220; }
   .mes b { cursor:pointer; border:1px solid var(--acento); border-radius:10px; padding:4px 12px; }
   .calendario { border:1px solid var(--borde); border-radius:14px; padding:10px; margin:8px 0 12px; }
   .cal-grid { display:grid; grid-template-columns:repeat(7,1fr); gap:4px; }
@@ -126,7 +133,7 @@
 <div class="ver-en">
   <span data-i="verEn">Ver todo en:</span>
   <div class="pildoras" role="group">
-    <button type="button" data-ver="DOP">RD$ Pesos</button><button type="button" data-ver="USD" data-i="usd">US$ Dólares</button>
+    <button type="button" data-ver="DOP">RD$ Pesos</button><button type="button" data-ver="USD" data-i="usd">US$ Dólares</button><button type="button" data-ver="EUR">€ Euros</button>
   </div>
 </div>
 
@@ -160,7 +167,8 @@
   <label><span data-i="ingresoPregunta">¿Cuánto ganas al mes?</span> <small data-i="ingresoAyuda">(sueldo, negocio, remesas que recibes…)</small>
     <input id="ingreso-monto" inputmode="decimal" autocomplete="off" placeholder="45000"></label>
   <div class="monedas"><label><input type="radio" name="ingreso-moneda" value="DOP" checked> RD$ Pesos</label>
-    <label><input type="radio" name="ingreso-moneda" value="USD"> <span data-i="usd">US$ Dólares</span></label></div>
+    <label><input type="radio" name="ingreso-moneda" value="USD"> <span data-i="usd">US$ Dólares</span></label>
+    <label><input type="radio" name="ingreso-moneda" value="EUR"> € Euros</label></div>
   <button type="submit" class="boton" data-i="guardar">Guardar</button> <button type="button" id="ingreso-cancelar" class="enlace" data-i="cancelar">Cancelar</button>
 </form>
 
@@ -168,7 +176,8 @@
 <form id="gasto-form" class="caja">
   <label><span data-i="cuanto">¿Cuánto?</span> <input id="g-monto" inputmode="decimal" autocomplete="off" placeholder="1500" required></label>
   <div class="monedas"><label><input type="radio" name="g-moneda" value="DOP" checked> RD$ Pesos</label>
-    <label><input type="radio" name="g-moneda" value="USD"> <span data-i="usd">US$ Dólares</span></label></div>
+    <label><input type="radio" name="g-moneda" value="USD"> <span data-i="usd">US$ Dólares</span></label>
+    <label><input type="radio" name="g-moneda" value="EUR"> € Euros</label></div>
   <p id="g-equivale" class="pequeno"></p>
   <p style="margin:8px 0 4px"><b data-i="enQue">¿En qué?</b></p>
   <div id="categorias" class="categorias"></div>
@@ -307,7 +316,8 @@
   function fechaCorta(f) { return lang === "en" ? f.slice(5, 7) + "/" + f.slice(8) : f.slice(8) + "/" + f.slice(5, 7); }
   function pesos(v) { return "RD$ " + Math.round(v).toLocaleString("en-US"); }
   function dolares(v) { return "US$ " + v.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 }); }
-  function montoTexto(v, moneda) { return moneda === "USD" ? dolares(v) : pesos(v); }
+  function euros(v) { return "€ " + v.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 }); }
+  function montoTexto(v, moneda) { return moneda === "USD" ? dolares(v) : moneda === "EUR" ? euros(v) : pesos(v); }
   function leerMonto(t) {
     t = String(t || "").trim();
     if (t.indexOf(".") >= 0) t = t.replace(/,/g, "");
@@ -320,7 +330,7 @@
   // ---------- Datos (solo en este navegador) ----------
   var memoria = null;
   function ejemplo(moneda) {
-    var m = mesActual(), usd = moneda === "USD";
+    var m = mesActual(), usd = moneda !== "DOP"; // en dólares o euros, montos pequeños
     var l = [["comida", 9800, 520, "Compra del súper", "Grocery shopping"], ["luz", 2850, 140, "Factura de la luz", "Electric bill"], ["agua", 450, 45, "Agua", "Water bill"],
       ["telefono", 1900, 95, "Celular e internet", "Cell phone & internet"], ["casa", 12000, 1400, "Alquiler", "Rent"], ["carro", 3500, 380, "Pago y mantenimiento", "Car payment"],
       ["combustible", 3200, 160, "Gasolina", "Gas"], ["mascota", 1200, 60, "Comida del perro", "Dog food"], ["salud", 950, 40, "Farmacia", "Pharmacy"],
@@ -336,13 +346,15 @@
   var datos = cargar();
 
   // ---------- Tasa del día y conversión a la moneda escogida ----------
-  var dop = null;
+  var dop = null, eur = null; // pesos y euros por cada dólar
   fetch("https://open.er-api.com/v6/latest/USD").then(function (r) { return r.json(); })
-    .then(function (j) { dop = j && j.rates && j.rates.DOP; pintar(); }).catch(function () {});
+    .then(function (j) { dop = j && j.rates && j.rates.DOP; eur = j && j.rates && j.rates.EUR; pintar(); }).catch(function () {});
   function aVer(monto, moneda) {
     if (moneda === datos.monedaVer) return monto;
-    if (!dop) return null;
-    return datos.monedaVer === "USD" ? monto / dop : monto * dop;
+    if (!dop || ((moneda === "EUR" || datos.monedaVer === "EUR") && !eur)) return null;
+    // se pasa todo a pesos y de pesos a la moneda escogida
+    var enPesos = moneda === "USD" ? monto * dop : moneda === "EUR" ? monto * dop / eur : monto;
+    return datos.monedaVer === "USD" ? enPesos / dop : datos.monedaVer === "EUR" ? enPesos * eur / dop : enPesos;
   }
   function dinero(v) { return v === null ? "—" : montoTexto(v, datos.monedaVer); }
 
@@ -436,7 +448,7 @@
   function empezarEdicion(id) {
     var g = datos.gastos.find(function (x) { return x.id === id; }); if (!g) return;
     editandoId = id;
-    $("g-monto").value = g.moneda === "USD" ? g.monto.toFixed(2) : String(Math.round(g.monto));
+    $("g-monto").value = g.moneda !== "DOP" ? g.monto.toFixed(2) : String(Math.round(g.monto));
     ponerMoneda("g-moneda", g.moneda); catElegida = g.cat; marcarCat();
     $("g-nota").value = g.nota || ""; $("g-fecha").value = g.fecha;
     $("titulo-form").textContent = "✏️ Corregir gasto"; $("g-guardar").textContent = "💾 Guardar cambios"; $("cancelar-edicion").hidden = false;
