@@ -1,0 +1,15 @@
+{
+ "entidades": [
+  {
+   "nombre": "Banco Popular",
+   "tipo": "banco",
+   "compra": 57.25,
+   "venta": 61.25,
+   "fuente": "popularenlinea.com",
+   "desde": "2026-11-22T20:58:14+00:00"
+  }
+ ],
+ "errores": [
+  "banreservas: HTTP Error 403: Forbidden"
+ ]
+}
