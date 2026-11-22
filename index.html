@@ -1369,10 +1369,17 @@
   function pintarSelector() {
     const sel = $("fuente");
     const actual = sel.value;
-    sel.length = 1;
-    paraConvertir().forEach((e) => sel.add(new Option(e.wu
+    while (sel.children.length > 1) sel.removeChild(sel.lastChild); // deja solo "Mercado internacional"
+    const grupo = (titulo) => { const g = document.createElement("optgroup"); g.label = titulo; sel.appendChild(g); return g; };
+    const gUsd = grupo("💵 Dólar en bancos y remesas");
+    paraConvertir().forEach((e) => gUsd.appendChild(new Option(e.wu
       ? `Western Union · desde ${e.wu.nombre} · RD$ ${fmt(e.compra)} por ${e.wu.simbolo} 1`
       : `${e.nombre} · compra ${fmt(e.compra)} / venta ${fmt(e.venta)}`, e.nombre)));
+    // el euro de los bancos (el valor lleva "EUR|" delante para no confundirlo con el dólar del mismo banco)
+    if (euros.length) {
+      const gEur = grupo("💶 Euro en bancos y casas de cambio");
+      euros.forEach((e) => gEur.appendChild(new Option(`${e.nombre} · compra ${fmt(e.compra)} / venta ${fmt(e.venta)}`, "EUR|" + e.nombre)));
+    }
     sel.value = [...sel.options].some((o) => o.value === actual) ? actual : "mercado";
   }
 
@@ -1393,7 +1400,11 @@
       return;
     }
 
-    const e = paraConvertir().find((x) => x.nombre === fuente);
+    const esEuro = fuente.startsWith("EUR|");
+    const e = esEuro ? euros.find((x) => "EUR|" + x.nombre === fuente) : paraConvertir().find((x) => x.nombre === fuente);
+    const nombreMoneda = esEuro ? "euros" : "dólares";
+    $("vendo").textContent = "Vendo " + nombreMoneda;
+    $("compro").textContent = "Compro " + nombreMoneda;
     document.querySelector("#modo-banco .pastillas").style.display = e && e.wu ? "none" : "";
     if (e && e.wu) {
       // Western Union: lo que te mandan desde ese país, en su moneda
@@ -1403,14 +1414,14 @@
       return;
     }
     const tasa = e && (vendo ? e.compra : e.venta);
-    $("etq-cantidad").textContent = "Cantidad en dólares (US$)";
+    $("etq-cantidad").textContent = esEuro ? "Cantidad en euros (€)" : "Cantidad en dólares (US$)";
     if (tasa == null) {
       $("resultado").textContent = "—";
-      $("detalle").textContent = `${fuente} no publica precio de ${vendo ? "compra" : "venta"}. Prueba con otra entidad.`;
+      $("detalle").textContent = `${e ? e.nombre : fuente} no publica precio de ${vendo ? "compra" : "venta"}${esEuro ? " del euro" : ""}. Prueba con otra entidad.`;
       return;
     }
     $("resultado").textContent = (vendo ? "Te dan " : "Pagas ") + "RD$ " + fmt(monto * tasa);
-    $("detalle").textContent = `${e.nombre} · ${vendo ? "compra" : "venta"} a RD$ ${fmt(tasa)} por dólar`;
+    $("detalle").textContent = `${e.nombre} · ${vendo ? "compra" : "venta"} a RD$ ${fmt(tasa)} por ${esEuro ? "euro" : "dólar"}`;
   }
 
   ["cantidad", "desde", "hacia", "fuente"].forEach((id) => $(id).addEventListener("input", convertir));
