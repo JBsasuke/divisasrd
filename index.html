@@ -482,7 +482,10 @@
   <!-- Bancos -->
   <section class="tarjeta" id="bancos" aria-labelledby="t-bancos">
     <h2 id="t-bancos">Dólar en bancos y remesas</h2>
-    <p class="nota">Compra = lo que te dan por cada dólar. Toca una entidad para ver su nombre completo y activar avisos 🔔.</p>
+    <div class="pastillas" id="moneda-bancos" role="group" aria-label="Moneda">
+      <button type="button" data-m="USD" class="activo">💵 Dólar</button><button type="button" data-m="EUR">💶 Euro</button>
+    </div>
+    <p class="nota">Compra = lo que te dan por cada <span id="nota-moneda">dólar</span>. Toca una entidad para ver su nombre completo y activar avisos 🔔.</p>
     <div class="cab"><span>Entidad</span><span>Compra</span><span>Venta</span></div>
     <div id="lista-bancos"><div class="cargando">Cargando tasas…</div></div>
     <p class="nota" id="act-bancos" style="margin-top:8px"></p>
@@ -1241,6 +1244,7 @@
       const d = await json(SERVIDOR + "/tasas");
       ultimosServidor = d;
       entidades = (d.entidades || []).filter((e) => e.compra != null || e.venta != null);
+      euros = (d.euros || []).filter((e) => e.compra != null || e.venta != null);
       pintarBancos();
       pintarSelector();
       pintarRemesas();
@@ -1276,18 +1280,30 @@
   }
 
   // ---------- Pintar ----------
-  function pintarBancos() {
-    if (!entidades.length) { $("lista-bancos").innerHTML = '<p class="aviso">Sin datos por ahora.</p>'; return; }
-    const mejor = Math.max(...entidades.map((e) => e.compra || 0));
-    const top = entidades.find((e) => e.compra === mejor);
-    if (top) $("mejor-hoy").innerHTML = `★ Mejor compra hoy: <b>${esc(top.nombre)}</b> a RD$ ${fmt(top.compra)} por dólar`;
+  // Dólar o euro en la lista de bancos (el euro viene en d.euros del servidor)
+  var monedaBancos = "USD", euros = [];
+  document.querySelectorAll("#moneda-bancos button").forEach((b) => b.addEventListener("click", () => {
+    monedaBancos = b.dataset.m;
+    document.querySelectorAll("#moneda-bancos button").forEach((x) => x.classList.toggle("activo", x === b));
+    pintarBancos();
+  }));
 
-    $("lista-bancos").innerHTML = entidades.map((e) => {
+  function pintarBancos() {
+    const enEuro = monedaBancos === "EUR";
+    const lista = enEuro ? euros : entidades;
+    $("t-bancos").textContent = enEuro ? "Euro en bancos y casas de cambio" : "Dólar en bancos y remesas";
+    $("nota-moneda").textContent = enEuro ? "euro" : "dólar";
+    if (!lista.length) { $("lista-bancos").innerHTML = '<p class="aviso">Sin datos por ahora.</p>'; return; }
+    const mejor = Math.max(...lista.map((e) => e.compra || 0));
+    const top = lista.find((e) => e.compra === mejor);
+    if (top && !enEuro) $("mejor-hoy").innerHTML = `★ Mejor compra hoy: <b>${esc(top.nombre)}</b> a RD$ ${fmt(top.compra)} por dólar`;
+
+    $("lista-bancos").innerHTML = lista.map((e) => {
       const esMejor = e.compra != null && e.compra === mejor;
       const tipo = TIPOS[e.tipo] || "Casa de cambio";
       return fila(colorEntidad(e.nombre), iniciales(e.nombre), e.nombre, tipo + (esMejor ? " · ★ Mejor compra hoy" : ""),
         `<div class="nombre"><b>${esc(e.nombre)}</b><small class="${esMejor ? "mejor" : ""}">${esMejor ? "★ Mejor compra" : tipo}</small></div>
-         <div class="num">${fmt(e.compra)}</div><div class="num">${fmt(e.venta)}</div>`, "banco:" + e.nombre);
+         <div class="num">${fmt(e.compra)}</div><div class="num">${fmt(e.venta)}</div>`, (enEuro ? "euro:" : "banco:") + e.nombre);
     }).join("");
   }
 
