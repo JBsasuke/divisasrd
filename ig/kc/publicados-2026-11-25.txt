@@ -1,1 +1,5 @@
 kc-clima-2026-11-25
+kc-ejemplo-edesur-2026-11-25
+kc-ejemplo-edenorte-2026-11-25
+kc-ejemplo-edeeste-2026-11-25
+kc-ejemplo-cepm-2026-11-25
