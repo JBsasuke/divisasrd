@@ -1,8 +1,9 @@
 {
-  "fecha": "2026-11-25",
+  "fecha": "2026-11-26",
   "dolar": 59.692296,
-  "dolarAnterior": 60.128772,
+  "dolarAnterior": 59.692296,
   "usadas": [
+    "empresa_baja:4",
     "empresa_baja:2",
     "empresa_sube:3",
     "empresa_baja:1",
@@ -41,8 +42,7 @@
     "gasolina_igual:3",
     "gasolina_igual:4",
     "finde:1",
-    "mejor_compra:1",
-    "mejor_compra:5"
+    "mejor_compra:1"
   ],
   "gasolina": {
     "semana": "21 al 27 noviembre del 2026",
