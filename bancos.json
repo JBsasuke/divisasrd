@@ -3,10 +3,10 @@
   {
    "nombre": "Banco Popular",
    "tipo": "banco",
-   "compra": 58.15,
-   "venta": 61.5,
+   "compra": 58.3,
+   "venta": 61.65,
    "fuente": "popularenlinea.com",
-   "desde": "2026-11-26T23:18:07+00:00"
+   "desde": "2026-11-27T19:39:40+00:00"
   }
  ],
  "errores": [
